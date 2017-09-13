@@ -2,4 +2,7 @@
     <string name="app_name">Koch-App</string>
     <string name="recipe">Recipe</string>
     <string name="recipe_title">Recipe</string>
+    <string name="plusButton">+</string>
+    <string name="minusButton">-</string>
+    <string name="readyButton">Fertig</string>
 </resources>
