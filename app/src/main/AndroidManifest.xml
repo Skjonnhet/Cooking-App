@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ninah.cooking_app">
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -18,23 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".RecipeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name=".TimerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <uses-permission android:name="android.permission.VIBRATE" />
         </activity>
         <activity android:name=".ChooseRingToneActivity">
             <intent-filter>
@@ -44,7 +33,7 @@
 
         <receiver android:name=".TimeReceiver">
             <intent-filter>
-                <action android:name="CURRENT_TIME_ACTION"/>
+                <action android:name="CURRENT_TIME_ACTION" />
             </intent-filter>
         </receiver>
 
@@ -52,12 +41,11 @@
             android:name=".PlayRingToneService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".CookingTimerService"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity android:name=".TimerActivity"></activity>
     </application>
-
-
 
 </manifest>

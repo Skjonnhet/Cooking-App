@@ -2,17 +2,24 @@ package com.example.ninah.cooking_app;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+
+
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.ninah.cooking_app.ChooseRingToneActivity;
+import com.example.ninah.cooking_app.CookingTimerService;
+import com.example.ninah.cooking_app.MovingSensor;
+import com.example.ninah.cooking_app.TimeReceiver;
 
 public class TimerActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -74,7 +81,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     private MovingSensor movingSensor;
 
     //context of the activity
-   // public static Context context;
+    // public static Context context;
 
 
      /*--------------------------------------------------------------------------*/
@@ -86,7 +93,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_timer);
         initEditTexts();
         initButtons();
         initTextView();
