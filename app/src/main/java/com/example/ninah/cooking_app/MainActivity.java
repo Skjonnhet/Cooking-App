@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void onClickForTesting(){
         //tests timer
         //timer alarm sound is always the same song in (the raw file) with different names
-        //should be changed to different sounds
+        //should be changed to different sounds soon
         if(testTimerButton!=null) {
             testTimerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
