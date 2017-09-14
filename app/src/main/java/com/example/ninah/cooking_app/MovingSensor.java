@@ -14,7 +14,7 @@ public class MovingSensor {
 
     //constants
     //motion_detection values show how big the movements of the devices has to be until motion is detected by the sensor
-    private final static int MOTION_DETECTION_X = 10;
+    private final static int MOTION_DETECTION_X = 8;
     private final static int MOTION_DETECTION_Y = 10;
     private final static int MOTION_DETECTION_Z = 15;
 
