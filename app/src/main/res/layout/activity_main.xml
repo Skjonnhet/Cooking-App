@@ -9,39 +9,74 @@
 
 
     <TextView
+        android:id="@+id/viewRecipeList"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/recipe_list"
+        android:gravity="center_horizontal|center_vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="54dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorSkyBlue"/>
+
+    <TextView
         android:id="@+id/viewBestRecipe"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Titel bestes Rezept"
+        android:text="@string/best_recipe"
+        android:gravity="center_horizontal|center_vertical"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="54dp"
-        android:layout_marginTop="67dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/viewRecipeList"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorSkyBlue"/>
 
     <TextView
         android:id="@+id/viewRandomRecipe"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Titel Zufallsrezept"
+        android:text="@string/random_recipe"
+        android:gravity="center_horizontal|center_vertical"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="112dp"
-        android:layout_marginTop="27dp"
+        tools:layout_editor_absoluteY="54"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/viewBestRecipe"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@color/colorSkyBlue"/>
 
     <TextView
         android:id="@+id/viewFastRecipe"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Titel schnelles Rezept"
+        android:text="@string/fast_recipe"
+        android:gravity="center_horizontal|center_vertical"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="171dp"
-        android:layout_marginTop="28dp"
+        tools:layout_editor_absoluteY="54dp"
         android:layout_below="@+id/viewRandomRecipe"
-        android:layout_alignLeft="@+id/viewRandomRecipe"
-        android:layout_alignStart="@+id/viewRandomRecipe" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorSkyBlue"/>
+
+    <TextView
+        android:id="@+id/viewNewRecipe"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/new_recipe"
+        android:gravity="center_horizontal|center_vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="54dp"
+        android:layout_below="@+id/viewFastRecipe"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorSkyBlue"/>
 
     <Button
         android:id="@+id/testTimerButton"
@@ -53,5 +88,6 @@
         android:layout_marginBottom="34dp"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
-        android:text="test timer" />
+        android:text="test timer **noch als String hinterlegen**"
+        android:gravity="center_horizontal|center_vertical"/>
 </RelativeLayout>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false">
+
+    <TextView
+        android:id="@+id/recipeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/recipeName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/recipeNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/inputRecipeName"
+        android:layout_below="@+id/recipeName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/recipeIngredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/recipeNameInput"
+        android:layout_marginTop="29dp"
+        android:text="@string/ingredients" />
+
+    <EditText
+        android:id="@+id/recipeIngredientsInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/recipeIngredients"
+        android:layout_marginTop="18dp"
+        android:inputType="textPersonName"
+        android:hint="@string/inputRecipeIngredients" />
+
+    <TextView
+        android:id="@+id/recipeServings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/recipeIngredientsInput"
+        android:layout_marginTop="29dp"
+        android:text="@string/numOfServings" />
+
+    <EditText
+        android:id="@+id/recipeServingsInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/recipeServings"
+        android:layout_marginTop="18dp"
+        android:inputType="textPersonName"
+        android:hint="@string/inputServings" />
+
+    <TextView
+        android:id="@+id/recipeWorkstep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/recipeServingsInput"
+        android:layout_marginTop="29dp"
+        android:text="@string/recipeText" />
+
+    <EditText
+        android:id="@+id/editTexrecipeWorkstepInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/recipeWorkstep"
+        android:layout_marginTop="18dp"
+        android:inputType="textPersonName"
+        android:hint="@string/inputWorkingstep" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="21dp"
+        android:text="@string/saveButton" />
+
+</RelativeLayout>

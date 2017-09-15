@@ -1,8 +1,23 @@
 <resources>
     <string name="app_name">Koch-App</string>
-    <string name="recipe">Recipe</string>
+    <string name="recipe">Rezept</string>
+    <string name="recipe_list">Rezept-Liste</string>
+    <string name="best_recipe">bestes Rezept</string>
+    <string name="random_recipe">Zufallsrezept</string>
+    <string name="fast_recipe">schnelles Rezept</string>
+    <string name="new_recipe">neues Rezept</string>
     <string name="recipe_title">Recipe</string>
     <string name="plusButton">+</string>
     <string name="minusButton">-</string>
     <string name="readyButton">Fertig</string>
+    <string name="recipeName">Rezeptname</string>
+    <string name="ingredients">Zutaten</string>
+    <string name="numOfServings">Anzahl Portionen</string>
+    <string name="recipeText">Arbeitsschritte</string>
+    <string name="saveButton">Speichern</string>
+    <string name="inputRecipeName">Rezeptname eingeben</string>
+    <string name="inputRecipeIngredients">Zutaten eintragen</string>
+    <string name="inputServings">Anzahl der Portionen angeben</string>
+    <string name="inputWorkingstep">Arbeitsschritt angeben</string>
+
 </resources>
