@@ -101,7 +101,7 @@ public class Rating_Activity extends AppCompatActivity {
             }
 
             else {
-                //write Raing in DB
+                //write Rating in DB
             }
         }
     }
