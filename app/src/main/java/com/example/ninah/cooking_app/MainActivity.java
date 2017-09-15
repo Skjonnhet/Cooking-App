@@ -2,14 +2,15 @@ package com.example.ninah.cooking_app;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.app.ActionBar;
 import com.example.ninah.cooking_app.RecipeActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onClick(View v) {
                     try {
-                        Intent intent = new Intent(MainActivity.this, TimerActivity.class);
+                        Intent intent = new Intent(MainActivity.this, Rating_Activity.class);
                         startActivity(intent);
                     } catch (ActivityNotFoundException e) {
                         Toast.makeText(MainActivity.this, "Not installed.", Toast.LENGTH_SHORT).show();
