@@ -7,9 +7,10 @@
     <string name="fast_recipe">schnelles Rezept</string>
     <string name="new_recipe">neues Rezept</string>
     <string name="recipe_title">Recipe</string>
+    <string name="servings">Portione(n)</string>
     <string name="plusButton">+</string>
     <string name="minusButton">-</string>
-    <string name="readyButton">Fertig</string>
+    <string name="readyButton">Kochvorgang starten</string>
     <string name="recipeName">Rezeptname</string>
     <string name="ingredients">Zutaten</string>
     <string name="numOfServings">Anzahl Portionen</string>
@@ -19,5 +20,6 @@
     <string name="inputRecipeIngredients">Zutaten eintragen</string>
     <string name="inputServings">Anzahl der Portionen angeben</string>
     <string name="inputWorkingstep">Arbeitsschritt angeben</string>
+    <string name="edit">Bearbeiten</string>
 
 </resources>
