@@ -19,5 +19,7 @@
     <string name="inputRecipeIngredients">Zutaten eintragen</string>
     <string name="inputServings">Anzahl der Portionen angeben</string>
     <string name="inputWorkingstep">Arbeitsschritt angeben</string>
+    <string name="title_activity_rating_">Arbeitsschritt angeben</string>
+    <string name="edit">edit</string>
 
 </resources>

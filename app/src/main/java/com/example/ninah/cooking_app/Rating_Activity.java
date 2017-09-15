@@ -2,8 +2,7 @@ package com.example.ninah.cooking_app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.Toast;
+
 
 public class Rating_Activity extends AppCompatActivity {
 
@@ -25,7 +25,7 @@ public class Rating_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_rating_);
 
         receiveIntent();
-        initActionBar();
+
         initButtons();
         initRatingBar();
         setButtonOnClickListener();
@@ -44,19 +44,7 @@ public class Rating_Activity extends AppCompatActivity {
         }
     }
 
-    private void initActionBar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }
 
     private void initButtons(){
         yesButton=(Button) findViewById(R.id.ratingRecipe_changeRecipeButton_yes);
@@ -72,7 +60,9 @@ public class Rating_Activity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                commitRatingToDB();
                 changeRecipe();
+
             }
         });
 
@@ -80,6 +70,7 @@ public class Rating_Activity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                commitRatingToDB();
                 returnToMainMenu();
             }
         });
@@ -101,6 +92,18 @@ public class Rating_Activity extends AppCompatActivity {
     private void returnToMainMenu(){
         Intent mainMenuIntent=new Intent(this, MainActivity.class);
         startActivity(mainMenuIntent);
+    }
+
+    private void commitRatingToDB(){
+        if(ratingBar!=null){
+            if(ratingBar.getRating()==0){
+                Toast.makeText(this,"Please rate your recipe", Toast.LENGTH_LONG);
+            }
+
+            else {
+                //write Rating in DB
+            }
+        }
     }
 
 
