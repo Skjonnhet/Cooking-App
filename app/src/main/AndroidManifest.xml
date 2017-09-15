@@ -59,7 +59,11 @@
             android:name=".CookingTimerService"
             android:exported="false" />
 
-        <activity android:name=".TimerActivity"></activity>
+        <activity android:name=".TimerActivity" />
+        <activity
+            android:name=".Rating_Activity"
+            android:label="@string/title_activity_rating_"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
