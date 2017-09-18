@@ -46,6 +46,13 @@ public class RecipeNew extends AppCompatActivity implements View.OnClickListener
                 /**
                  * Bitte Funktion einfügen, die dann alles in die DB speichert
                  */
+                int recipeIngredients = Integer.parseInt(recipeIngredientsString);
+                editTextQuantity.setText("");
+                editTextProduct.setText("");
+
+                dbSource.createRecipt(recipeName,  recipeIngredients);
+
+
                 break;
             default:
                 break;
