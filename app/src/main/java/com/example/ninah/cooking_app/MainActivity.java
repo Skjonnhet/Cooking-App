@@ -10,10 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import java.util.List;
+import com.example.ninah.cooking_app.RecipeActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -23,8 +20,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView randomRecipe;
     TextView newRecipe;
     Button testTimerButton;
-
-    private RecipeListDatabase dbSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,31 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newRecipe.setOnClickListener(this);
         onClickForTesting();
 
-
-// Db open an close
-
-        dbSource = new RecipeListDatabase(this);
-        dbSource.open();
-
-        RecipeListDatabase.Recipt recipt = dbSource.createRecipt("test", 2,2);
-
-        dbSource.close();
-
-
-        showAllData();
-
-    }
-
-    private void showAllData () {
-        List<Recipt> reciptList = dbSource.getRecipts();
-
-        ArrayAdapter<Recipt> ReciptArrayAdapter = new ArrayAdapter<> (
-                this,
-                android.R.layout.simple_list_item_multiple_choice,
-                reciptList);
-
-        ListView _______ = (ListView) findViewById(R.id._______);
-       ________.setAdapter(ReciptArrayAdapter);
     }
 
     @Override

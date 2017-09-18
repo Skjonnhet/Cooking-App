@@ -5,38 +5,38 @@
     android:baselineAligned="false">
 
     <TextView
-        android:id="@+id/Title"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="Recipe-Title"
+        android:text="@string/recipeName"
         android:visibility="visible" />
 
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/Title"
+        android:layout_below="@+id/title"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <ListView
         android:id="@+id/ingredients"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/recipe_text"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ratingBar" />
 
     <TextView
-        android:id="@+id/Servings"
+        android:id="@+id/servings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Portionen"
-        android:layout_below="@+id/ratingBar"
+        android:text=""
+        android:layout_below="@+id/ingredients"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -44,11 +44,11 @@
         android:id="@+id/numberOfServings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/Servings"
+        android:layout_alignTop="@+id/servings"
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
-        android:layout_toRightOf="@+id/Servings"
-        android:text="3" />
+        android:layout_toRightOf="@+id/servings"
+        android:text="3 ** noch ändern mit DB-Funktion**" />
 
     <Button
         android:id="@+id/plus"
