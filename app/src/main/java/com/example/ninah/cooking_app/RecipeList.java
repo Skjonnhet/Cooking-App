@@ -35,10 +35,11 @@ public class RecipeList extends AppCompatActivity {
         ListView recipeListView = (ListView) findViewById(R.id.recipe_list);
         //Create Adapter
 
-        List<RecipeListDatabase.Recipt> reciptList = new ArrayList<>();
+        /*List<RecipeListDatabase.Recipt> reciptList = new ArrayList<>();
 
         //set adapter
         recipeListView.setAdapter(todo_items_adapter);
+
         //setOnItemLongClickListener
         recipeListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -48,6 +49,7 @@ public class RecipeList extends AppCompatActivity {
                 return false;
             }
         });
+        */
     }
 
 }

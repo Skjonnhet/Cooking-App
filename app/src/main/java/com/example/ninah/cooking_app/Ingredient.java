@@ -1,15 +1,17 @@
 package com.example.ninah.cooking_app;
 
+import java.io.Serializable;
+
 /**
  * Created by Roman on 18.09.2017.
  */
 
-public class Ingridient {
+public class Ingredient implements Serializable{
     private String name;
     private String norm;
     private double amount;
 
-    public Ingridient(String name, String norm, double amount){
+    public Ingredient(String name, String norm, double amount){
         this.name=name;
         this.norm=norm;
         this.amount=amount;

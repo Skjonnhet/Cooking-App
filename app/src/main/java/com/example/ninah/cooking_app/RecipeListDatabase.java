@@ -77,9 +77,9 @@ public class RecipeListDatabase {
         int stars = cursor.getInt(idstars);
         long id = cursor.getLong(idIndex);
 
-        Recipe recipt = new Recipe(recipeName, recipeIngredients, stars,id);
+       // Recipe recipt = new Recipe(recipeName, recipeIngredients, stars,id);
 
-        return recipt;
+        return null;
     }
 
     public List<Recipe> getRecipts() {

@@ -1,20 +1,21 @@
 package com.example.ninah.cooking_app;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Roman on 18.09.2017.
  */
 
-public class Recipe {
+public class Recipe implements Serializable{
     private static String name;
-    private List<RecipeListDatabase.Ingridient> ingridients;
+    private List<Ingredient> ingredients;
     private static int ID;
 
 
-    public Recipe(int ID, String name, List<RecipeListDatabase.Ingridient> ingridients ){
+    public Recipe(int ID, String name, List<Ingredient> ingredients){
         this.name=name;
-        this.ingridients=ingridients;
+        this.ingredients = ingredients;
         this.ID=ID;
     }
 

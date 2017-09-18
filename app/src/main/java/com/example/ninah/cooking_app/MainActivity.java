@@ -1,6 +1,5 @@
 package com.example.ninah.cooking_app;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,9 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.ninah.cooking_app.RecipeActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView randomRecipe;
     TextView newRecipe;
     Button testTimerButton;
+    Db4oAdapter db4oAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         randomRecipe.setOnClickListener(this);
         newRecipe.setOnClickListener(this);
         onClickForTesting();
+        db4oAdapter=new Db4oAdapter(this);
 
     }
 
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void onClickForTesting(){
+
         //tests timer
         //timer alarm sound is always the same song in (the raw file) with different names
         //should be changed to different sounds soon
@@ -80,14 +83,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             testTimerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /*
                     try {
                         Intent intent = new Intent(MainActivity.this, TimerActivity.class);
                         startActivity(intent);
                     } catch (ActivityNotFoundException e) {
                         Toast.makeText(MainActivity.this, "Not installed.", Toast.LENGTH_SHORT).show();
+
+                    }*/
+                    List<Ingredient> ingredients =new ArrayList<Ingredient>();
+
+
+                    Recipe recipe=new Recipe(1,"Erstes Rezept", ingredients);
+                    if(db4oAdapter!=null){
+                        db4oAdapter.store(recipe);
+
                     }
 
                 }
+
+
             });
         }
 

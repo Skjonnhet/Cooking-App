@@ -31,4 +31,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
     compile 'junit:junit:4.12'
+    compile files('libs/db4o-8.0.184.15484-all-java5.jar')
+
 }
