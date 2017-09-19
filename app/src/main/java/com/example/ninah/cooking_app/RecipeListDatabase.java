@@ -45,7 +45,7 @@ public class RecipeListDatabase {
     }
 
     //Create the database
-    public Recipe createNewRecipeInDB(String recipeName, int recipeIngredients, int stars) {
+ /*   public Recipe createNewRecipeInDB(String recipeName, int recipeIngredients, int stars) {
            ContentValues values = new ContentValues();
         values.put(RecipeListAdapter.COLUMN_RECIPE_NAME, recipeName);
         values.put(RecipeListAdapter.COLUMN_RECIPE_INGREDIENTS, recipeIngredients);
@@ -104,5 +104,5 @@ public class RecipeListDatabase {
     }
 
 
-
+*/
 }

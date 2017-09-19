@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView randomRecipe;
     TextView newRecipe;
     Button testTimerButton;
-    Db4oAdapter db4oAdapter;
+    DBAdapter dbAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fastRecipe.setOnClickListener(this);
         randomRecipe.setOnClickListener(this);
         newRecipe.setOnClickListener(this);
+        dbAdapter=new DBAdapter(this);
         onClickForTesting();
-        db4oAdapter=new Db4oAdapter(this);
+      //  createNewRecipe();
+
 
     }
 
@@ -74,38 +76,99 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void createNewRecipeInDataBase(){
+        //Erst das Rezept erstellen
+
+        String RezeptName="Kuchen";
+        String Beschreibung="leckerer Schockokuchen";
+        String Schwierigkeit="leicht";
+        int ZeitInMinuten=45;
+
+        //Bitte Adapter verwendenen um Rezepte, Zutaten und Arbeitsschritte zu erstellen
+        //Ansonsten funktioniert DB nicht mehr
+        Recipe recipe=dbAdapter.createNewRecipe(RezeptName,Beschreibung,Schwierigkeit,ZeitInMinuten);
+
+        //Zweitens Zutatenliste erstellen
+        String ZutatenName="Zucker";
+        String ZuatetnEinheit="gramm";
+        double Menge=500;
+        String ZutatenName2="Mehl";
+
+        //Bitte Adapter verwendenen um Rezepte, Zutaten und Arbeitsschritte zu erstellen
+        //Ansonsten funktioniert DB nicht mehr
+        Ingrident ingrident1=dbAdapter.createNewIngrident(ZutatenName, ZuatetnEinheit,Menge);
+        Ingrident ingrident2=dbAdapter.createNewIngrident(ZutatenName2, ZuatetnEinheit,Menge);
+
+        List<Ingrident> ingridentList=new ArrayList<>();
+        ingridentList.add(ingrident1);
+        ingridentList.add(ingrident2);
+
+        //ArbeitsschrittListe erstellen
+        String ruhren="Rühren";
+        String essen="Essen";
+
+        //Bitte Adapter verwendenen um Rezepte, Zutaten und Arbeitsschritte zu erstellen
+        //Ansonsten funktioniert DB nicht mehr
+        RecipeWorkStep workStep1=dbAdapter.createNewWorkStep(ruhren);
+        RecipeWorkStep workStep2=dbAdapter.createNewWorkStep(essen);
+
+        List<RecipeWorkStep> workStepList=new ArrayList<>();
+        workStepList.add(workStep1);
+        workStepList.add(workStep2);
+
+        //IN DATENBANK EINFÜGEN
+        //Rezpet, Liste mit Zutaten und Arbeitsschritte
+        dbAdapter.saveRecipeToDB(recipe,ingridentList,workStepList);
+    }
+
+
+    public List<Recipe> getRecipeWithName(String recipeName){
+
+        //holt immer eine Liste zurück, da ja Rezepte gleich heißen können
+        //alles läuft über den dbAdapter
+        List<Recipe> list=dbAdapter.getAllRecipesWithThisName(recipeName);
+        return list;
+    }
+
+
+
+
     private void onClickForTesting(){
 
         //tests timer
         //timer alarm sound is always the same song in (the raw file) with different names
         //should be changed to different sounds soon
         if(testTimerButton!=null) {
+
+
             testTimerButton.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                    /*
-                    try {
-                        Intent intent = new Intent(MainActivity.this, TimerActivity.class);
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-                        Toast.makeText(MainActivity.this, "Not installed.", Toast.LENGTH_SHORT).show();
 
-                    }*/
-                    List<Ingredient> ingredients =new ArrayList<Ingredient>();
+                    createNewRecipeInDataBase();
+                    //hole eine Liste von Rezepten mit dem namen "Kuchen" aus der DB
+                    //nehme da erste Objekt aus der Liste
+                    Recipe kuchenRezept=getRecipeWithName("Kuchen").get(0);
 
+                    //hole dir die id des kcuhenRezptes, ID ist (Long)
+                    //die getter und setter kommen ohne Adapter aus
+                    Long id=kuchenRezept.getId();
+                    String name=kuchenRezept.getName();
+                    //String schwierigkeit=kuchenRezept.getDifficulty();
 
-                    Recipe recipe=new Recipe(1,"Erstes Rezept", ingredients);
-                    if(db4oAdapter!=null){
-                        db4oAdapter.store(recipe);
+                    //schreibe den namen auf dem Button
+                    testTimerButton.setText(name);
 
                     }
 
                 }
 
 
-            });
+            );}
+        else Log.d("MainActivity", "testTimerButtonIsNull");
         }
 
-        else Log.d("MainActivity", "testTimerButtonIsNull");
-    }
+
+
 }

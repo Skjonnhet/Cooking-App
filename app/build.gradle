@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 25
@@ -21,6 +22,10 @@ android {
     }
 }
 
+greendao {
+    schemaVersion 1
+}
+
 dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -32,5 +37,7 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'junit:junit:4.12'
     compile files('libs/db4o-8.0.184.15484-all-java5.jar')
+    compile 'org.greenrobot:greendao:3.2.2'
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
 
 }
