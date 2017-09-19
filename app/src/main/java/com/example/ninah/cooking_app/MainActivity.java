@@ -77,6 +77,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createNewRecipeInDataBase(){
+
+        //Rezpet in db schreiben:
+        // 1.recipe erstellen
+        // 2. liste von zutaten erstellen
+        //3.Liste von Arbeitsschritten erstellen
+        // 4. mit der Methode  dbAdapter.saveRecipeToDB(recipe,ingridentList,workStepList)
+        //in die DB schreibem
+
         //Erst das Rezept erstellen
 
         String RezeptName="Kuchen";
