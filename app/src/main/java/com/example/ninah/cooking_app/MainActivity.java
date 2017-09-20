@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newRecipe.setOnClickListener(this);
         dbAdapter=new DBAdapter(this);
         onClickForTesting();
-      //  createNewRecipe();
+
 
 
     }
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbAdapter.saveRecipeToDB(recipe,ingridentList,workStepList);
     }
 
-
+    //holte Rezept mit name recipeName
     public List<Recipe> getRecipeWithName(String recipeName){
 
         //holt immer eine Liste zurück, da ja Rezepte gleich heißen können
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void createDefaultRecipeInDB(){
+        //erstellt das standardRezept
        dbAdapter.createDefaultRecipeAndSaveItToDB();
     }
 
