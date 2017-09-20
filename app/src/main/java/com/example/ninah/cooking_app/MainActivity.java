@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Ingrident ingrident1=dbAdapter.createNewIngrident(ZutatenName, ZuatetnEinheit,Menge);
         Ingrident ingrident2=dbAdapter.createNewIngrident(ZutatenName2, ZuatetnEinheit,Menge);
 
+
         List<Ingrident> ingridentList=new ArrayList<>();
         ingridentList.add(ingrident1);
         ingridentList.add(ingrident2);
@@ -119,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Ansonsten funktioniert DB nicht mehr
         RecipeWorkStep workStep1=dbAdapter.createNewWorkStep(ruhren);
         RecipeWorkStep workStep2=dbAdapter.createNewWorkStep(essen);
+
+
 
         List<RecipeWorkStep> workStepList=new ArrayList<>();
         workStepList.add(workStep1);
@@ -136,6 +139,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //alles läuft über den dbAdapter
         List<Recipe> list=dbAdapter.getAllRecipesWithThisName(recipeName);
         return list;
+    }
+
+    public void createDefaultRecipeInDB(){
+       dbAdapter.createDefaultRecipeAndSaveItToDB();
     }
 
 
@@ -159,14 +166,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //nehme da erste Objekt aus der Liste
                     Recipe kuchenRezept=getRecipeWithName("Kuchen").get(0);
 
-                    //hole dir die id des kcuhenRezptes, ID ist (Long)
+                    //hole dir die id des kuchenRezeptes, ID ist (Long)
                     //die getter und setter kommen ohne Adapter aus
                     Long id=kuchenRezept.getId();
+
+                    //neuen Namen setzten und updaten
+                    //kuchenRezept.setName("donut");
+                    //kuchenRezept.update();
+
                     String name=kuchenRezept.getName();
                     //String schwierigkeit=kuchenRezept.getDifficulty();
 
+
+                    //erstelle das StandardZufallsRezept
+                    createDefaultRecipeInDB();
+
+                    //hole ds rezept mit der höchten Bewertung (Kuchen oder StandardZufallsRezept?)
+                    Recipe recipeWithHighestRating=dbAdapter.getHighestRateRecipe();
+
+
                     //schreibe den namen auf dem Button
-                    testTimerButton.setText(name);
+                    testTimerButton.setText(recipeWithHighestRating.getName());
 
                     }
 
