@@ -689,7 +689,7 @@ public class DBAdapter {
 
 
     //---------------saveAndDestroy-part---------------------------------
-    //most important part: user can save a recipe to DB or destroy it
+    //most important part: user can save a whole recipe to DB or destroy it
 
     //save a recipe to DB: needs, recipe, List of ingridents, list of worksteps
     //each ingrident and worksteps gets the id of "his" recipe
@@ -711,8 +711,21 @@ public class DBAdapter {
         daoSession.update(recipe);
     }
 
+    public void destroyWholeRecipeAndAllItsConnectedInstances(Recipe recipe){
+        if(recipe!=null) {
+            try {
+                destroyWholeRecipe(recipe);
+            } catch (Exception e) {
+                giveFeedback("destroyWholeRecipeAndAllItsConnectedInstances : ", e.toString());
+            }
+        }
+        else giveFeedback("destroyWholeRecipeAndAllItsConnectedInstances : ","recipe is null");
+
+    }
 
 
+   // ----------update-part------------------------------------------------------------------------
+    //all update methods
 
     //destroys old worksteps and writes new in DB
     public void updateAllWorkStepsOfSingleRecipeByRecipeID(Long recipeId, List<RecipeWorkStep> worksteps){
@@ -737,17 +750,7 @@ public class DBAdapter {
 
     }
 
-    public void destroyWholeRecipeAndAllItsConnectedInstances(Recipe recipe){
-        if(recipe!=null) {
-            try {
-                destroyWholeRecipe(recipe);
-            } catch (Exception e) {
-                giveFeedback("destroyWholeRecipeAndAllItsConnectedInstances : ", e.toString());
-            }
-        }
-        else giveFeedback("destroyWholeRecipeAndAllItsConnectedInstances : ","recipe is null");
 
-    }
 
 
 
