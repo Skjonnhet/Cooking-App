@@ -13,7 +13,7 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(nameInDb = "recipeWorkStep",  active = true)
 public class RecipeWorkStep {
-    @Id(autoincrement = true)
+    @Id
     private Long id;
 
     @Property(nameInDb = "workStepDescribition")

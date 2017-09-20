@@ -21,6 +21,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView newRecipe;
     Button testTimerButton;
     DBAdapter dbAdapter;
+    Button changeRecipeButton;
+    Button deleteRecipeButton;
+    Long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fastRecipe = (TextView)findViewById(R.id.viewFastRecipe);
         newRecipe = (TextView) findViewById(R.id.viewNewRecipe);
         testTimerButton=(Button) findViewById(R.id.testTimerButton);
+        changeRecipeButton=(Button) findViewById(R.id.changeRecipeName);
+        deleteRecipeButton=(Button) findViewById(R.id.deleteRecipeButton);
         recipeList.setOnClickListener(this);
         bestRecipe.setOnClickListener(this);
         fastRecipe.setOnClickListener(this);
@@ -40,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbAdapter=new DBAdapter(this);
         onClickForTesting();
 
-
+        recipeWithNewName=dbAdapter.createDefaultRecipeAndSaveItToDB();
+        newId=recipeWithNewName.getId();
 
     }
 
@@ -76,7 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void createNewRecipeInDataBase(){
+    //Beispiel neues Rezept erstellen
+    private Long createNewRecipeInDataBase(){
 
         //Rezpet in db schreiben:
         // 1.recipe erstellen
@@ -87,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Erst das Rezept erstellen
 
-        String RezeptName="Kuchen";
+        String RezeptName="SchokoTorte";
         String Beschreibung="leckerer Schockokuchen";
         String Schwierigkeit="leicht";
         int ZeitInMinuten=45;
@@ -95,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Bitte Adapter verwendenen um Rezepte, Zutaten und Arbeitsschritte zu erstellen
         //Ansonsten funktioniert DB nicht mehr
         Recipe recipe=dbAdapter.createNewRecipe(RezeptName,Beschreibung,Schwierigkeit,ZeitInMinuten);
+        dbAdapter.createNewRecipe(RezeptName,Beschreibung,Schwierigkeit,ZeitInMinuten);
+        id=recipe.getId();
 
         //Zweitens Zutatenliste erstellen
         String ZutatenName="Zucker";
@@ -130,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //IN DATENBANK EINFÜGEN
         //Rezpet, Liste mit Zutaten und Arbeitsschritte
         dbAdapter.saveRecipeToDB(recipe,ingridentList,workStepList);
+
+        return recipe.getId();
     }
 
     //holte Rezept mit name recipeName
@@ -141,13 +152,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return list;
     }
 
-    public void createDefaultRecipeInDB(){
+    public Long createDefaultRecipeInDB(){
         //erstellt das standardRezept
-       dbAdapter.createDefaultRecipeAndSaveItToDB();
+       Recipe recipe=dbAdapter.createDefaultRecipeAndSaveItToDB();
+        return recipe.getId();
     }
 
 
-
+    Recipe recipeWithNewName;
+    Long newId;
 
     private void onClickForTesting(){
 
@@ -155,48 +168,82 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //timer alarm sound is always the same song in (the raw file) with different names
         //should be changed to different sounds soon
         if(testTimerButton!=null) {
-
+            testTimerButton.setText("setTextOnButton");
 
             testTimerButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
 
-                    createNewRecipeInDataBase();
-                    //hole eine Liste von Rezepten mit dem namen "Kuchen" aus der DB
-                    //nehme da erste Objekt aus der Liste
-                    Recipe kuchenRezept=getRecipeWithName("Kuchen").get(0);
 
-                    //hole dir die id des kuchenRezeptes, ID ist (Long)
-                    //die getter und setter kommen ohne Adapter aus
-                    Long id=kuchenRezept.getId();
-
-                    //neuen Namen setzten und updaten
-                    //kuchenRezept.setName("donut");
-                    //kuchenRezept.update();
-
-                    String name=kuchenRezept.getName();
-                    //String schwierigkeit=kuchenRezept.getDifficulty();
-
-
-                    //erstelle das StandardZufallsRezept
-                    createDefaultRecipeInDB();
-
-                    //hole ds rezept mit der höchten Bewertung (Kuchen oder StandardZufallsRezept?)
-                    Recipe recipeWithHighestRating=dbAdapter.getHighestRateRecipe();
-
-
-                    //schreibe den namen auf dem Button
-                    testTimerButton.setText(recipeWithHighestRating.getName());
-
-                    }
-
+                  //  Long id=createDefaultRecipeInDB();
+                    // testTimerButton.setText(dbAdapter.getRecipeByID(id).getName());
+                if(recipeWithNewName!=null){
+                    changeRecipeButton.setText(dbAdapter.getRecipeByID(newId).getName()+dbAdapter.getRecipeByID(newId).getId().toString());
                 }
 
+                }
+            }
 
             );}
         else Log.d("MainActivity", "testTimerButtonIsNull");
+
+        if(changeRecipeButton!=null){
+
+            changeRecipeButton.setText("changeRecipeName");
+
+            changeRecipeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+               // changeRecipeButton.setText(dbAdapter.getRecipeByID(id).getName()+dbAdapter.getRecipeByID(id).getId().toString());
+
+                   recipeWithNewName= dbAdapter.getRecipeByID(newId);
+                    recipeWithNewName.setName("Lecker");
+                    recipeWithNewName.update();
+                }
+            });
         }
+
+        if(deleteRecipeButton!=null){
+            deleteRecipeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   RecipeWorkStep workStep=dbAdapter.createNewWorkStep("Laufen");
+                   RecipeWorkStep workStep2=dbAdapter.createNewWorkStep("schwimmen");
+                    List<RecipeWorkStep> workSteps=new ArrayList<RecipeWorkStep>();
+                    workSteps.add(workStep);
+                    workSteps.add(workStep2);
+
+                    String ZutatenName="Zucker";
+                    String ZuatetnEinheit="gramm";
+                    double Menge=500;
+                    String ZutatenName2="Mehl";
+
+                    //Bitte Adapter verwendenen um Rezepte, Zutaten und Arbeitsschritte zu erstellen
+                    //Ansonsten funktioniert DB nicht mehr
+                    Ingrident ingrident1=dbAdapter.createNewIngrident(ZutatenName, ZuatetnEinheit,Menge);
+                    Ingrident ingrident2=dbAdapter.createNewIngrident(ZutatenName2, ZuatetnEinheit,Menge);
+
+
+                    List<Ingrident> ingridentList=new ArrayList<>();
+                    ingridentList.add(ingrident1);
+                    ingridentList.add(ingrident2);
+
+                   // dbAdapter.updateAllIngridentsOfSingleRecipeByRecipeID(newId, ingridentList);
+                    dbAdapter.saveRecipeToDB(recipeWithNewName,ingridentList, workSteps);
+
+
+
+                }
+            });
+        }
+
+
+    }
+
+
 
 
 

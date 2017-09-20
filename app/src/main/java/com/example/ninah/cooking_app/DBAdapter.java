@@ -3,6 +3,7 @@ package com.example.ninah.cooking_app;
 import android.content.Context;
 import android.util.Log;
 
+import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.query.QueryBuilder;
 import org.greenrobot.greendao.query.WhereCondition;
 
@@ -25,7 +26,7 @@ public class DBAdapter {
     //this allows communications between dadapter-implementing class and this class and the DB
 
     public DBAdapter(Context context) {
-        this.daoSession = new DaoMaster(new OpenDBHelper(context, "demoDB3.db").getWritableDb()).newSession();
+        this.daoSession = new DaoMaster(new OpenDBHelper(context, "demoDB4.db").getWritableDb()).newSession();
         if (daoSession == null) Log.d("DBAdapter", "session null!");
         else giveFeedback("constructor","session created");
         recipeQueryBuilder = daoSession.queryBuilder(Recipe.class);
@@ -77,14 +78,39 @@ public class DBAdapter {
 
 
     private void saveSingleRecipeToDB(Recipe recipe) {
-        daoSession.getRecipeDao().insertOrReplace(recipe);
-        giveFeedback("setRecipe", "success");
+        try {
+           Long id= recipe.getId();
+            daoSession.getRecipeDao().insertOrReplace(recipe);
+            giveFeedback("saveSingleRecipeToDB", "success" +"id: "+id );
+        }
+
+        catch (Exception e){giveFeedback("saveSingleRecipeToDB", e.toString());}
+
+
     }
 
     private void saveSingleIngridentToDB(Ingrident ingrident) {
-        Long id = daoSession.getIngridentDao().insertOrReplace(ingrident);
-        giveFeedback("saveSingleIngridentToDB", id.toString() + ":" + ingrident.getName());
+        try {
+            Long id =ingrident.getId();
+            Long recipeID=ingrident.getRecipeID();
+            daoSession.getIngridentDao().insertOrReplace(ingrident);
+            giveFeedback("saveSingleIngridentToDB success"+"recipeID. "+recipeID+ " ingridentID: ", id.toString() + ":" + ingrident.getName());
+        }
+        catch (Exception e){giveFeedback("saveSingleIngridentToDB", e.toString());}
     }
+
+    private void saveSingleRecipeWorkStepToDB(RecipeWorkStep recipeWorkStep) {
+        try {
+            Long id = recipeWorkStep.getId();
+            Long recipeID=recipeWorkStep.getRecipeID();
+            daoSession.getRecipeWorkStepDao().insertOrReplace(recipeWorkStep);
+            giveFeedback("saveSingleRecipeWorkStepToDB success"+"recipeID: "+recipeID+ " workstepiID: ", id.toString() + ":" + recipeWorkStep.getWorkStepDescribition().toString());
+        }
+
+        catch (Exception e){giveFeedback("saveSingleRecipeWorkStepToDB", e.toString());}
+
+    }
+
 
     private void saveAllIngridentsToDB(List<Ingrident> ingridentList, Long recipeId) {
         for (Ingrident ingrident : ingridentList) {
@@ -94,10 +120,6 @@ public class DBAdapter {
         }
     }
 
-    private void saveSingleRecipeWorkStepToDB(RecipeWorkStep recipeWorkStep) {
-        Long id = daoSession.getRecipeWorkStepDao().insertOrReplace(recipeWorkStep);
-        giveFeedback("saveSingleRecipeWorkStepToDB", id.toString() + ":" + recipeWorkStep.getWorkStepDescribition().toString());
-    }
 
     private void saveAllRecipeWorkStepsToDB(List<RecipeWorkStep> workStepList, Long recipeId) {
         for (RecipeWorkStep workStep : workStepList) {
@@ -107,27 +129,94 @@ public class DBAdapter {
         }
     }
 
+    //-----------------------------------------------------------------------------
+    //destroy methods: destroy all specified instances
+    //should be used carefully
+
+    //destroys whole recipe and all connected ingridents and workSteps
+    //should be used carefuly
+    private void destroyWholeRecipe(Recipe recipe) {
+        Long id = recipe.getId();
+        try {
+
+
+            List<Ingrident> ingridentList = getIngridentListByRecipe(recipe);
+            for (Ingrident ingrident : ingridentList) {
+
+                daoSession.delete(ingrident);
+            }
+
+            List<RecipeWorkStep> workSteps = getAllWorkStepsOfRecipe(recipe);
+            for (RecipeWorkStep workStep : workSteps) {
+
+                daoSession.delete(workStep);
+            }
+
+            recipe.delete();
+        } catch (Exception e) {
+            Log.d("destroyWholeRecipe", e.toString());
+        }
+        if (id != null) {
+            giveFeedback("destroyWholeRecipe", "detroyed id: " + id.toString());
+        }
+
+    }
+
+    private void destroyAllIngridientsWithThisRecipeID(Long id){
+        List<Ingrident> ingridentList=getIngridentListByRecipeID(id);
+
+        try {
+            for (Ingrident ingrident : ingridentList) {
+                if(ingrident.getId()!=null)
+                giveFeedback("destroyAllIngridientsWithThisRecipeID","recipe id:"+id+  " ingrident id:"+ ingrident.getId().toString()+":"+ingrident.getName());
+                daoSession.delete(ingrident);
+
+
+            }
+        }
+        catch (Exception e){giveFeedback("destroyAllIngridientsWithThisRecipeID: ", e.toString());}
+    }
+
+    private void destroyAllWorkStepsWithThisRecipeID(Long id){
+        List<RecipeWorkStep> worksteps=getWorkStepListByRecipeID(id);
+
+        try {
+            for (RecipeWorkStep workstep : worksteps) {
+                if(workstep.getId()!=null)
+                giveFeedback("destroyAllWorkStepsWithThisRecipeID", "recipe id :"+id+" workstep id:"+ workstep.getId().toString()+" "+workstep.getWorkStepDescribition());
+                daoSession.delete(workstep);
+            }
+        }
+        catch (Exception e){giveFeedback("destroyAllWorkStepsWithThisRecipeID: ", e.toString());}
+    }
+
     //-----------------------------------------------------------------------------------------------
     //getter-Methods: return values
     //those methods are only for the class
     //used in the public part of this class
 
 
-    private Recipe getRecipeByID(Long id) {
+    public Recipe getRecipeByID(Long id) {
         Recipe recipe = daoSession.getRecipeDao().load(id);
+        if(recipe!=null)
         giveFeedback("getRecipeByID", id + " : " + recipe.getName());
+        else giveFeedback("getRecipeByID", id + " : recipe is null" );
         return recipe;
     }
 
     private Ingrident getIngridentByID(Long id) {
         Ingrident ingrident = daoSession.getIngridentDao().load(id);
+        if(ingrident!=null)
         giveFeedback("getRecipeByID", id + " : " + ingrident.getName());
+        else giveFeedback("getRecipeByID", id + " : ingrident is null" );
         return ingrident;
     }
 
     private RecipeWorkStep getWorkStepByID(Long id) {
         RecipeWorkStep workstep = daoSession.getRecipeWorkStepDao().load(id);
+        if(workstep!=null)
         giveFeedback("getRecipeByID", id + " : " + workstep.getWorkStepDescribition());
+        else giveFeedback("getRecipeByID", id + " : workstep is null" );
         return workstep;
     }
 
@@ -152,6 +241,7 @@ public class DBAdapter {
         List recipesWithNameX = null;
         try {
             recipesWithNameX = recipeQueryBuilder.where(RecipeDao.Properties.Name.eq(nameX)).list();
+            giveFeedback("getRecipeListByName", "Size: "+ recipesWithNameX.size());
         } catch (Exception e) {
             Log.d("DBAdapter", "getRecipeByName" + e.toString());
         }
@@ -181,6 +271,23 @@ public class DBAdapter {
         return recipesWithNameX;
     }
 
+    private List<Ingrident> getIngridentListByRecipeID(Long id) {
+
+        List recipesWithNameX = null;
+        try {
+            recipesWithNameX = ingridentQueryBuilder.where(IngridentDao.Properties.RecipeID.eq(id)).list();
+        } catch (Exception e) {
+            Log.d("DBAdapter", "getIngridentListByRecipeID" + e.toString());
+        }
+
+        if (recipesWithNameX == null) {
+            Log.d("DBAdapter", "getIngridentListByRecipeID returns Null");
+        }
+
+
+        return recipesWithNameX;
+    }
+
     private List<RecipeWorkStep> getWorkStepListByRecipe(Recipe recipe) {
         Long id = recipe.getId();
         List recipesWithNameX = null;
@@ -196,6 +303,23 @@ public class DBAdapter {
 
         return recipesWithNameX;
     }
+
+    private List<RecipeWorkStep> getWorkStepListByRecipeID(Long id) {
+
+        List recipesWithNameX = null;
+        try {
+            recipesWithNameX = workStepQueryBuilder.where(RecipeWorkStepDao.Properties.RecipeID.eq(id)).list();
+        } catch (Exception e) {
+            Log.d("DBAdapter", "getWorkStepListByRecipe" + e.toString());
+        }
+
+        if (recipesWithNameX == null) {
+            Log.d("DBAdapter", "getWorkStepListByRecipe returns Null");
+        }
+
+        return recipesWithNameX;
+    }
+
 
 
     private List<Integer> getRecipeIDListByName(String nameX) {
@@ -221,9 +345,99 @@ public class DBAdapter {
         return idList;
     }
 
-    private void ensureIDisEqual() {
+    private Long getHighestRecipeID() {
+        List<Recipe> allRecipes = null;
+        Recipe recipe = null;
+        Long id=Long.valueOf(0);
+        try {
+            allRecipes = getAllRecipesList();
+            for (Recipe r : allRecipes) {
+                if (recipe == null) {
+                    recipe = r;
+                } else {
+                    if (r.getId() > recipe.getId()) {
+                        recipe = r;
+                    }
+                }
 
+            }
+        } catch (Exception e) {
+            giveFeedback("getHighestRecipeID", e.toString());
+        }
+
+        if(recipe!=null)
+        {
+            giveFeedback("getHighestRecipeID", "id:" +recipe.getId());
+            id=recipe.getId();
+        }
+
+        else{ giveFeedback("getHighestRecipeID","recipe is null! return: "+ id);}
+
+        return id;
     }
+
+    private Long getHighestIngridentID() {
+        List<Ingrident> ingridentList = null;
+        Ingrident ingrident = null;
+        Long id=Long.valueOf(0);
+        try {
+            ingridentList = daoSession.getIngridentDao().loadAll();
+            for (Ingrident ing : ingridentList) {
+                if (ingrident == null) {
+                    ingrident = ing;
+                } else {
+                    if (ing.getId() > ingrident.getId()) {
+                        ingrident = ing;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            giveFeedback("getHighestIngridentID", e.toString());
+        }
+
+        if(ingrident!=null)
+        {
+            giveFeedback("getHighestIngridentID", "id:" +ingrident.getId());
+            id=ingrident.getId();
+        }
+
+        else{ giveFeedback("getHighestIngridentID","ingrident is null! return: "+ id);}
+
+        return id;
+    }
+
+    private Long getHighestWorkStepID() {
+        List<RecipeWorkStep> workSteps = null;
+        RecipeWorkStep workStep = null;
+        Long id=Long.valueOf(0);
+        try {
+            workSteps = daoSession.getRecipeWorkStepDao().loadAll();
+            for (RecipeWorkStep ws : workSteps) {
+                if (workStep == null) {
+                    workStep = ws;
+                } else {
+                    if (ws.getId() > workStep.getId()) {
+                        workStep = ws;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            giveFeedback("getHighestWorkStepID", e.toString());
+        }
+
+        if(workStep!=null)
+        {
+            giveFeedback("getHighestWorkStepID", "id:" +workStep.getId());
+            id=workStep.getId();
+        }
+
+        else{ giveFeedback("getHighestWorkStepID","workstep is null! return: "+ id);}
+
+        return id;
+    }
+
 
 
 //--------------------------------------------------------------------------------------------------
@@ -232,6 +446,7 @@ public class DBAdapter {
     private void setStarsById(Long id, int starRating) {
         Recipe recipe = daoSession.getRecipeDao().load(id);
         recipe.setRatingInStars(starRating);
+        daoSession.update(recipe);
     }
 
 
@@ -326,6 +541,8 @@ public class DBAdapter {
     }
 
 
+
+
     //returns highest rated recipe
     public Recipe getHighestRateRecipe() {
         List<Recipe> allRecipes = null;
@@ -349,6 +566,8 @@ public class DBAdapter {
         return recipe;
     }
 
+
+
     //returns highest rated recipe
     public Recipe getRecipeWithSmallestTime() {
         List<Recipe> allRecipes = null;
@@ -371,6 +590,7 @@ public class DBAdapter {
 
         return recipe;
     }
+
 
     public Recipe getRandomRecipe() {
         List<Recipe> allRecipes = null;
@@ -397,36 +617,53 @@ public class DBAdapter {
         return recipe;
     }
 
+    public int getRecipeTimeInMinutes(Long id){
+       int time=0;
+        try{
+            time=getRecipeByID(id).getTimeInMinutes();
+        }
+
+        catch (Exception e){giveFeedback("getRecipeTimeInMinutes", e.toString());}
+        giveFeedback("getRecipeTimeInMinutes", "recipeId:" +id+ " time:"+time );
+        return time;
+    }
+
     // -------------------create-methods-part-------------------------------------------------------
     //user create new instances through those methods
     //ensures he doesn't set the startID, startRecipeID and ratings by himself
 
     //creates a new single RecipeInstance without confusing the user with setting the startID and rating
     //should always be used for creating new recipes
-    public static Recipe createNewRecipe(String name, String descpription, String difficulty, int timeInMinutes) {
-        Long startID = null;
+    public Recipe createNewRecipe(String name, String descpription, String difficulty, int timeInMinutes) {
+        Long startID = getHighestRecipeID();
+        startID++;
         int startRating = 0;
         Recipe recipe = new Recipe(startID, name, descpription, difficulty, timeInMinutes, startRating);
         giveFeedback("createNewRecipe", "name:" + recipe.getName().toString());
+        saveSingleRecipeToDB(recipe);
         return recipe;
     }
 
     //creates a new single Ingrident Instance without confusing the user with setting the startID and rating
     //should always be used for creating new ingrident
-    public static Ingrident createNewIngrident(String name, String einheit, double menge) {
-        Long startID = null;
+    public Ingrident createNewIngrident(String name, String einheit, double menge) {
+        Long startID = getHighestIngridentID();
+        startID++;
         Long startRecipeID = Long.valueOf(1);
         Ingrident ingrident = new Ingrident(startID, name, einheit, menge, startRecipeID);
-        giveFeedback("createNewIngrident", "name:" + ingrident.getName().toString());
+        giveFeedback("createNewIngrident", "name:" + ingrident.getName().toString()+" id: "+startID);
+        saveSingleIngridentToDB(ingrident);
         return ingrident;
     }
 
     //creates a new single workstep instance without confusing the user with setting the startID and rating
     //should always be used for creating new workstep
-    public static RecipeWorkStep createNewWorkStep(String description) {
-        Long startID = null;
+    public RecipeWorkStep createNewWorkStep(String description) {
+        Long startID = getHighestWorkStepID();
+        startID++;
         Long startRecipeID = Long.valueOf(1);
         RecipeWorkStep workStep = new RecipeWorkStep(startID, description, startRecipeID);
+        saveSingleRecipeWorkStepToDB(workStep);
         return workStep;
     }
 
@@ -436,16 +673,14 @@ public class DBAdapter {
     //should be used to fill DB in the mainactivity when app starts to avoid nullpointers
     public Recipe createDefaultRecipeAndSaveItToDB() {
         Recipe recipe = getDefaultRecipe();
-        Long id = Long.valueOf(1);
-        if (recipe != null) {
-            id = recipe.getId();
-        }
+        Long id = getHighestRecipeID();
+        id++;
+
         List<Ingrident> ingridentList = new ArrayList<>();
         List<RecipeWorkStep> workSteps = new ArrayList<>();
         ingridentList.add(getDefaultIngrident(id));
         workSteps.add(getDefaultWorkStep(id));
-
-        saveRecipeToDB(getDefaultRecipe(), ingridentList, workSteps);
+        saveRecipeToDB(recipe, ingridentList, workSteps);
         giveFeedback("createDefaultRecipeAndSaveItToDB", "recipe saved");
         return recipe;
     }
@@ -464,40 +699,61 @@ public class DBAdapter {
             saveSingleRecipeToDB(recipe);
             saveAllIngridentsToDB(ingridentList, recipe.getId());
             saveAllRecipeWorkStepsToDB(recipeWorkStepList, recipe.getId());
+
         } catch (Exception e) {
             giveFeedback("saveRecipeToDB", "couldnt save recipe: Exception: " + e.toString());
         }
+    }
+
+
+    public void updateRecipe(Recipe recipe){
+
+        daoSession.update(recipe);
+    }
+
+
+
+
+    //destroys old worksteps and writes new in DB
+    public void updateAllWorkStepsOfSingleRecipeByRecipeID(Long recipeId, List<RecipeWorkStep> worksteps){
+        destroyAllWorkStepsWithThisRecipeID(recipeId);
+        saveAllRecipeWorkStepsToDB(worksteps,recipeId);
 
     }
 
-    //destroys whole recipe and all connected ingridents and workSteps
-    //should be used carefuly
-    public void destroyWholeRecipe(Recipe recipe) {
-        Long id = recipe.getId();
-        try {
+    public void updateAllIngridentsOfSingleRecipeByRecipeID(Long recipeId, List<Ingrident> ingridents){
+        destroyAllIngridientsWithThisRecipeID(recipeId);
+        saveAllIngridentsToDB(ingridents, recipeId);
+    }
 
+    public void updateSingleRecipeByID(Long oldRecipeId, Recipe newRecipe){
+        //destroy old recipe
+        Recipe oldRecipe=getRecipeByID(oldRecipeId);
+        daoSession.delete(oldRecipe);
 
-            List<Ingrident> ingridentList = getIngridentListByRecipe(recipe);
-            for (Ingrident ingrident : ingridentList) {
-
-                daoSession.delete(ingrident);
-            }
-
-            List<RecipeWorkStep> workSteps = getAllWorkStepsOfRecipe(recipe);
-            for (RecipeWorkStep workStep : workSteps) {
-
-                daoSession.delete(workStep);
-            }
-
-            recipe.delete();
-        } catch (Exception e) {
-            Log.d("destroyWholeRecipe", e.toString());
-        }
-        if (id != null) {
-            giveFeedback("destroyWholeRecipe", "detroyed id: " + id.toString());
-        }
+        //create new recipe
+        newRecipe.setId(oldRecipeId);
+        saveSingleRecipeToDB(newRecipe);
 
     }
+
+    public void destroyWholeRecipeAndAllItsConnectedInstances(Recipe recipe){
+        if(recipe!=null) {
+            try {
+                destroyWholeRecipe(recipe);
+            } catch (Exception e) {
+                giveFeedback("destroyWholeRecipeAndAllItsConnectedInstances : ", e.toString());
+            }
+        }
+        else giveFeedback("destroyWholeRecipeAndAllItsConnectedInstances : ","recipe is null");
+
+    }
+
+
+
+
+
+
 
 
 }

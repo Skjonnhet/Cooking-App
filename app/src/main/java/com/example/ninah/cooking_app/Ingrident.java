@@ -14,7 +14,7 @@ import org.greenrobot.greendao.DaoException;
 @Entity(nameInDb = "ingrident",  active = true)
 public class Ingrident {
 
-    @Id(autoincrement = true)
+    @Id
     private Long id;
 
     @Property(nameInDb = "name")
