@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -78,7 +77,7 @@ public class Rating_Activity extends AppCompatActivity {
     }
 
     private void changeRecipe(){
-        Intent changeRecipeIntent= new Intent(this, RecipeNew.class);
+        Intent changeRecipeIntent= new Intent(this, RecipeNewActivity.class);
         changeRecipeIntent.putExtra(CookingConstants.NEW_RECIPE_KEY, CookingConstants.NEW_RECIPE_FALSE);
         if(recipeId!=null){
             changeRecipeIntent.putExtra(CookingConstants.RECIPE_ID_KEY, recipeId);

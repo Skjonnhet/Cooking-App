@@ -685,6 +685,31 @@ public class DBAdapter {
         return recipe;
     }
 
+    //creates a new single Ingrident Instance without confusing the user with setting the startID and rating
+    //should always be used for creating new ingrident
+    public Ingrident createNewIngridentWithRecipeID(String name, String einheit, double menge, Long recipeID) {
+        Long startID = getHighestIngridentID();
+        startID++;
+        Long startRecipeID = recipeID;
+        Ingrident ingrident = new Ingrident(startID, name, einheit, menge, startRecipeID);
+        giveFeedback("createNewIngridentWithRecipeID", "name:" + ingrident.getName().toString()+" id: "+startID);
+        saveSingleIngridentToDB(ingrident);
+        return ingrident;
+    }
+
+    //creates a new single workstep instance without confusing the user with setting the startID and rating
+    //should always be used for creating new workstep
+    public RecipeWorkStep createNewWorkStepWithRecipeID(String description, Long recipeID) {
+        Long startID = getHighestWorkStepID();
+        startID++;
+        Long startRecipeID = recipeID;
+        RecipeWorkStep workStep = new RecipeWorkStep(startID, description, startRecipeID);
+        saveSingleRecipeWorkStepToDB(workStep);
+        return workStep;
+    }
+
+
+
 
 
 

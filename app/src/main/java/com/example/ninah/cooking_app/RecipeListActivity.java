@@ -10,7 +10,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeList extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity {
 
     ListView recipeList;
 

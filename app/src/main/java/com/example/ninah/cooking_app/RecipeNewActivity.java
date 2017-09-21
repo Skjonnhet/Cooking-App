@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class RecipeNew extends AppCompatActivity implements View.OnClickListener{
+public class RecipeNewActivity extends AppCompatActivity implements View.OnClickListener{
 
     TextView recipeNameTextView;
     TextView difficultLevelTextView;
@@ -26,7 +26,7 @@ public class RecipeNew extends AppCompatActivity implements View.OnClickListener
     Button ingridentsButton;
     Button workStepsButton;
     DBAdapter dbAdapter;
-    Recipe activityRecipe;
+    Recipe actiticityRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +121,7 @@ public class RecipeNew extends AppCompatActivity implements View.OnClickListener
 
     //creates a new recipe for this actitivity
     private void createActivityRecipe(){
-        activityRecipe=dbAdapter.createDefaultRecipeAndSaveItToDB();
+        actiticityRecipe =dbAdapter.createDefaultRecipeAndSaveItToDB();
     }
 
 
@@ -138,7 +138,7 @@ public class RecipeNew extends AppCompatActivity implements View.OnClickListener
 
     //saves whole recipe to DB WITH ingridents and worksteps
     private void saveRecipeToDB(){
-        updateActivityRecipe(activityRecipe);
+        updateActivityRecipe(actiticityRecipe);
         Recipe recipe=getActivityRecipe();
         List<Ingrident> ingridentList=dbAdapter.getAllIngridentsOfRecipe(recipe);
         List<RecipeWorkStep> workStepList=dbAdapter.getAllWorkStepsOfRecipe(recipe);
@@ -157,7 +157,7 @@ public class RecipeNew extends AppCompatActivity implements View.OnClickListener
 
 
     private Recipe getActivityRecipe(){
-        return activityRecipe;
+        return actiticityRecipe;
     }
 
     private String getRecipeName(){
@@ -221,7 +221,7 @@ public class RecipeNew extends AppCompatActivity implements View.OnClickListener
   //  ---------------------------helper-methods---------------------------------------------
 
     private void giveFeedback(String method, String feedback) {
-        Log.d("RecipeNew " + method, feedback);
+        Log.d("RecipeNewActivity " + method, feedback);
     }
 
     private boolean isNumber(String s){

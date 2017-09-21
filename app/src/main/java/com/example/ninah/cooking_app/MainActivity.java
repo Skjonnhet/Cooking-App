@@ -54,27 +54,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.viewRecipeList:
-                Intent recipeListIntent = new Intent(MainActivity.this, RecipeList.class);
+                Intent recipeListIntent = new Intent(MainActivity.this, RecipeListActivity.class);
                 startActivity(recipeListIntent);
                 break;
             case R.id.viewBestRecipe:
                 
                 /** hier gehört eine Logik rein, die das beste Rezept aufruft**/
-                Intent bestRecipeIntent = new Intent(MainActivity.this, RecipeActivity.class);
+                Intent bestRecipeIntent = new Intent(MainActivity.this, RecipeStartActivity.class);
                 startActivity(bestRecipeIntent);
                 break;
             case R.id.viewFastRecipe:
                 /** hier gehört eine Logik rein, die das schnellste Rezept aufruft**/
-                Intent fastRecipeIntent = new Intent(MainActivity.this, RecipeActivity.class);
+                Intent fastRecipeIntent = new Intent(MainActivity.this, RecipeStartActivity.class);
                 startActivity(fastRecipeIntent);
                 break;
             case R.id.viewRandomRecipe:
                 /** hier gehört eine Logik rein, die ein zufälliges Rezept aufruft**/
-                Intent randomRecipeIntent = new Intent(MainActivity.this, RecipeActivity.class);
+                Intent randomRecipeIntent = new Intent(MainActivity.this, RecipeStartActivity.class);
                 startActivity(randomRecipeIntent);
                 break;
             case R.id.viewNewRecipe:
-                Intent newRecipeIntent = new Intent(MainActivity.this, RecipeNew.class);
+                Intent newRecipeIntent = new Intent(MainActivity.this, RecipeNewActivity.class);
                 startActivity(newRecipeIntent);
                 break;
             default:

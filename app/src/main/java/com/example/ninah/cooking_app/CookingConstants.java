@@ -12,5 +12,6 @@ public class CookingConstants {
     public final static String DATA_BASE_FILE_NAME="demoDB5.db";
 
     public final static String DIFFICULTY_EASY="leicht";
+    public final static String EMPTY_STRING="";
 
 }

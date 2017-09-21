@@ -14,7 +14,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 
-public class RecipeActivity extends AppCompatActivity implements View.OnClickListener {
+public class RecipeStartActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView title;
     RatingBar ratingBar;
@@ -98,7 +98,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
                  * hier muss eine DB-Abfrage rein, die das Formular mit vorhandenen Daten füllt
                  * @Jonas: hier wäre auch der Platz für deinen Boolean
                  */
-                Intent newRecipeIntent = new Intent(RecipeActivity.this, RecipeNew.class);
+                Intent newRecipeIntent = new Intent(RecipeStartActivity.this, RecipeNewActivity.class);
                 startActivity(newRecipeIntent);
                 break;
         }
