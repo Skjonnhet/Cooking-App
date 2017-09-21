@@ -748,6 +748,16 @@ public class DBAdapter {
 
     }
 
+    public void deleteIngridentFromDB(Long ingridentID){
+        daoSession.getIngridentDao().deleteByKey(ingridentID);
+        giveFeedback("deleteIngridentFromDB", " ingrident-ID: "+ingridentID);
+    }
+
+    public void deleteWorkStepFromDB(Long workStepID){
+        daoSession.getRecipeWorkStepDao().deleteByKey(workStepID);
+        giveFeedback("deleteWorkStepFromDB", " workStep-ID: "+workStepID);
+    }
+
 
    // ----------update-part------------------------------------------------------------------------
     //all update methods
