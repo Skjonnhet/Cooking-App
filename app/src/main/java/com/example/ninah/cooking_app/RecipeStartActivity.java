@@ -65,6 +65,8 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
                 /**
                  * DB-Funktion, dass eine Portion abgezogen wird
                  */
+
+
                 break;
             case R.id.checkBox:
                 /**
@@ -98,6 +100,8 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
                  * hier muss eine DB-Abfrage rein, die das Formular mit vorhandenen Daten füllt
                  * @Jonas: hier wäre auch der Platz für deinen Boolean
                  */
+
+
                 Intent newRecipeIntent = new Intent(RecipeStartActivity.this, RecipeNewActivity.class);
                 startActivity(newRecipeIntent);
                 break;

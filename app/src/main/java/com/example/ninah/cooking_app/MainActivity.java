@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.viewFastRecipe:
                 /** hier gehört eine Logik rein, die das schnellste Rezept aufruft**/
+
+
                 Intent fastRecipeIntent = new Intent(MainActivity.this, RecipeStartActivity.class);
                 startActivity(fastRecipeIntent);
                 break;
