@@ -14,7 +14,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 
-public class RecipeStartActivity extends AppCompatActivity implements View.OnClickListener {
+public class RecipeActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView title;
     RatingBar ratingBar;
@@ -50,11 +50,6 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
                 /**
                  * Intent zu Jonas Bewertungs-Activity
                  */
-
-                Intent RatingIntent = new Intent( RecipeStartActivity.this, Rating_Activity.class);
-                //RatingIntent.putExtra
-                startActivity(RatingIntent);
-
                 break;
             case R.id.plus:
                 /**
@@ -98,7 +93,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
                  * hier muss eine DB-Abfrage rein, die das Formular mit vorhandenen Daten füllt
                  * @Jonas: hier wäre auch der Platz für deinen Boolean
                  */
-                Intent newRecipeIntent = new Intent(RecipeStartActivity.this, RecipeNewActivity.class);
+                Intent newRecipeIntent = new Intent(RecipeActivity.this, RecipeNew.class);
                 startActivity(newRecipeIntent);
                 break;
         }
