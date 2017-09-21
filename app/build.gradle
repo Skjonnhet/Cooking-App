@@ -32,7 +32,7 @@ dependencies {
 
 
     })
-    compile files('libs/db4o-8.0.184.15484-all-java5.jar')
+    //compile files('libs/db4o-8.0.184.15484-all-java5.jar')
 
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
