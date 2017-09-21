@@ -76,6 +76,10 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
                 /**
                  * Funktion, dass Kochvorgang gestartet wird
                  */
+
+                Intent CookReadyIntent = new Intent( RecipeStartActivity.this, TimerActivity.class);
+                //RatingIntent.putExtra
+                startActivity(CookReadyIntent);
             default:
                 break;
         }
