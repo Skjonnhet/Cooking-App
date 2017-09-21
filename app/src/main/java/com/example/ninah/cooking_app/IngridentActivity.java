@@ -129,9 +129,8 @@ public class IngridentActivity extends AppCompatActivity {
             Ingrident ingrident=dbAdapter.createNewIngridentWithRecipeID(getIngridentName(), getEinheit(),getIngridentMenge(), recipeID);
             setIngridentsNameToList(getIngridentName());
                 ingridentArrayList.add(ingrident);
-        }
-            else {
-            Toast.makeText(this, "Ein Feld ist leer. Konnte nicht speichern",Toast.LENGTH_LONG);}
+                Toast.makeText(this, "Zutat gespeichert",Toast.LENGTH_SHORT);}
+            else  {  Toast.makeText(this, "Ein Feld ist leer. Konnte nicht speichern",Toast.LENGTH_LONG);}
         }
         else {giveFeedback("createNewIngrident", "no recipe created, recipeID is null");}
 
