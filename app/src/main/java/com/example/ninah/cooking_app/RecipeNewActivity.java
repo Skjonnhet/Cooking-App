@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +28,10 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     Button workStepsButton;
     DBAdapter dbAdapter;
     Recipe actiticityRecipe;
+    boolean isNewRecipe;
+    Long oldRecipeID;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +59,11 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         workStepsButton=(Button) findViewById(R.id.newWorkStepsButton);
         buttonSave.setOnClickListener(this);
 
-        createActivityRecipe();
-        setOnClickListener();
+                                    //keep order!
+        setIsNewRecipeBoolean();    //1.checks boolean if recipe is new or old
+        setOldRecipeID();           //2.sets oldRecipeID
+        createActivityRecipe();     //3.creates the recipe of this activity with boolean and oldRecipeID
+        setOnClickListener();       //4.sets ClickListener
 
     }
 
@@ -82,6 +90,47 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    //-----------------------------init methods--------------------------------------------------
+
+    private void setIsNewRecipeBoolean(){
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        isNewRecipe=extras.getBoolean(CookingConstants.NEW_RECIPE_KEY);
+    }
+
+    private void setOldRecipeID(){
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        oldRecipeID=extras.getLong(CookingConstants.RECIPE_ID_KEY);
+    }
+
+    //creates a new recipe for this actitivity
+    private void createActivityRecipe(){
+        if(isNewRecipe)
+        {
+            actiticityRecipe =dbAdapter.createDefaultRecipeAndSaveItToDB();
+            oldRecipeID=actiticityRecipe.getId();
+            giveFeedback("createActivityRecipe","recipe is new id:"+oldRecipeID);
+        }
+
+        else {
+            actiticityRecipe=dbAdapter.getRecipeByID(oldRecipeID);
+            giveFeedback("createActivityRecipe","recipe is old id:"+oldRecipeID);
+            updateTextViewsWithOldRecipe();
+        }
+
+    }
+
+    private void updateTextViewsWithOldRecipe(){
+        if(actiticityRecipe!=null){
+            recipeNameInput.setText(actiticityRecipe.getName().toString());
+            recipePortionsInput.setText(""+actiticityRecipe.getPortions());
+            recipeTimeInput.setText(""+actiticityRecipe.getTimeInMinutes());
+            difficultInput.setText(actiticityRecipe.getDifficulty().toString());
+        }
+    }
+
+
     private void setOnClickListener(){
        ingridentsButton.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -97,6 +146,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
+
 
     //-----------------------start other activities-------------------------------------------------
 
@@ -119,10 +169,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
     //-----------------------save recipe to DB------------------------------------------------------
 
-    //creates a new recipe for this actitivity
-    private void createActivityRecipe(){
-        actiticityRecipe =dbAdapter.createDefaultRecipeAndSaveItToDB();
-    }
+
 
 
     //updates this activitiy recipe
@@ -134,6 +181,8 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         recipe.setTimeInMinutes(getTimeInMinutes());
         dbAdapter.updateRecipe(recipe);
     }
+
+
 
 
     //saves whole recipe to DB WITH ingridents and worksteps

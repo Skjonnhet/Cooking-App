@@ -80,8 +80,10 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     //private MovingSensor movingSensor;
     private MovingSensor movingSensor;
 
-    //context of the activity
-    // public static Context context;
+    //DBAdapter for coomunication with DB
+    DBAdapter dbAdapter=new DBAdapter(this);
+
+    private Long recipeId;
 
 
      /*--------------------------------------------------------------------------*/
@@ -104,6 +106,9 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
         initTimerActitivty();
         setCookingTimerClickListener();
         setRingToneClickListener();
+
+        setRecipeId();//1.get recipeID
+        setStartTimeToTextView();//2.set time trough recipeID
     }
 
     //overwritten method of the Activity-LifeCycle
@@ -216,6 +221,40 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     private void initTimerActitivty(){
         timerActivity=this;
     }
+
+    private void setRecipeId(){
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        recipeId=extras.getLong(CookingConstants.RECIPE_ID_KEY);
+        Log.d("TimerActivity","setRecipeId recipeID: "+recipeId);
+    }
+
+    private void setStartTimeToTextView(){
+        String time=calculateRecipeTime(getRecipeTime());
+        showTimeTextView.setText(time);
+    }
+
+    private int getRecipeTime(){
+        int timeInMinutes=0;
+        if(recipeId!=null){
+            timeInMinutes=dbAdapter.getRecipeByID(recipeId).getTimeInMinutes();
+        }
+
+        return timeInMinutes;
+    }
+
+    private String calculateRecipeTime(int timeInMinutes){
+        final String timeFormat = "%02d:%02d:%02d";
+        int timeInSecondsLeft = timeInMinutes*60;
+        int hours = timeInSecondsLeft / 3600;
+        int minutes = (timeInSecondsLeft % 360) / 60;
+        int seconds = timeInSecondsLeft % 60;
+
+        String currentTime=  String.format(timeFormat, hours, minutes, seconds);
+
+        return currentTime;
+    }
+
 
 
     /*--------------------------------------------------------------------------*/

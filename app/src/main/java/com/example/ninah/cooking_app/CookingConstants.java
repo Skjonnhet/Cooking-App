@@ -14,4 +14,6 @@ public class CookingConstants {
     public final static String DIFFICULTY_EASY="leicht";
     public final static String EMPTY_STRING="";
 
+
+
 }

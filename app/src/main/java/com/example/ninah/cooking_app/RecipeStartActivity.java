@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class RecipeStartActivity extends AppCompatActivity implements View.OnClickListener {
@@ -72,18 +71,11 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
                  * hier muss was rein, aber was?
                  * Wenn Timer-Funktion im Rezept hinterlegt ist bei diesem Arbeitsschritt, dann Weiterleitung zu Timer?
                  */
-
-
-                Toast.makeText(this,"Bitte 'Fertig' drücken",Toast.LENGTH_LONG);
                 break;
             case R.id.ready_button:
                 /**
                  * Funktion, dass Kochvorgang gestartet wird
                  */
-
-                Intent CookReadyIntent = new Intent( RecipeStartActivity.this, TimerActivity.class);
-                //RatingIntent.putExtra
-                startActivity(CookReadyIntent);
             default:
                 break;
         }
