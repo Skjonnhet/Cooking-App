@@ -51,7 +51,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
                  * Intent zu Jonas Bewertungs-Activity
                  */
 
-                Intent RatingIntent = new Intent( this, Rating_Activity.class);
+                Intent RatingIntent = new Intent( RecipeActivity.this, Rating_Activity.class);
                 //RatingIntent.putExtra
                 startActivity(RatingIntent);
 
