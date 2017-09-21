@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         randomRecipe.setOnClickListener(this);
         newRecipe.setOnClickListener(this);
         dbAdapter=new DBAdapter(this);
-        dbAdapter.cleanAllTables();
+       // dbAdapter.cleanAllTables();//cleans all tables: löscht alle Einträge!
         onClickForTesting();
 
         recipeWithNewName=dbAdapter.createDefaultRecipeAndSaveItToDB();
