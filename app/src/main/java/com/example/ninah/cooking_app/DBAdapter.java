@@ -443,14 +443,6 @@ public class DBAdapter {
 
 
 
-//--------------------------------------------------------------------------------------------------
-    //setter-methods:allow user of DBAdapter to set Rating-values in the db
-
-    private void setStarsById(Long id, int starRating) {
-        Recipe recipe = daoSession.getRecipeDao().load(id);
-        recipe.setRatingInStars(starRating);
-        daoSession.update(recipe);
-    }
 
 
     //----------------------------------------------------------------------------------------------
@@ -792,6 +784,20 @@ public class DBAdapter {
         daoMaster.dropAllTables(daoSession.getDatabase(), true);
         daoMaster.createAllTables(daoSession.getDatabase(), true);
     }
+
+    //allows user of DBAdapter to set  rating values in the db
+    public void updateRatingStars(Long id, int starRating) {
+
+        try {
+            Recipe recipe = daoSession.getRecipeDao().load(id);
+            recipe.setRatingInStars(starRating);
+            daoSession.update(recipe);
+        }
+        catch (Exception e){giveFeedback("updateRatingStars ", e.toString());}
+
+    }
+
+
 
 
 

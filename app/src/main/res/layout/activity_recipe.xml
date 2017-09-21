@@ -30,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/ratingBar" />
+        android:layout_below="@+id/ratingBar"
+        android:layout_alignParentBottom="true" />
 
     <TextView
         android:id="@+id/servings"
@@ -96,6 +97,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/readyButton" />
+        android:text="Zeit starten" />
+
+    <Button
+        android:id="@+id/reStAc_rateRecipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@+id/ready_button"
+        android:layout_toRightOf="@+id/ready_button"
+        android:text="Bewerten" />
 
 </RelativeLayout>

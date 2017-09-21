@@ -43,11 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         randomRecipe.setOnClickListener(this);
         newRecipe.setOnClickListener(this);
         dbAdapter=new DBAdapter(this);
-       // dbAdapter.cleanAllTables();//cleans all tables: löscht alle Einträge!
-        onClickForTesting();
-
-        recipeWithNewName=dbAdapter.createDefaultRecipeAndSaveItToDB();
-        newId=recipeWithNewName.getId();
+        createStartRecipe();
 
     }
 
@@ -77,6 +73,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
 
+    }
+
+    //creates default recipe so db is not empty
+    private void createStartRecipe(){
+        dbAdapter.createDefaultRecipeAndSaveItToDB();
+    }
+
+    //optional: cleans all tables
+    //useful if DB has to be reseted in the future to Test DB
+    private void cleanAllTables(){
+        dbAdapter.cleanAllTables();
     }
 
     private void startRecipeList(){
@@ -114,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
+/*
     //Beispiel neues Rezept erstellen
     private Long createNewRecipeInDataBase(){
 
@@ -275,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+    */
 
 
 

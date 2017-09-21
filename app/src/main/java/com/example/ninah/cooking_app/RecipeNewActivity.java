@@ -136,7 +136,10 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
             recipePortionsInput.setText(""+ actitivityRecipe.getPortions());
             recipeTimeInput.setText(""+ actitivityRecipe.getTimeInMinutes());
             difficultInput.setText(actitivityRecipe.getDifficulty().toString());
+            giveFeedback("updateTextViewsWithOldRecipe", "updatet");
         }
+
+        else {giveFeedback("updateTextViewsWithOldRecipe", "actitivityRecipe is null");}
     }
 
 
@@ -210,7 +213,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
             if (recipe != null | ingridentList != null | workStepList != null) {
                 dbAdapter.saveRecipeToDB(recipe, ingridentList, workStepList);
-                Toast.makeText(this, "Rezept gespeichert!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Rezept"+recipe.getName()+ "gespeichert!", Toast.LENGTH_LONG).show();
             } else {
                 giveFeedback("saveRecipeToDB", "one paramter is null!");
                 Toast.makeText(this, "Eine Eingabe ist leer: Prüfe Rezept-, Zutaten und Arbeitsschritteingaben", Toast.LENGTH_LONG).show();
@@ -229,7 +232,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     private String getRecipeName(){
         String name="";
         if(recipeNameInput!=null){
-            name=recipeNameInput.toString();
+            name=""+recipeNameInput.getText().toString();
         }
 
         return name;
@@ -238,7 +241,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     private String getDifficulty(){
         String difficulty="";
         if(difficultInput!=null){
-            difficulty=difficultInput.toString();
+            difficulty=difficultInput.getText().toString();
         }
 
 

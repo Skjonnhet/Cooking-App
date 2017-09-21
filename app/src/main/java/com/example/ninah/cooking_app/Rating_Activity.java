@@ -16,32 +16,36 @@ public class Rating_Activity extends AppCompatActivity {
     private Button yesButton;
     private Button noButton;
     private RatingBar ratingBar;
-    private String recipeId;
+    private Long recipeId;
+    private DBAdapter dbAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating_);
-
-        receiveIntent();
-
         initButtons();
         initRatingBar();
         setButtonOnClickListener();
+        setRecipeIdTroughIntent();
+
+        dbAdapter=new DBAdapter(this);
     }
 
-    private void receiveIntent(){
+    private void setRecipeIdTroughIntent(){
         Intent intent=getIntent();
-        if(intent!=null){
-            if(intent.getStringExtra("RecipeId")!=null){
-                recipeId =intent.getStringExtra("RecipeId");            }
+        if(intent!=null) {
+            try {
+                Bundle extras = intent.getExtras();
+                recipeId = extras.getLong(CookingConstants.RECIPE_ID_KEY);
+            } catch (Exception e){Log.d("Rating_Activity","setRecipeIdTroughIntent "+e.toString() );}
+        }
             else {
                 Toast.makeText(this,"No recipeId-can't rate recipe",Toast.LENGTH_LONG);
                 Log.d("Rating_Activity","No recipeId in Intent" );
             }
 
         }
-    }
+
 
 
 
@@ -84,7 +88,7 @@ public class Rating_Activity extends AppCompatActivity {
             startActivity(changeRecipeIntent);
         }
 
-        else{Toast.makeText(this,"No recipeId-can't change recipe",Toast.LENGTH_LONG);
+        else{Toast.makeText(this,"Rezept konnte nicht geladen werden.Bitte starten Sie die Bewertung neu!",Toast.LENGTH_LONG);
             Log.d("Rating_Activity","No recipeId in changeRecipe()" );}
     }
 
@@ -95,15 +99,12 @@ public class Rating_Activity extends AppCompatActivity {
 
     private void commitRatingToDB(){
         if(ratingBar!=null){
-            if(ratingBar.getRating()==0){
-                Toast.makeText(this,"Please rate your recipe", Toast.LENGTH_LONG);
-            }
+            dbAdapter.updateRatingStars(recipeId,ratingBar.getNumStars());
 
-            else {
-                //write Rating in DB
             }
+        else  Log.d("Rating_Activity","commitRatingToDB is null" );
         }
-    }
+
 
 
 

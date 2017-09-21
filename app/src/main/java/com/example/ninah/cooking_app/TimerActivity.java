@@ -81,7 +81,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     private MovingSensor movingSensor;
 
     //DBAdapter for coomunication with DB
-    DBAdapter dbAdapter=new DBAdapter(this);
+    DBAdapter dbAdapter;
 
     private Long recipeId;
 
@@ -96,6 +96,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
+        initAdapter();
         initEditTexts();
         initButtons();
         initTextView();
@@ -106,7 +107,6 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
         initTimerActitivty();
         setCookingTimerClickListener();
         setRingToneClickListener();
-
         setRecipeId();//1.get recipeID
         setStartTimeToTextView();//2.set time trough recipeID
     }
@@ -157,8 +157,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
             @Override
             public void onClick(View view) {
                 resetTimer();
-                stopRingToneService();
-                stopTimerService();
+                stopAllServices();
             }
         });
 
@@ -187,6 +186,10 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
         editTextForSeconds = (EditText) findViewById(R.id.editTextForSeconds);
         editTextForMinutes = (EditText) findViewById(R.id.editTextForMinutes);
         editTextForHour = (EditText) findViewById(R.id.editTextForHours);
+    }
+
+    private void initAdapter(){
+        dbAdapter=new DBAdapter(this);
     }
 
     //inits all showTimeTextView
@@ -223,21 +226,40 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     }
 
     private void setRecipeId(){
-        Intent intent=getIntent();
-        Bundle extras=intent.getExtras();
-        recipeId=extras.getLong(CookingConstants.RECIPE_ID_KEY);
-        Log.d("TimerActivity","setRecipeId recipeID: "+recipeId);
+        try{
+            Intent intent=getIntent();
+            Bundle extras=intent.getExtras();
+            recipeId=extras.getLong(CookingConstants.RECIPE_ID_KEY);
+            Log.d("TimerActivity","setRecipeId recipeID: "+recipeId);
+        }
+
+        catch (Exception e){giveFeedback("setRecipeId", e.toString());}
+
     }
 
     private void setStartTimeToTextView(){
-        String time=calculateRecipeTime(getRecipeTime());
-        showTimeTextView.setText(time);
+        try{
+            String time=calculateRecipeTime(getRecipeTime());
+            showTimeTextView.setText(time);
+        }
+        catch (Exception e){giveFeedback("setStartTimeToTextView ",e.toString());}
+
+    }
+
+    private void setStartTimeToEdiTexts(int hours, int minutes, int seconds){
+       editTextForSeconds.setText(""+seconds);
+       editTextForMinutes.setText(""+minutes);
+       editTextForHour.setText(""+hours);
     }
 
     private int getRecipeTime(){
         int timeInMinutes=0;
         if(recipeId!=null){
-            timeInMinutes=dbAdapter.getRecipeByID(recipeId).getTimeInMinutes();
+            try{
+                timeInMinutes=dbAdapter.getRecipeByID(recipeId).getTimeInMinutes();
+            }
+            catch (Exception e){giveFeedback("getRecipeTime()",e.toString());}
+
         }
 
         return timeInMinutes;
@@ -251,6 +273,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
         int seconds = timeInSecondsLeft % 60;
 
         String currentTime=  String.format(timeFormat, hours, minutes, seconds);
+        setStartTimeToEdiTexts(hours,minutes,seconds);
 
         return currentTime;
     }
@@ -514,7 +537,10 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
 
 
 
-
+    //helper-methods:help in this class
+    private static void giveFeedback(String method, String feedback) {
+        Log.d("TimerActvitiy " + method, feedback);
+    }
 
 
 

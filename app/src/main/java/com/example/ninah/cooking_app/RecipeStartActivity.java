@@ -15,10 +15,9 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import java.security.spec.ECField;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 public class RecipeStartActivity extends AppCompatActivity implements View.OnClickListener {
@@ -28,17 +27,19 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
     ListView ingredientsListView;
     TextView servings;
     TextView numberOfServings;
+    Button rateRecipeButton;
     Button plus;
     Button minus;
     TextView recipe_text;
     CheckBox checkBox;
-    Button ready_button;
+    Button startTimer;
     Long recipeId;
     DBAdapter dbAdapter;
     ArrayAdapter arrayAdapterWorkSteps;
     ArrayAdapter arrayAdapterIngridents;
     ArrayList<String> workstepList;
     ArrayList<String>  ingridentList;
+    Recipe activityRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,8 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         minus = (Button)findViewById(R.id.minus);
         recipe_text = (TextView)findViewById(R.id.recipe_text);
         checkBox = (CheckBox)findViewById(R.id.checkBox);
-        ready_button = (Button)findViewById(R.id.ready_button);
+        startTimer = (Button)findViewById(R.id.ready_button);
+        rateRecipeButton=(Button) findViewById(R.id.reStAc_rateRecipeButton);
 
         workstepList=new ArrayList<>();
         ingridentList=new ArrayList<>();
@@ -67,6 +69,8 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
 
         setRecipeId();//1. get recipeID
         fillViewsWithRecipe();//2.fills views with recipeID
+
+        setOnClickListener();
 
     }
 
@@ -99,7 +103,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
                  * Wenn Timer-Funktion im Rezept hinterlegt ist bei diesem Arbeitsschritt, dann Weiterleitung zu Timer?
                  */
                 break;
-            case R.id.ready_button:
+            case R.id.ready_button:startTimerActivity();
                 /**
                  * Funktion, dass Kochvorgang gestartet wird
                  */
@@ -140,24 +144,40 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         Log.d("RecipeStartActivity","setRecipeId recipeID: "+recipeId);
     }
 
+    private void setOnClickListener(){
+        startTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTimerActivity();
+            }
+        });
+
+        rateRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startRatingActivity();
+            }
+        });
+    }
+
     private void fillViewsWithRecipe(){
         if(recipeId!=null){
-            Recipe recipe= dbAdapter.getRecipeByID(recipeId);
-            if(recipe!=null)
+            Recipe activityRecipe= dbAdapter.getRecipeByID(recipeId);
+            if(activityRecipe!=null)
             {
                 try{
-                    title.setText(recipe.getName());
-                    numberOfServings.setText(recipe.getPortions());
-                    ratingBar.setNumStars(recipe.getRatingInStars());
-                    fillIngridentsList(recipe);
-                    fillWorkStepList(recipe);
+                    title.setText(activityRecipe.getName());
+                    numberOfServings.setText(""+activityRecipe.getPortions());
+                    ratingBar.setNumStars(activityRecipe.getRatingInStars());
+                    fillIngridentsList(activityRecipe);
+                    fillWorkStepList(activityRecipe);
                 }
                 catch (Exception e){Log.d("RecipeStartActivity","fillViewsWithRecipe "+e.toString());}
 
             }
-
-
         }
+
+        else {Log.d("RecipeStartActivity","fillViewsWithRecipe recipeID is null");}
     }
 
     private void fillIngridentsList(Recipe recipe){
@@ -167,7 +187,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
                 String name=ingrident.getName();
                 double menge=ingrident.getMenge();
                 String einheit=ingrident.getEinheit();
-                String ingridentFormat="Zutat: "+name +" Menge: "+menge+" "+einheit;
+                String ingridentFormat="Zutat: "+name +", Menge: "+menge+" "+einheit;
                 this.ingridentList.add(ingridentFormat);
             }
             catch (Exception e){Log.d("RecipeStartActivity","fillIngridentsList "+e.toString());}
@@ -175,6 +195,14 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
 
         }
         arrayAdapterIngridents.notifyDataSetChanged();
+
+    }
+
+    private void riseNumberPortions(){
+
+    }
+
+    private void lowerNumberOfPortions(){
 
     }
 
@@ -189,5 +217,19 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
             }
         }
         arrayAdapterIngridents.notifyDataSetChanged();
+    }
+
+    private void startTimerActivity(){
+        Intent intent=new Intent(this, TimerActivity.class);
+        intent.putExtra(CookingConstants.RECIPE_ID_KEY,recipeId);
+        startActivity(intent);
+        Log.d("RecipeStartActivity","startTimerActivity" );
+    }
+
+    private void startRatingActivity(){
+        Intent intent=new Intent(this, Rating_Activity.class);
+        intent.putExtra(CookingConstants.RECIPE_ID_KEY,recipeId);
+        startActivity(intent);
+        Log.d("RecipeStartActivity","startRatingActivity" );
     }
 }
