@@ -201,6 +201,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
         if(recipe!=null| ingridentList!=null | workStepList!=null){
                 dbAdapter.saveRecipeToDB(recipe,ingridentList,workStepList);
+            Toast.makeText(this,"Rezept gespeichert!", Toast.LENGTH_LONG).show();
         }
 
         else {
