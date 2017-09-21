@@ -54,34 +54,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.viewRecipeList:
-                Intent recipeListIntent = new Intent(MainActivity.this, RecipeListActivity.class);
-                startActivity(recipeListIntent);
+               startRecipeList();
                 break;
             case R.id.viewBestRecipe:
                 
                 /** hier gehört eine Logik rein, die das beste Rezept aufruft**/
-                Intent bestRecipeIntent = new Intent(MainActivity.this, RecipeStartActivity.class);
-                startActivity(bestRecipeIntent);
+              startBestRecipe();
                 break;
             case R.id.viewFastRecipe:
                 /** hier gehört eine Logik rein, die das schnellste Rezept aufruft**/
-                Intent fastRecipeIntent = new Intent(MainActivity.this, RecipeStartActivity.class);
-                startActivity(fastRecipeIntent);
+               startFastestRecipe();
                 break;
             case R.id.viewRandomRecipe:
                 /** hier gehört eine Logik rein, die ein zufälliges Rezept aufruft**/
-                Intent randomRecipeIntent = new Intent(MainActivity.this, RecipeStartActivity.class);
-                startActivity(randomRecipeIntent);
+               startRandomRecipe();
                 break;
             case R.id.viewNewRecipe:
-                Intent newRecipeIntent = new Intent(MainActivity.this, RecipeNewActivity.class);
-                startActivity(newRecipeIntent);
+               startNewRecipe();
                 break;
             default:
                 break;
         }
 
     }
+
+    private void startRecipeList(){
+        Intent recipeListIntent = new Intent(MainActivity.this, RecipeListActivity.class);
+        startActivity(recipeListIntent);
+    }
+
+    private void startNewRecipe(){
+        Intent newRecipeIntent = new Intent(MainActivity.this, RecipeNewActivity.class);
+        newRecipeIntent.putExtra(CookingConstants.NEW_RECIPE_KEY,CookingConstants.NEW_RECIPE_TRUE);
+        startActivity(newRecipeIntent);
+    }
+
+    private void startOldRecipe(Long id){
+
+        Intent oldRecipeIntent = new Intent(MainActivity.this, RecipeStartActivity.class);
+        oldRecipeIntent.putExtra(CookingConstants.NEW_RECIPE_KEY,CookingConstants.NEW_RECIPE_FALSE);
+        oldRecipeIntent.putExtra(CookingConstants.RECIPE_ID_KEY,id);
+        startActivity(oldRecipeIntent);
+    }
+
+    private void startBestRecipe(){
+        Long id=dbAdapter.getHighestRateRecipe().getId();
+        startOldRecipe(id);
+    }
+
+    private void startFastestRecipe(){
+        Long id=dbAdapter.getRecipeWithSmallestTime().getId();
+        startOldRecipe(id);
+    }
+
+    private void startRandomRecipe(){
+        Long id=dbAdapter.getRandomRecipe().getId();
+        startOldRecipe(id);
+    }
+
+
 
     //Beispiel neues Rezept erstellen
     private Long createNewRecipeInDataBase(){
