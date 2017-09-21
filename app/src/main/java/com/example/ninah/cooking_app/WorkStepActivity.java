@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +37,8 @@ public class WorkStepActivity extends AppCompatActivity {
         setContentView(R.layout.activity_work_step);
 
         addButton=(Button) findViewById(R.id.saveSingleWorkStepButton);
-
         saveButton=(Button) findViewById(R.id.saveAllWorkStepsButton);
+
         workStepEditText=(EditText) findViewById(R.id.workStepEditText);
         listView=(ListView) findViewById(R.id.workStepsListView);
 
@@ -84,6 +85,7 @@ public class WorkStepActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveWorkStepListToDB();
+                finish();
 
             }
         });
@@ -116,11 +118,25 @@ public class WorkStepActivity extends AppCompatActivity {
             for (String description:workstepDescribitions){
                 RecipeWorkStep recipeWorkStep=dbAdapter.createNewWorkStepWithRecipeID(description,recipeID);
             }
+            Toast.makeText(this, "Gespeichert!", Toast.LENGTH_LONG).show();
         }
     }
 
     private void giveFeedback(String method, String feedback) {
         Log.d("WorkStepActivity " + method, feedback);
     }
+
+    private void returnToRecipeActivity(){
+        Intent intent=new Intent(this,RecipeNewActivity.class);
+        intent.putExtra(CookingConstants.RECIPE_ID_KEY,recipeID);
+        intent.putExtra(CookingConstants.NEW_RECIPE_KEY, CookingConstants.NEW_RECIPE_FALSE);
+        String id=recipeID.toString();
+        Log.d("returnToRecipeActivity"," id:"+ id);
+        intent.putExtra(CookingConstants.NEW_RECIPE_KEY, CookingConstants.NEW_RECIPE_FALSE);
+        startActivity(intent);
+
+    }
+
+
 
 }

@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         randomRecipe.setOnClickListener(this);
         newRecipe.setOnClickListener(this);
         dbAdapter=new DBAdapter(this);
+        dbAdapter.cleanAllTables();
         onClickForTesting();
 
         recipeWithNewName=dbAdapter.createDefaultRecipeAndSaveItToDB();

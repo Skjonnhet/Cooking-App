@@ -17,16 +17,19 @@ import java.util.Random;
  */
 
 public class DBAdapter {
+    private DaoMaster daoMaster;
     private DaoSession daoSession;
     private QueryBuilder recipeQueryBuilder;
     private QueryBuilder ingridentQueryBuilder;
     private QueryBuilder workStepQueryBuilder;
+
     //------------------------------------------------------------------------------------------------
     //Constructor: creates a daoSession and queryBuilder with the given context
     //this allows communications between dadapter-implementing class and this class and the DB
 
     public DBAdapter(Context context) {
-        this.daoSession = new DaoMaster(new OpenDBHelper(context, CookingConstants.DATA_BASE_FILE_NAME).getWritableDb()).newSession();
+        daoMaster= new DaoMaster(new OpenDBHelper(context, CookingConstants.DATA_BASE_FILE_NAME).getWritableDb());
+        this.daoSession = daoMaster.newSession();
         if (daoSession == null) Log.d("DBAdapter", "session null!");
         else giveFeedback("constructor","session created");
         recipeQueryBuilder = daoSession.queryBuilder(Recipe.class);
@@ -783,6 +786,11 @@ public class DBAdapter {
         newRecipe.setId(oldRecipeId);
         saveSingleRecipeToDB(newRecipe);
 
+    }
+
+    public void cleanAllTables(){
+        daoMaster.dropAllTables(daoSession.getDatabase(), true);
+        daoMaster.createAllTables(daoSession.getDatabase(), true);
     }
 
 

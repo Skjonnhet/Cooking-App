@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,9 +26,10 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     Button ingridentsButton;
     Button workStepsButton;
     DBAdapter dbAdapter;
-    Recipe actiticityRecipe;
+    Recipe actitivityRecipe;
     boolean isNewRecipe=false;
     Long oldRecipeID;
+    boolean recipeSaved=false;
 
 
 
@@ -115,25 +115,27 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     private void createActivityRecipe(){
         if(isNewRecipe)
         {
-            actiticityRecipe =dbAdapter.createDefaultRecipeAndSaveItToDB();
-            oldRecipeID=actiticityRecipe.getId();
-            giveFeedback("createActivityRecipe","recipe is new id:"+oldRecipeID);
+            actitivityRecipe =dbAdapter.createDefaultRecipeAndSaveItToDB();
+            oldRecipeID= actitivityRecipe.getId();
+            giveFeedback("createActivityRecipe","recipe: "+actitivityRecipe.getName()+" is new id:"+oldRecipeID);
         }
 
         else {
-            actiticityRecipe=dbAdapter.getRecipeByID(oldRecipeID);
-            giveFeedback("createActivityRecipe","recipe is old id:"+oldRecipeID);
+            actitivityRecipe =dbAdapter.getRecipeByID(oldRecipeID);
+            actitivityRecipe.getName();
+            giveFeedback("createActivityRecipe","recipe:"+actitivityRecipe.getName()+" is old id:"+oldRecipeID);
             updateTextViewsWithOldRecipe();
         }
 
     }
 
     private void updateTextViewsWithOldRecipe(){
-        if(actiticityRecipe!=null){
-            recipeNameInput.setText(actiticityRecipe.getName().toString());
-            recipePortionsInput.setText(""+actiticityRecipe.getPortions());
-            recipeTimeInput.setText(""+actiticityRecipe.getTimeInMinutes());
-            difficultInput.setText(actiticityRecipe.getDifficulty().toString());
+        if(actitivityRecipe !=null){
+            recipeNameInput.setText("");
+            recipeNameInput.setText(actitivityRecipe.getName().toString());
+            recipePortionsInput.setText(""+ actitivityRecipe.getPortions());
+            recipeTimeInput.setText(""+ actitivityRecipe.getTimeInMinutes());
+            difficultInput.setText(actitivityRecipe.getDifficulty().toString());
         }
     }
 
@@ -158,19 +160,25 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     //-----------------------start other activities-------------------------------------------------
 
     private void startIngridentActivity(){
-        Intent intent=new Intent(this, IngridentActivity.class);
-        Long id=getActivityRecipe().getId();
-        giveFeedback("startIngridentActivity", "recipe-id:"+id);
-        intent.putExtra(CookingConstants.RECIPE_ID_KEY,id);
-        startActivity(intent);
+        if(areAllFieldsFilled()){
+            Intent intent=new Intent(this, IngridentActivity.class);
+            Long id=getActivityRecipe().getId();
+            giveFeedback("startIngridentActivity", "recipe-id:"+id);
+            intent.putExtra(CookingConstants.RECIPE_ID_KEY,id);
+            startActivity(intent);
+        }
+        else  Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();
     }
 
     private void startWorkStepActivity(){
+        if(areAllFieldsFilled()){
         Intent intent=new Intent(this, WorkStepActivity.class);
         Long id=getActivityRecipe().getId();
         giveFeedback("startWorkStepActivity", "recipe-id:"+id);
         intent.putExtra(CookingConstants.RECIPE_ID_KEY,id);
         startActivity(intent);
+        }
+        else  Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();
     }
 
 
@@ -194,27 +202,28 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
     //saves whole recipe to DB WITH ingridents and worksteps
     private void saveRecipeToDB(){
-        updateActivityRecipe(actiticityRecipe);
-        Recipe recipe=getActivityRecipe();
-        List<Ingrident> ingridentList=dbAdapter.getAllIngridentsOfRecipe(recipe);
-        List<RecipeWorkStep> workStepList=dbAdapter.getAllWorkStepsOfRecipe(recipe);
+        if(areAllFieldsFilled()) {
+            updateActivityRecipe(actitivityRecipe);
+            Recipe recipe = getActivityRecipe();
+            List<Ingrident> ingridentList = dbAdapter.getAllIngridentsOfRecipe(recipe);
+            List<RecipeWorkStep> workStepList = dbAdapter.getAllWorkStepsOfRecipe(recipe);
 
-        if(recipe!=null| ingridentList!=null | workStepList!=null){
-                dbAdapter.saveRecipeToDB(recipe,ingridentList,workStepList);
-            Toast.makeText(this,"Rezept gespeichert!", Toast.LENGTH_LONG).show();
+            if (recipe != null | ingridentList != null | workStepList != null) {
+                dbAdapter.saveRecipeToDB(recipe, ingridentList, workStepList);
+                Toast.makeText(this, "Rezept gespeichert!", Toast.LENGTH_LONG).show();
+            } else {
+                giveFeedback("saveRecipeToDB", "one paramter is null!");
+                Toast.makeText(this, "Eine Eingabe ist leer: Prüfe Rezept-, Zutaten und Arbeitsschritteingaben", Toast.LENGTH_LONG).show();
+            }
         }
-
-        else {
-            giveFeedback("saveRecipeToDB", "one paramter is null!");
-            Toast.makeText(this,"Eine Eingabe ist leer: Prüfe Rezept-, Zutaten und Arbeitsschritteingaben", Toast.LENGTH_LONG).show();
-        }
+        else  Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();
     }
 
     //-----------------------getter methods: return values for recipe from inputs------------------------------------------------------
 
 
     private Recipe getActivityRecipe(){
-        return actiticityRecipe;
+        return actitivityRecipe;
     }
 
     private String getRecipeName(){
@@ -293,6 +302,21 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         }
 
         return true;
+
+    }
+
+    //checks if user fileld all Fields
+    private boolean areAllFieldsFilled(){
+      if(isEditTextEmpty(recipeNameInput)|isEditTextEmpty(difficultInput)|isEditTextEmpty(recipePortionsInput)|isEditTextEmpty(recipeTimeInput)){
+          return false;
+      }
+
+      else return true;
+    }
+
+    private boolean isEditTextEmpty(EditText editText){
+       if (editText.getText().toString().trim().isEmpty()) return true;
+        else return false;
 
     }
 }
