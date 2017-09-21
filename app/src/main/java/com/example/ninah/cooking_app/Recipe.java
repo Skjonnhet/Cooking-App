@@ -23,8 +23,8 @@ public class Recipe {
         @Property(nameInDb = "name")
         private String name;
 
-        @Property(nameInDb = "recipeDescribtion")
-        private String recipeDescribtion;
+        @Property(nameInDb = "portions")
+        private int portions;
 
         @Property(nameInDb = "difficulty")
         private String difficulty;
@@ -52,12 +52,13 @@ public class Recipe {
 
 
 
-    @Generated(hash = 1236500943)
-    public Recipe(Long id, String name, String recipeDescribtion, String difficulty, int timeInMinutes,
+
+    @Generated(hash = 1702570931)
+    public Recipe(Long id, String name, int portions, String difficulty, int timeInMinutes,
             int ratingInStars) {
         this.id = id;
         this.name = name;
-        this.recipeDescribtion = recipeDescribtion;
+        this.portions = portions;
         this.difficulty = difficulty;
         this.timeInMinutes = timeInMinutes;
         this.ratingInStars = ratingInStars;
@@ -66,6 +67,7 @@ public class Recipe {
     @Generated(hash = 829032493)
     public Recipe() {
     }
+
 
 
 
@@ -83,14 +85,6 @@ public class Recipe {
 
         public void setName(String name) {
             this.name = name;
-        }
-
-        public String getRecipeDescribtion() {
-            return this.recipeDescribtion;
-        }
-
-        public void setRecipeDescribtion(String recipeDescribtion) {
-            this.recipeDescribtion = recipeDescribtion;
         }
 
         public String getDifficulty() {
@@ -149,6 +143,14 @@ public class Recipe {
 
         public void setRatingInStars(int ratingInStars) {
             this.ratingInStars = ratingInStars;
+        }
+
+        public int getPortions() {
+            return this.portions;
+        }
+
+        public void setPortions(int portions) {
+            this.portions = portions;
         }
 
         /**
@@ -250,6 +252,11 @@ public class Recipe {
             myDao = daoSession != null ? daoSession.getRecipeDao() : null;
         }
 
+        /**
+         * To-many relationship, resolved on first access (and after reset).
+         * Changes to to-many relations are not persisted, make changes to the target entity.
+         */
+       
 
 
 }

@@ -26,7 +26,7 @@ public class DBAdapter {
     //this allows communications between dadapter-implementing class and this class and the DB
 
     public DBAdapter(Context context) {
-        this.daoSession = new DaoMaster(new OpenDBHelper(context, "demoDB4.db").getWritableDb()).newSession();
+        this.daoSession = new DaoMaster(new OpenDBHelper(context, CookingConstants.DATA_BASE_FILE_NAME).getWritableDb()).newSession();
         if (daoSession == null) Log.d("DBAdapter", "session null!");
         else giveFeedback("constructor","session created");
         recipeQueryBuilder = daoSession.queryBuilder(Recipe.class);
@@ -45,7 +45,7 @@ public class DBAdapter {
 
     private Recipe getDefaultRecipe() {
 
-        Recipe recipe = new Recipe(null, "DefaultRecipeName", "Beschreibung", "Zutaten", 10, 10);
+        Recipe recipe = new Recipe(null, "DefaultRecipeName", 2, "Zutaten", 10, 10);
         daoSession.getRecipeDao().insertOrReplace(recipe);
 
         Long id = recipe.getId();
@@ -634,11 +634,11 @@ public class DBAdapter {
 
     //creates a new single RecipeInstance without confusing the user with setting the startID and rating
     //should always be used for creating new recipes
-    public Recipe createNewRecipe(String name, String descpription, String difficulty, int timeInMinutes) {
+    public Recipe createNewRecipe(String name, int portions, String difficulty, int timeInMinutes) {
         Long startID = getHighestRecipeID();
         startID++;
         int startRating = 0;
-        Recipe recipe = new Recipe(startID, name, descpription, difficulty, timeInMinutes, startRating);
+        Recipe recipe = new Recipe(startID, name, portions, difficulty, timeInMinutes, startRating);
         giveFeedback("createNewRecipe", "name:" + recipe.getName().toString());
         saveSingleRecipeToDB(recipe);
         return recipe;

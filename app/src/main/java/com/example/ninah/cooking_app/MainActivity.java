@@ -95,14 +95,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Erst das Rezept erstellen
 
         String RezeptName="SchokoTorte";
-        String Beschreibung="leckerer Schockokuchen";
+        int portionen=2;
         String Schwierigkeit="leicht";
         int ZeitInMinuten=45;
 
         //Bitte Adapter verwendenen um Rezepte, Zutaten und Arbeitsschritte zu erstellen
         //Ansonsten funktioniert DB nicht mehr
-        Recipe recipe=dbAdapter.createNewRecipe(RezeptName,Beschreibung,Schwierigkeit,ZeitInMinuten);
-        dbAdapter.createNewRecipe(RezeptName,Beschreibung,Schwierigkeit,ZeitInMinuten);
+        Recipe recipe=dbAdapter.createNewRecipe(RezeptName,portionen,Schwierigkeit,ZeitInMinuten);
+        dbAdapter.createNewRecipe(RezeptName,portionen,Schwierigkeit,ZeitInMinuten);
         id=recipe.getId();
 
         //Zweitens Zutatenliste erstellen

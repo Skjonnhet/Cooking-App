@@ -3,22 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ninah.cooking_app">
     xmlns:tools="http://schemas.android.com/tools">
-
-
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-
-        tools:replace="label"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="label">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -71,7 +67,9 @@
         <activity
             android:name=".Rating_Activity"
             android:label="@string/title_activity_rating_"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".IngridentActivity" />
+        <activity android:name=".WorkStepActivity"></activity>
     </application>
 
 </manifest>

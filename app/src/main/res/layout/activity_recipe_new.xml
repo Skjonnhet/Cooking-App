@@ -26,75 +26,109 @@
         android:layout_marginTop="18dp" />
 
     <TextView
-        android:id="@+id/recipeIngredients"
+        android:id="@+id/difficultLevel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/recipeNameInput"
         android:layout_marginTop="29dp"
-        android:text="@string/ingredients" />
+        android:text="Leicht,Mittel,Schwer?" />
 
     <EditText
-        android:id="@+id/recipeIngredientsInput"
+        android:id="@+id/DifficultInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/recipeIngredients"
+        android:layout_below="@+id/difficultLevel"
         android:layout_marginTop="18dp"
-        android:inputType="textPersonName"
-        android:hint="@string/inputRecipeIngredients" />
+        android:hint="Schwierigkeit eintragen"
+        android:inputType="textPersonName" />
 
     <TextView
-        android:id="@+id/recipeServings"
+        android:id="@+id/recipePortions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/recipeIngredientsInput"
+        android:layout_below="@+id/DifficultInput"
         android:layout_marginTop="29dp"
         android:text="@string/numOfServings" />
 
     <EditText
-        android:id="@+id/recipeServingsInput"
+        android:id="@+id/recipeNumberOfPortions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/recipeServings"
+        android:layout_below="@+id/recipePortions"
         android:layout_marginTop="18dp"
-        android:inputType="textPersonName"
-        android:hint="@string/inputServings" />
+        android:hint="@string/inputServings"
+        android:inputType="numberPassword" />
 
     <TextView
-        android:id="@+id/recipeWorkstep"
+        android:id="@+id/recipeTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/recipeServingsInput"
+        android:layout_below="@+id/recipeNumberOfPortions"
         android:layout_marginTop="29dp"
-        android:text="@string/recipeText" />
+        android:text="Kochdauer" />
 
     <EditText
-        android:id="@+id/editTexrecipeWorkstepInput"
+        android:id="@+id/recipeTimeInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/recipeWorkstep"
+        android:layout_below="@+id/recipeTime"
         android:layout_marginTop="18dp"
-        android:inputType="textPersonName"
-        android:hint="@string/inputWorkingstep" />
+        android:hint="Zeit in Minuten eingeben"
+        android:inputType="numberPassword" />
 
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/saveButton"
+        android:layout_below="@+id/recipeTimeInput"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="17dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginTop="33dp" />
+
+    <Button
+        android:id="@+id/newIngridentsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Neue Zutaten"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="21dp"
-        android:text="@string/saveButton" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/newWorkStepsButton"
+        android:layout_alignEnd="@+id/newWorkStepsButton" />
+
+    <Button
+        android:id="@+id/newWorkStepsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Neue Arbeitsschritte"
+        android:layout_below="@+id/recipeTimeInput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/recipeNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="89dp"
+        android:layout_marginStart="89dp"
+        android:text="@string/inputServings" />
 
 </RelativeLayout>
