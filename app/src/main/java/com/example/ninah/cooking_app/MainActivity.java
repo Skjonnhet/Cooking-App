@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(recipeListIntent);
                 break;
             case R.id.viewBestRecipe:
+                
                 /** hier gehört eine Logik rein, die das beste Rezept aufruft**/
                 Intent bestRecipeIntent = new Intent(MainActivity.this, RecipeActivity.class);
                 startActivity(bestRecipeIntent);
