@@ -3,11 +3,8 @@ package com.example.ninah.cooking_app;
 import android.content.Context;
 import android.util.Log;
 
-import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.query.QueryBuilder;
-import org.greenrobot.greendao.query.WhereCondition;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +31,7 @@ public class DBAdapter {
     //this allows communications between dadapter-implementing class and this class and the DB
 
     public DBAdapter(Context context) {
-        daoMaster= new DaoMaster(new OpenDBHelper(context, CookingConstants.DATA_BASE_FILE_NAME).getWritableDb());
+        daoMaster= new DaoMaster(new DBOpenHelper(context, CookingConstants.DATA_BASE_FILE_NAME).getWritableDb());
         this.daoSession = daoMaster.newSession();
         if (daoSession == null) Log.d("DBAdapter", "session null!");
         else giveFeedback("constructor","session created");
