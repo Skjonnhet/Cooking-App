@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ninah.cooking_app.TimerActivity">
+    tools:context="com.example.ninah.cooking_app.CookingTimerActivity">
 
     <Button
         android:id="@+id/startCookingButton"

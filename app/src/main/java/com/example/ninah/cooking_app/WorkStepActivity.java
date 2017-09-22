@@ -131,7 +131,7 @@ public class WorkStepActivity extends AppCompatActivity {
         intent.putExtra(CookingConstants.RECIPE_ID_KEY,recipeID);
         intent.putExtra(CookingConstants.NEW_RECIPE_KEY, CookingConstants.NEW_RECIPE_FALSE);
         String id=recipeID.toString();
-        Log.d("returnToRecipeActivity"," id:"+ id);
+        Log.d("returnToRecipeActivity"," recipeID:"+ id);
         intent.putExtra(CookingConstants.NEW_RECIPE_KEY, CookingConstants.NEW_RECIPE_FALSE);
         startActivity(intent);
 

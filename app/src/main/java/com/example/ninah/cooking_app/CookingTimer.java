@@ -9,21 +9,29 @@ import android.util.Log;
 
 public class CookingTimer {
 
+    /*****************CountDown-class of the timer function of the app******************************/
+    /*logic: CookingTimerServices starts countDownTimer and gives CookingTimer cookingTimerListener
+     through constructor of the CookingTimer--------------------------------------------------------
+    *countDownTimer counts given time down and sets currentTime-------------------------------------
+    *CookingTimerServices gets current time trough getCurrentTime() getter method-------------------
+    *countDownTimer counts given time down and tells cookingTimerListener when timer ticks/has finished
+    *cookingTimerListener is implemented in CookingTimerServices------------------------------------
+    * CookingTimerServices "knows" when cookingTimer has finished and ticks trough  cookingTimerListener
+  */
+
     private CountDownTimer countDownTimer;
-    private String currentTime;
+    private static String currentTime;
     private CookingTimerListener cookingTimerListener;
 
-     /*--------------------------------------------------------------------------*/
-    /*Constructor-part: (all) constructor(s) of the class*/
 
-    //constructor of the cookingTimer
+    //constructor of the cookingTimer sets cookingTimerListener
     public CookingTimer(CookingTimerListener cookingTimerListener){
                 this.cookingTimerListener=cookingTimerListener;
     }
 
 
-     /*--------------------------------------------------------------------------*/
-    /*countDownTimer-Part: all methods to control the countDownTimer*/
+    /*---------------------------------------------------------------------------------------------*/
+    /*------------countDownTimer-Part: all methods to control the countDownTimer-------------------*/
 
 
     //starts a new countdown timer. All timer functions and logic is here.
@@ -68,8 +76,8 @@ public class CookingTimer {
         countDownTimer.cancel();
     }
 
-     /*--------------------------------------------------------------------------*/
-    /*currentTime-Part: all methods to control the currentTime*/
+     /*-------------------------------------------------------------------------------------------*/
+    /*-------------currentTime-Part: all methods to control the currentTime-----------------------*/
 
 
     //sets CurrentTime
@@ -79,7 +87,7 @@ public class CookingTimer {
     }
 
     //returns currentTime
-    //is used in the CookingTimerService, to send the currentTime to the TimeReceiver
+    //is used in the CookingTimerService, to send the currentTime to the CookingTimeReceiver
     public String getCurrentTime(){
         if(currentTime!=null){
             Log.d("Cooking Timer returns", currentTime);
@@ -93,8 +101,8 @@ public class CookingTimer {
     }
 
 
- /*--------------------------------------------------------------------------*/
-    /*Listener-Part: all methods to control the cookingTimerListener*/
+     /*-------------------------------------------------------------------------------------------*/
+    /*-------------Listener-Part: all methods to control the cookingTimerListener-----------------*/
 
     //calls onCookingTimerTick() of the cookingTimerListener
     //this method is used in onTick() of the countDownTimer

@@ -5,8 +5,8 @@ package com.example.ninah.cooking_app;
  */
 
 public interface CookingTimerListener {
-
-    /*Interface so services and other classes can communicate with the CookingTimer*/
+    /*****************Listener of the timer function of the app************************************/
+    /*Interface so CookingTimerService and other classes can communicate with the CookingTimer.class*/
 
     public void onCookingTimerTick();
     public void onCookingTimerFinished();

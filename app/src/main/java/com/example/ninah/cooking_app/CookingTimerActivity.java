@@ -16,36 +16,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.ninah.cooking_app.ChooseRingToneActivity;
-import com.example.ninah.cooking_app.CookingTimerService;
-import com.example.ninah.cooking_app.MovingSensor;
-import com.example.ninah.cooking_app.TimeReceiver;
+public class CookingTimerActivity extends AppCompatActivity implements SensorEventListener {
 
-public class TimerActivity extends AppCompatActivity implements SensorEventListener {
-
-    /*MainActivity of the timer function of the app
-    *----------------------------------------------------------------------------------
-    * --------------Timer Function----------------------------------------------------
-    * TimerActivity starts a new timer via the sending an intent to the CookingTimerService
+    /*****************Main Activity of the timer function of the app*******************************/
+    /*----------------------------------------------------------------------------------------------
+    * --------------Timer Function------------------------------------------------------------------
+    * CookingTimerActivity starts a new timer via the sending an intent to the CookingTimerService
     * CookingTimerService creates a new CookingTimer
      * CookingTimer counts down to zero an sends calculated time via the CookingTimerListener to the CookingTimerService
-     * CookingTimerService sends a BroadCast to TimeReceiver
-     * TimeReceiver updates the time in the showTimeTextView of the TimerActivity via a runOnUiThread
-     * Order: TimerActivity->CookingTimerService->CookingTimer->CookingTimerService (BroadCast)->TimeReceiver(BroadCastReceiver)->TimerActivity(GUI)
+     * CookingTimerService sends a BroadCast to CookingTimeReceiver
+     * CookingTimeReceiver updates the time in the showTimeTextView of the CookingTimerActivity via a runOnUiThread
+     * Order: CookingTimerActivity->CookingTimerService->CookingTimer->CookingTimerService (BroadCast)->CookingTimeReceiver(BroadCastReceiver)->CookingTimerActivity(GUI)
      *
-     *  --------------SelectTingTone Function----------------------------------------------------
-     *  TimerActivity starts the ChooseRingToneActivity via startActivityForResult
+     *  --------------SelectTingTone Function-------------------------------------------------------
+     *  CookingTimerActivity starts the ChooseRingToneActivity via startActivityForResult
      *  user chooses ringTone in ChooseRingToneActivity
-     *  ringTone is sent back to TimerActivity
-     *  TimerActivity gets new ringTone as Result
-     *  Order: TimerActivity->ChooseRingToneActivity->Result(RingTone)->TimerActivity
+     *  ringTone is sent back to CookingTimerActivity
+     *  CookingTimerActivity gets new ringTone as Result
+     *  Order: CookingTimerActivity->ChooseRingToneActivity->Result(RingTone)->CookingTimerActivity
      *
-     *   --------------Alarm Function----------------------------------------------------
-     *TimerActivity starts PlayRingToneService if Timer Function receives that time has counted to 00:00
+     *   --------------Alarm Function---------------------------------------------------------------
+     *CookingTimerActivity starts PlayRingToneService if Timer Function receives that time has counted to 00:00
      * PlayRingToneService includes an MediaPlayer and a Vibrator
      * PlayRingToneService is stopped by pressing the resetTimerButton, moving the device so MovingSensor recognize motion
-     * or by finishing the TimerActivity
-     *  Order: TimerActivity->PlayRingToneService
+     * or by finishing the CookingTimerActivity
+     *  Order: CookingTimerActivity->PlayRingToneService
     * */
 
     //Edit texts
@@ -61,20 +56,21 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     //TextViews
     private TextView showTimeTextView;
 
-    //TimeReceiver and TimeActivity
-    private TimeReceiver timeReceiver;
-    private static TimerActivity timerActivity;
+    //CookingTimeReceiver and TimeActivity
+    private CookingTimeReceiver cookingTimeReceiver;
+    private static CookingTimerActivity cookingTimerActivity;
 
 
     //finals for the communication with the cookingTimerService and the TimReceiver
-    public final static String KEY_CURRENT_TIME="KEY_CURRENT_TIME";
-    public final static String CURRENT_TIME_ACTION="CURRENT_TIME_ACTION";
-    public final static IntentFilter TIME_INTENT_FILTER =new IntentFilter(CURRENT_TIME_ACTION);
-    public final static String COOKING_TIMER_FINISHED="COOKING_TIMER_FINISHED";
+    public final static String KEY_CURRENT_TIME=CookingConstants.KEY_CURRENT_TIME;
+    public final static String CURRENT_TIME_ACTION=CookingConstants.CURRENT_TIME_ACTION;
+    public final static String COOKING_TIMER_FINISHED= CookingConstants.COOKING_TIMER_FINISHED;
+    public final static IntentFilter TIME_INTENT_FILTER = new IntentFilter(CURRENT_TIME_ACTION);
+
 
     //chosen RingTone
     private static String chosenRingTone;
-    public static final int RING_TONE_REQUEST_CODE = 1;
+    public static final int RING_TONE_REQUEST_CODE = CookingConstants.RING_TONE_REQUEST_CODE;
     public static final String CHOSEN_RING_TONE_KEY="CHOSEN_RING_TONE_KEY";
 
     //private MovingSensor movingSensor;
@@ -112,11 +108,11 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     }
 
     //overwritten method of the Activity-LifeCycle
-    //registers TimeReceiver
+    //registers CookingTimeReceiver
     @Override
     protected void onStart() {
         registerTimeReceiver();
-        Log.d("TimerActivty","Receiver registered "+timeReceiver);
+        Log.d("TimerActivty","Receiver registered "+ cookingTimeReceiver);
         super.onStart();
     }
 
@@ -129,11 +125,11 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
 
     @Override
     protected void onStop() {
-        Log.d("TimerActivity","Receiver unregistered");
+        Log.d("CookingTimerActivity","Receiver unregistered");
         super.onStop();
     }
 
-    //destroys all services if this activity is destroyed and unregisters TimeReceiver
+    //destroys all services if this activity is destroyed and unregisters CookingTimeReceiver
     @Override
     protected void onDestroy() {
         unregisterTimeReceiver();
@@ -177,7 +173,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
 
     /*--------------------------------------------------------------------------*/
     /*init part: all editTexts, showTimeTextView and the buttons via the view ids
-     *the status (enabled, disabled) of the buttons are set, inits a new timeReceiver-object and a new movingSensor-Object
+     *the status (enabled, disabled) of the buttons are set, inits a new cookingTimeReceiver-object and a new movingSensor-Object
      * this part is used in the on createMethod();
       */
 
@@ -212,8 +208,8 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
 
     //inits time Receiver
     private void initTimeReceiver(){
-        timeReceiver=new TimeReceiver();
-        Log.d("TimerActivity","Receiver constructed "+timeReceiver);
+        cookingTimeReceiver =new CookingTimeReceiver();
+        Log.d("CookingTimerActivity","Receiver constructed "+ cookingTimeReceiver);
     }
 
     //inits MovingSensor
@@ -222,7 +218,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     }
 
     private void initTimerActitivty(){
-        timerActivity=this;
+        cookingTimerActivity =this;
     }
 
     private void setRecipeId(){
@@ -230,7 +226,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
             Intent intent=getIntent();
             Bundle extras=intent.getExtras();
             recipeId=extras.getLong(CookingConstants.RECIPE_ID_KEY);
-            Log.d("TimerActivity","setRecipeId recipeID: "+recipeId);
+            Log.d("CookingTimerActivity","setRecipeId recipeID: "+recipeId);
         }
 
         catch (Exception e){giveFeedback("setRecipeId", e.toString());}
@@ -358,7 +354,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
         Intent intent=new Intent(this, CookingTimerService.class);
         intent.putExtra(KEY_CURRENT_TIME, timeInSeconds);
         startService(intent);
-        Log.d("TimerActivity","startService(cookingTimerService)");
+        Log.d("CookingTimerActivity","startService(cookingTimerService)");
     }
 
     //stops the cooking timer service by sending an intent.
@@ -379,7 +375,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
         showTimeTextView.setText("00:00:00");
         startRingToneService();
         startMovingSensor();
-        Log.d("TimerActivity", "timerHasFinished");
+        Log.d("CookingTimerActivity", "timerHasFinished");
     }
 
     /*--------------------------------------------------------------------------*/
@@ -389,7 +385,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
 
     //starts a new Activity (chooseRingToneActivity) with startActivityForResult(intent, code) so the user can select the ringtone in a new activity
     private void selectRingTone(){
-        Log.d("TimerActivity", "RingTone selected");
+        Log.d("CookingTimerActivity", "RingTone selected");
         Intent selectRingToneIntent= new Intent(this, ChooseRingToneActivity.class);
         startActivityForResult(selectRingToneIntent, RING_TONE_REQUEST_CODE);
     }
@@ -404,7 +400,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
                 if(data!=null){
                     if(data.getStringExtra(CHOSEN_RING_TONE_KEY)!=null){
                         chosenRingTone=data.getStringExtra(CHOSEN_RING_TONE_KEY);
-                        Log.d("TimerActivity", "chosenRingTone: "+chosenRingTone);
+                        Log.d("CookingTimerActivity", "chosenRingTone: "+chosenRingTone);
                     }
                 }
             }
@@ -427,47 +423,47 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     }
 
     /*--------------------------------------------------------------------------*/
-    /*TimeReceiver-part: all methods to control the TimeReceiver
-    * this receiver is necessary so this Activity (TimerActivity) can communicate with the CookingTimerService
-    * the TimeReceiver receives the values of that service and updates the GUI of the TimerActivity */
+    /*CookingTimeReceiver-part: all methods to control the CookingTimeReceiver
+    * this receiver is necessary so this Activity (CookingTimerActivity) can communicate with the CookingTimerService
+    * the CookingTimeReceiver receives the values of that service and updates the GUI of the CookingTimerActivity */
 
-    //registers the TimeReceiver via the LocalBroadcastManager at this Activity(TimerActivity)
+    //registers the CookingTimeReceiver via the LocalBroadcastManager at this Activity(CookingTimerActivity)
     //it is used in onStart()-method of the ActivityLifecycle so each time the user switches to another activity
     //and back it is ensured the receiver is registered
     private void registerTimeReceiver(){
-        LocalBroadcastManager.getInstance(this).registerReceiver(timeReceiver, TIME_INTENT_FILTER);
+        LocalBroadcastManager.getInstance(this).registerReceiver(cookingTimeReceiver, TIME_INTENT_FILTER);
     }
 
-    //unregisters the TimeReceiver via the LocalBroadcastManager at this Activity(TimerActivity)
+    //unregisters the CookingTimeReceiver via the LocalBroadcastManager at this Activity(CookingTimerActivity)
     //it is used in onStop()-method of the ActivityLifecycle so each time the user switches to another activity
     //it is ensured the receiver is unregistered even if the Activity is not killed via onDestroy()
     //this safes memory
     private void unregisterTimeReceiver(){
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(timeReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(cookingTimeReceiver);
     }
 
-    //getTimerActivity  and setCurrentTimer are for the communication with the receiver
+    //getCookingTimerActivity  and setCurrentTimer are for the communication with the receiver
 
-    //returns the running TimerActivity(this)
-    //it is used by the TimeReceiver for setting the time in this TimerActivity
-    public static TimerActivity getTimerActivity() {
-        if (timerActivity != null) {
-            return timerActivity;
+    //returns the running CookingTimerActivity(this)
+    //it is used by the CookingTimeReceiver for setting the time in this CookingTimerActivity
+    public static CookingTimerActivity getCookingTimerActivity() {
+        if (cookingTimerActivity != null) {
+            return cookingTimerActivity;
         }
 
         else {
-            Log.d("TimerActivity", "timerActivity is null");
+            Log.d("CookingTimerActivity", "cookingTimerActivity is null");
             return null;
         }
     }
 
     //sets currentTime in the showTimeTextView
-    //updates the GUI through the non-UI-thread receiver (TimeReceiver), therefore uses runOnUiThread(action)
+    //updates the GUI through the non-UI-thread receiver (CookingTimeReceiver), therefore uses runOnUiThread(action)
     // checks if the cookingTime is unequal the time when the timer has finished
     //if so updates the showTimeTextView, otherwise starts reportTimerHasFinished()
-    //is is used in the TimeReceiver to update the time
+    //is is used in the CookingTimeReceiver to update the time
     public void setCurrentTime(final String currentTime) {
-        TimerActivity.this.runOnUiThread(new Runnable() {
+        CookingTimerActivity.this.runOnUiThread(new Runnable() {
             public void run() {
                 if(currentTime!=COOKING_TIMER_FINISHED) {
 
@@ -512,7 +508,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
                 }
             }
 
-            else {Log.d("TimerActivity", "movingsensor is null");}
+            else {Log.d("CookingTimerActivity", "movingsensor is null");}
 
         }
     }
@@ -525,7 +521,7 @@ public class TimerActivity extends AppCompatActivity implements SensorEventListe
     }
 
     /*-------------------------------------------------------------------------------------*/
-    /*Destroy-part:all methods which are necessary to ensure a safe finishing of TimerActivity*/
+    /*Destroy-part:all methods which are necessary to ensure a safe finishing of CookingTimerActivity*/
 
     //stops all services
     //used in the onDestroy-method

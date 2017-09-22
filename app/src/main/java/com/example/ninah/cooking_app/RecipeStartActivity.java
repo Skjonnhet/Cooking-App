@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -220,7 +219,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void startTimerActivity(){
-        Intent intent=new Intent(this, TimerActivity.class);
+        Intent intent=new Intent(this, CookingTimerActivity.class);
         intent.putExtra(CookingConstants.RECIPE_ID_KEY,recipeId);
         startActivity(intent);
         Log.d("RecipeStartActivity","startTimerActivity" );

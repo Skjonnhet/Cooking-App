@@ -151,7 +151,7 @@ public class IngridentActivity extends AppCompatActivity {
                 id=ingrident.getId();
             }
         }
-        giveFeedback("getIngridentIDbyName", "id: "+id);
+        giveFeedback("getIngridentIDbyName", "recipeID: "+id);
 
         return id;
     }

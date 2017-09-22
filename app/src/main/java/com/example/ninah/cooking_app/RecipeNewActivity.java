@@ -117,13 +117,13 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         {
             actitivityRecipe =dbAdapter.createDefaultRecipeAndSaveItToDB();
             oldRecipeID= actitivityRecipe.getId();
-            giveFeedback("createActivityRecipe","recipe: "+actitivityRecipe.getName()+" is new id:"+oldRecipeID);
+            giveFeedback("createActivityRecipe","recipe: "+actitivityRecipe.getName()+" is new recipeID:"+oldRecipeID);
         }
 
         else {
             actitivityRecipe =dbAdapter.getRecipeByID(oldRecipeID);
             actitivityRecipe.getName();
-            giveFeedback("createActivityRecipe","recipe:"+actitivityRecipe.getName()+" is old id:"+oldRecipeID);
+            giveFeedback("createActivityRecipe","recipe:"+actitivityRecipe.getName()+" is old recipeID:"+oldRecipeID);
             updateTextViewsWithOldRecipe();
         }
 
@@ -166,7 +166,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         if(areAllFieldsFilled()){
             Intent intent=new Intent(this, IngridentActivity.class);
             Long id=getActivityRecipe().getId();
-            giveFeedback("startIngridentActivity", "recipe-id:"+id);
+            giveFeedback("startIngridentActivity", "recipe-recipeID:"+id);
             intent.putExtra(CookingConstants.RECIPE_ID_KEY,id);
             startActivity(intent);
         }
@@ -177,7 +177,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         if(areAllFieldsFilled()){
         Intent intent=new Intent(this, WorkStepActivity.class);
         Long id=getActivityRecipe().getId();
-        giveFeedback("startWorkStepActivity", "recipe-id:"+id);
+        giveFeedback("startWorkStepActivity", "recipe-recipeID:"+id);
         intent.putExtra(CookingConstants.RECIPE_ID_KEY,id);
         startActivity(intent);
         }

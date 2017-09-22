@@ -49,7 +49,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".TimeReceiver">
+        <receiver android:name=".CookingTimeReceiver">
             <intent-filter>
                 <action android:name="CURRENT_TIME_ACTION" />
             </intent-filter>
@@ -63,7 +63,7 @@
             android:name=".CookingTimerService"
             android:exported="false" />
 
-        <activity android:name=".TimerActivity" />
+        <activity android:name=".CookingTimerActivity" />
         <activity
             android:name=".Rating_Activity"
             android:label="@string/title_activity_rating_"

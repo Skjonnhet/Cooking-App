@@ -12,20 +12,28 @@ import android.util.Log;
  */
 
 public class CookingTimerService extends Service implements CookingTimerListener {
+    /*****************Main Activity of the timer function of the app*******************************/
+    /*CookingTimerService implements CookingTimerListener-------------------------------------------
+    /*CookingTimerListener is given to CookingTimer in LifeCycle-Part-------------------------------
+    /*LifeCycle-Part: inits the BroadCastIntent, CookingTimer. Starts and stops CookingTimer--------
+    /*listener part: cookingTimerListener receives orders from CookingTimer, sends broadcastIntent--
+     * in onCookingTimerTick() and onCookingTimerFinished() to CookingTimeReceiver------------------
+     *CookingTimerReceiver is implemented in CookingTimerActivity-----------------------------------
+     *CookingTimerActivity receives time trough CookingTimerReceiver--------------------------------
+     * Order: CookingTimerService->starts CookingTimer(CookingTimerListener)->CookingTimerListener
+     * tells CookingTimerService when to send broadCastIntent->broadCastIntent->CookingTimeReceiver->
+     *->TimerActivity->Timer Activity sets time */
+
     private CookingTimer cookingTimer;
     private Intent broadcastIntent;
 
-
-     /*--------------------------------------------------------------------------*/
-    /*Constructor-part: (all) constructor(s) of the class*/
-
-    //constructor of the CookingTimerService
+    //constructor of the CookingTimerService starts superclass
     public CookingTimerService() {
         super();
     }
 
-      /*--------------------------------------------------------------------------*/
-    /*LifeCycle-Part: all methods of the Activity-LifeCycle which are necessary for this service*/
+    /*--------------------------------------------------------------------------------------------*/
+    /*LifeCycle-Part: all methods of the Activity-LifeCycle which are necessary for this service--*/
 
     @Override
     public void onCreate() {
@@ -55,16 +63,18 @@ public class CookingTimerService extends Service implements CookingTimerListener
         return null;
     }
 
-      /*--------------------------------------------------------------------------*/
-    /*Service-Part: all methods to control service*/
+    /*--------------------------------------------------------------------------------------------*/
+    /*-------------------Service-Part: all methods to control service-----------------------------*/
 
+    //stops this service
+    //is used in onCookingTimerFinished()
     private void stopThisService(){
         stopSelf();
     }
 
 
-    /*--------------------------------------------------------------------------*/
-    /*init part: inits broadcastIntent, cookingTimer*/
+    /*--------------------------------------------------------------------------------------------*/
+    /*-------------------Init part: inits broadcastIntent, cookingTimer---------------------------*/
 
     //inits the broadCatIntent
     private void initBroadCastIntent(){
@@ -78,14 +88,14 @@ public class CookingTimerService extends Service implements CookingTimerListener
         Log.d("CTService","new CountDownTimer started: "+currentTime);
     }
 
-      /*--------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------------------------*/
     /*intent part: methods to getValues from received intents and to prepare a new BroadCastIntent*/
 
     //returns the int value currentTime of the given intent
     private int getValuesFromIntent(Intent intent){
         int currentTime=0;
         if(intent!=null ){
-            currentTime=intent.getExtras().getInt(TimerActivity.KEY_CURRENT_TIME);
+            currentTime=intent.getExtras().getInt(CookingTimerActivity.KEY_CURRENT_TIME);
         }
 
         Log.d("CTService","getValuesFromIntent: "+currentTime);
@@ -102,8 +112,8 @@ public class CookingTimerService extends Service implements CookingTimerListener
                 if (broadcastIntent != null) {
 
                     Log.d("prepare broadcast time", currentTimeFromTimer);
-                    broadcastIntent.setAction(TimerActivity.CURRENT_TIME_ACTION);
-                    broadcastIntent.putExtra(TimerActivity.KEY_CURRENT_TIME, currentTimeFromTimer);
+                    broadcastIntent.setAction(CookingTimerActivity.CURRENT_TIME_ACTION);
+                    broadcastIntent.putExtra(CookingTimerActivity.KEY_CURRENT_TIME, currentTimeFromTimer);
                 }
                 else {Log.d("CTService","no broadcast to prepare");}
             }
@@ -113,8 +123,8 @@ public class CookingTimerService extends Service implements CookingTimerListener
 
     }
 
-      /*--------------------------------------------------------------------------*/
-    /*listener part: overwritten methods of the CookingTimerListener*/
+    /*--------------------------------------------------------------------------------------------*/
+    /*-------------listener part: overwritten methods of the CookingTimerListener------------------*/
 
     //prepares and sends a broadCastIntent via sendBroadcast() of LocalBroadcastManager
     //LocalBroadcastManager is used as it has advantages over sending a global broadcast: https://developer.android.com/reference/android/support/v4/content/LocalBroadcastManager.html, 14.09.17
@@ -133,7 +143,7 @@ public class CookingTimerService extends Service implements CookingTimerListener
 
     }
 
-    //prepares a broadCastIntent with constant TimerActivity.COOKING_TIMER_FINISHED as extra
+    //prepares a broadCastIntent with constant CookingTimerActivity.COOKING_TIMER_FINISHED as extra
     //is activated in onFinish() of the CookingTimer
     //sends the broadCastIntent via sendBroadcast() of LocalBroadcastManager
     // receiver "knows" than that the cookingTimer has finished running();
@@ -143,10 +153,10 @@ public class CookingTimerService extends Service implements CookingTimerListener
     @Override
     public void onCookingTimerFinished() {
 
-        broadcastIntent.setAction(TimerActivity.CURRENT_TIME_ACTION);
-        broadcastIntent.putExtra( TimerActivity.KEY_CURRENT_TIME, TimerActivity.COOKING_TIMER_FINISHED);
+        broadcastIntent.setAction(CookingTimerActivity.CURRENT_TIME_ACTION);
+        broadcastIntent.putExtra( CookingTimerActivity.KEY_CURRENT_TIME, CookingTimerActivity.COOKING_TIMER_FINISHED);
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
-        Log.d("CTService", "onCookingTimerFinished: "+TimerActivity.COOKING_TIMER_FINISHED);
+        Log.d("CTService", "onCookingTimerFinished: "+ CookingTimerActivity.COOKING_TIMER_FINISHED);
 
 
         stopThisService(); //stops this service

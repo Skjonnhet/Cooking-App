@@ -17,6 +17,11 @@ import java.util.Random;
  */
 
 public class DBAdapter {
+    /*****************Adapter of the database function of the app**********************************/
+    /*translates the input which are done in the activities of the app into greenDao 3 code
+    to encapsulate the sensible database from users who are  working in the activities
+    greenDao 3 is an SQLite based Android ORM, source: http://greenrobot.org/greendao/ 22.09.17 */
+
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private QueryBuilder recipeQueryBuilder;
@@ -54,8 +59,8 @@ public class DBAdapter {
         Long id = recipe.getId();
         Ingrident ingridient = new Ingrident(null, "namedZutat", "einheit", 2, id);
         IngridentDao ingridentDao = daoSession.getIngridentDao();
-        if (id == null) giveFeedback("getDefaultRecipe", "id is null!");
-        else giveFeedback("getDefaultRecipe", "id not null");
+        if (id == null) giveFeedback("getDefaultRecipe", "recipeID is null!");
+        else giveFeedback("getDefaultRecipe", "recipeID not null");
         daoSession.getRecipeDao().insertOrReplace(recipe);
         return daoSession.getRecipeDao().load(id);
     }
@@ -84,7 +89,7 @@ public class DBAdapter {
         try {
            Long id= recipe.getId();
             daoSession.getRecipeDao().insertOrReplace(recipe);
-            giveFeedback("saveSingleRecipeToDB", "success" +"id: "+id );
+            giveFeedback("saveSingleRecipeToDB", "success" +"recipeID: "+id );
         }
 
         catch (Exception e){giveFeedback("saveSingleRecipeToDB", e.toString());}
@@ -160,7 +165,7 @@ public class DBAdapter {
             Log.d("destroyWholeRecipe", e.toString());
         }
         if (id != null) {
-            giveFeedback("destroyWholeRecipe", "detroyed id: " + id.toString());
+            giveFeedback("destroyWholeRecipe", "detroyed recipeID: " + id.toString());
         }
 
     }
@@ -171,7 +176,7 @@ public class DBAdapter {
         try {
             for (Ingrident ingrident : ingridentList) {
                 if(ingrident.getId()!=null)
-                giveFeedback("destroyAllIngridientsWithThisRecipeID","recipe id:"+id+  " ingrident id:"+ ingrident.getId().toString()+":"+ingrident.getName());
+                giveFeedback("destroyAllIngridientsWithThisRecipeID","recipe recipeID:"+id+  " ingrident recipeID:"+ ingrident.getId().toString()+":"+ingrident.getName());
                 daoSession.delete(ingrident);
 
 
@@ -186,7 +191,7 @@ public class DBAdapter {
         try {
             for (RecipeWorkStep workstep : worksteps) {
                 if(workstep.getId()!=null)
-                giveFeedback("destroyAllWorkStepsWithThisRecipeID", "recipe id :"+id+" workstep id:"+ workstep.getId().toString()+" "+workstep.getWorkStepDescribition());
+                giveFeedback("destroyAllWorkStepsWithThisRecipeID", "recipe recipeID :"+id+" workstep recipeID:"+ workstep.getId().toString()+" "+workstep.getWorkStepDescribition());
                 daoSession.delete(workstep);
             }
         }
@@ -370,7 +375,7 @@ public class DBAdapter {
 
         if(recipe!=null)
         {
-            giveFeedback("getHighestRecipeID", "id:" +recipe.getId());
+            giveFeedback("getHighestRecipeID", "recipeID:" +recipe.getId());
             id=recipe.getId();
         }
 
@@ -401,7 +406,7 @@ public class DBAdapter {
 
         if(ingrident!=null)
         {
-            giveFeedback("getHighestIngridentID", "id:" +ingrident.getId());
+            giveFeedback("getHighestIngridentID", "recipeID:" +ingrident.getId());
             id=ingrident.getId();
         }
 
@@ -432,7 +437,7 @@ public class DBAdapter {
 
         if(workStep!=null)
         {
-            giveFeedback("getHighestWorkStepID", "id:" +workStep.getId());
+            giveFeedback("getHighestWorkStepID", "recipeID:" +workStep.getId());
             id=workStep.getId();
         }
 
@@ -646,7 +651,7 @@ public class DBAdapter {
         startID++;
         Long startRecipeID = Long.valueOf(1);
         Ingrident ingrident = new Ingrident(startID, name, einheit, menge, startRecipeID);
-        giveFeedback("createNewIngrident", "name:" + ingrident.getName().toString()+" id: "+startID);
+        giveFeedback("createNewIngrident", "name:" + ingrident.getName().toString()+" recipeID: "+startID);
         saveSingleIngridentToDB(ingrident);
         return ingrident;
     }
@@ -687,7 +692,7 @@ public class DBAdapter {
         startID++;
         Long startRecipeID = recipeID;
         Ingrident ingrident = new Ingrident(startID, name, einheit, menge, startRecipeID);
-        giveFeedback("createNewIngridentWithRecipeID", "name:" + ingrident.getName().toString()+" id: "+startID);
+        giveFeedback("createNewIngridentWithRecipeID", "name:" + ingrident.getName().toString()+" recipeID: "+startID);
         saveSingleIngridentToDB(ingrident);
         return ingrident;
     }
@@ -712,7 +717,7 @@ public class DBAdapter {
     //most important part: user can save a whole recipe to DB or destroy it
 
     //save a recipe to DB: needs, recipe, List of ingridents, list of worksteps
-    //each ingrident and worksteps gets the id of "his" recipe
+    //each ingrident and worksteps gets the recipeID of "his" recipe
     //therefore recipe, ingridentList and recipeWorkStepList have to be saved together to the DB
     public void saveRecipeToDB(Recipe recipe, List<Ingrident> ingridentList, List<RecipeWorkStep> recipeWorkStepList) {
         try {

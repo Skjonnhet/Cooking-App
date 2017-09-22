@@ -12,17 +12,24 @@ import android.widget.Toast;
 
 
 public class ChooseRingToneActivity extends AppCompatActivity {
+    /*****************Acitvity of the timer function of the app************************************/
+    /*----------------------------------------------------------------------------------------------
+    * Logic: CookingTimerActivity starts this service------------------------------------------------------
+    * user selects ringTone through radioGroup------------------------------------------------------
+    * ringTone-string is send back in returnIntent through setResult(Activity.RESULT_OK,returnIntent);-----
+    * Timer Activity receives ringTone-string in onActivityResult()-method*/
+
     //Buttons and radioGroup
     RadioGroup radioGroup;
     RadioButton radioButton;
     Button okButton;
     Button cancelButton;
 
-    //constants of ringToneNames
-    public static final String RING_TONE_CLAPPING="RING_TONE_CLAPPING";
-    public static final String RING_TONE_EAGLE="RING_TONE_EAGLE";
-    public static final String RING_TONE_TRUMPET="RING_TONE_TRUMPET";
-    public static final String RING_TONE_WOLF="RING_TONE_WOLF";
+    //constants of ringToneNames are copied from constant class
+    private static final String RING_TONE_CLAPPING=CookingConstants.RING_TONE_CLAPPING;
+    private static final String RING_TONE_EAGLE=CookingConstants.RING_TONE_EAGLE;
+    private static final String RING_TONE_TRUMPET=CookingConstants.RING_TONE_TRUMPET;
+    private static final String RING_TONE_WOLF=CookingConstants.RING_TONE_WOLF;
 
     //array of ringToneNames
     private String allTones[]={RING_TONE_CLAPPING, RING_TONE_EAGLE, RING_TONE_TRUMPET, RING_TONE_WOLF};
@@ -30,8 +37,8 @@ public class ChooseRingToneActivity extends AppCompatActivity {
     //selected RingTone
     private static String selectedRingTone;
 
-
-    /*LifeCycle-Part: all methods of the Activity-LifeCycle which are necessary for this Activity*/
+    /*---------------------------------------------------------------------------------------------*/
+    /*----LifeCycle-Part:all methods of the Activity-LifeCycle which are necessary for this Activity*/
 
     //overwritten method of the Activity-Lifecycle
     //inits buttons, the radioGroup and sets the onClickListener
@@ -44,7 +51,8 @@ public class ChooseRingToneActivity extends AppCompatActivity {
         setButtonOnClickListener();
     }
 
-     /*clickListener-Part: all methods for the clickListener*/
+     /*---------------------------------------------------------------------------------------------*/
+     /*--------------clickListener-Part: all methods for the clickListener-------------------------*/
 
      //sets ClickListener on the buttons
      private void setButtonOnClickListener(){
@@ -74,8 +82,8 @@ public class ChooseRingToneActivity extends AppCompatActivity {
         selectRingTone(buttonName);
     }
 
-    /*--------------------------------------------------------------------------*/
-    /*init part: all editTexts, showTimeTextView and the buttons via the view ids*/
+    /*---------------------------------------------------------------------------------------------*/
+    /*-------init part: inits all editTexts, showTimeTextView and the buttons via the view ids-----*/
 
     //inits buttons
     private void initButtons(){
@@ -88,8 +96,8 @@ public class ChooseRingToneActivity extends AppCompatActivity {
         radioGroup= (RadioGroup) findViewById(R.id.radioGroup);
     }
 
-     /*--------------------------------------------------------------------------*/
-    /*select part: all methods so user can select ringTone*/
+     /*--------------------------------------------------------------------------------------------*/
+    /*-------select part: all methods so user can select ringTone----------------------------------*/
 
     //sets selectedRingTone to clapping, if selectedRingTone is null
     private void ensureThatRingToneIsNotNull(){
@@ -109,18 +117,18 @@ public class ChooseRingToneActivity extends AppCompatActivity {
     }
 
 
-    /*--------------------------------------------------------------------------*/
-    /*return part: all methods so user can return to TimerActivity*/
+    /*--------------------------------------------------------------------------------------------*/
+    /*----------return part: all methods so user can return to CookingTimerActivity----------------------*/
 
-    //returns to TimerActivity. Intent has selectedRingTone as extra. Finishes this activity.
+    //returns to CookingTimerActivity. Intent has selectedRingTone as extra. Finishes this activity.
     private void returnToTimerActivity(){
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(TimerActivity.CHOSEN_RING_TONE_KEY,selectedRingTone);
+        returnIntent.putExtra(CookingTimerActivity.CHOSEN_RING_TONE_KEY,selectedRingTone);
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }
 
-    //returns to TimerActivity. Intent has no selectedRingTone and no extra. Finishes this activity.
+    //returns to CookingTimerActivity. Intent has no selectedRingTone and no extra. Finishes this activity.
     private void cancelThisActivity(){
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED,returnIntent);
