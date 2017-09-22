@@ -24,7 +24,7 @@ public class Rating_Activity extends AppCompatActivity {
 
     private Button yesButton;
     private Button noButton;
-    private RatingBar ratingBar;
+    private static RatingBar ratingBar;
     private Long recipeId;
     private DBAdapter dbAdapter;
 
@@ -50,6 +50,8 @@ public class Rating_Activity extends AppCompatActivity {
 
     private void initRatingBar(){
         ratingBar=(RatingBar) findViewById(R.id.ratingRecipe_RatingBar);
+        ratingBar.setStepSize(1);
+        ratingBar.setRating(5);
     }
 
     private void setRecipeIdTroughIntent(){

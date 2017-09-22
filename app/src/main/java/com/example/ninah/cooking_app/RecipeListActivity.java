@@ -48,21 +48,28 @@ public class RecipeListActivity extends AppCompatActivity {
 
     //inits all adapters
     private void initAdapters(){
-        arrayAdapter=new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, recipeNames);
-        dbAdapter=new DBAdapter(this);
-        recipeList.setAdapter(arrayAdapter);
+        try {
+            arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, recipeNames);
+            dbAdapter = new DBAdapter(this);
+            recipeList.setAdapter(arrayAdapter);
+        }
+        catch (Exception e){ Log.d("RecipeListActivity", "initAdapters "+e.toString());}
     }
 
 
     //setsUpListViews
     private void setupListView(){
-        recipes=dbAdapter.getAllRecipesFromDB();
-        for (Recipe recipe:recipes){
-            recipeNames.add(recipe.getName());
-            Log.d("RecipeListActivity","setupListView recipe name:"+recipe.getName()+" id: "+ recipe.getId());
-        }
+        try{
+            recipes=dbAdapter.getAllRecipesFromDB();
+            for (Recipe recipe:recipes){
+                recipeNames.add(recipe.getName());
+                Log.d("RecipeListActivity","setupListView recipe name:"+recipe.getName()+" id: "+ recipe.getId());
+            }
 
-        arrayAdapter.notifyDataSetChanged();
+            arrayAdapter.notifyDataSetChanged();
+        }
+        catch (Exception e){ Log.d("RecipeListActivity", "setupListView: "+e.toString());}
+
     }
 
     //sets ClickListener

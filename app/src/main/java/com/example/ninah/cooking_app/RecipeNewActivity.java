@@ -215,11 +215,14 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     //checks if user forgot to fill all fields
     private void startIngridentActivity(){
         if(areAllFieldsFilled()){
-            Intent intent=new Intent(this, IngridentActivity.class);
-            Long id=getActivityRecipe().getId();
-            giveFeedback("startIngridentActivity", "recipe-recipeID:"+id);
-            intent.putExtra(CookingConstants.RECIPE_ID_KEY,id);
-            startActivity(intent);
+            try {
+
+                Intent intent = new Intent(this, IngridentActivity.class);
+                Long id = getActivityRecipe().getId();
+                giveFeedback("startWorkStepActivity", "recipe-recipeID:" + id);
+                intent.putExtra(CookingConstants.RECIPE_ID_KEY, id);
+                startActivity(intent);
+            }catch (Exception e) {giveFeedback("startIngridentActivity", e.toString());}
         }
         else  Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();
     }
@@ -229,11 +232,15 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     //checks if user forgot to fill all fields
     private void startWorkStepActivity(){
         if(areAllFieldsFilled()){
-        Intent intent=new Intent(this, WorkStepActivity.class);
-        Long id=getActivityRecipe().getId();
-        giveFeedback("startWorkStepActivity", "recipe-recipeID:"+id);
-        intent.putExtra(CookingConstants.RECIPE_ID_KEY,id);
-        startActivity(intent);
+            try {
+
+                Intent intent = new Intent(this, WorkStepActivity.class);
+                Long id = getActivityRecipe().getId();
+                giveFeedback("startWorkStepActivity", "recipe-recipeID:" + id);
+                intent.putExtra(CookingConstants.RECIPE_ID_KEY, id);
+                startActivity(intent);
+            }catch (Exception e) {giveFeedback("startWorkStepActivity", e.toString());}
+
         }
         else  Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();
     }
