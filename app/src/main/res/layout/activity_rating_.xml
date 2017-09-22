@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,18 +20,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-
-    <android.support.constraint.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         tools:context="com.example.ninah.cooking_app.Rating_Activity"
         tools:showIn="@layout/activity_rating_">
 
@@ -39,50 +30,41 @@
             android:id="@+id/ratingRecipe_RatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/title"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="72dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="57dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.187"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.022" />
+            android:layout_marginTop="114dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/textViewChangeRecipie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change Recipie?"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.465" />
+            android:text="@string/changeRecipe"
+            android:layout_above="@+id/ratingRecipe_changeRecipeButton_no"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="58dp" />
 
         <Button
             android:id="@+id/ratingRecipe_changeRecipeButton_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="170dp"
-            android:layout_marginRight="52dp"
-            android:text="NO"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            android:text="@string/no"
+            android:layout_marginLeft="13dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginBottom="116dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/ratingRecipe_RatingBar"
+            android:layout_alignStart="@+id/ratingRecipe_RatingBar" />
 
         <Button
             android:id="@+id/ratingRecipe_changeRecipeButton_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="170dp"
-            android:layout_marginLeft="54dp"
-            android:text="YES"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+            android:text="@string/yes"
+            android:layout_alignBaseline="@+id/ratingRecipe_changeRecipeButton_no"
+            android:layout_alignBottom="@+id/ratingRecipe_changeRecipeButton_no"
+            android:layout_alignRight="@+id/ratingRecipe_RatingBar"
+            android:layout_alignEnd="@+id/ratingRecipe_RatingBar" />
 
-</android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

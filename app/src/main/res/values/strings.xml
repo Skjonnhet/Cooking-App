@@ -21,5 +21,18 @@
     <string name="inputWorkingstep">Arbeitsschritt angeben</string>
     <string name="title_activity_rating_">Arbeitsschritt angeben</string>
     <string name="edit">edit</string>
+    <string name="changeRecipe">Rezept wechseln?</string>
+    <string name="IngrAct_saveButton">Zutat speichern</string>
+    <string name="IngrAct_einheitEditText">Einheit</string>
+    <string name="IngrAct_mengeEditText">Menge</string>
+    <string name="IngrAct_nameEditText">Zutat</string>
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="ringToneClapping">Applaus</string>
+    <string name="ringToneTrumpet">Trompete</string>
+    <string name="ringToneEagle">Adler</string>
+    <string name="ringToneWolf">Wolf</string>
 
 </resources>
