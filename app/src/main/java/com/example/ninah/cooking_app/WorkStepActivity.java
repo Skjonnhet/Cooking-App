@@ -16,10 +16,16 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class WorkStepActivity extends AppCompatActivity {
+    /*****************WorkStepActivity of the recipe function of the app**************************/
+    /*saves the user inputs into the listView trough an arrayAdapter*/
+    /*receives recipeID from RecipeNewActivity via Intent */
+    /*creates new worksteps with user input and tells the worksteps through the recipeID
+     *to which recipe the worksteps are connected */
+    /*saves worksteps to database*/
+    /*deletes workstep if user clicks long on workstep*/
 
 
     private Button addButton;
-
     private Button saveButton;
     private EditText workStepEditText;
     private ListView listView;
@@ -35,24 +41,42 @@ public class WorkStepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_step);
 
-        addButton=(Button) findViewById(R.id.saveSingleWorkStepButton);
-        saveButton=(Button) findViewById(R.id.saveAllWorkStepsButton);
-
-        workStepEditText=(EditText) findViewById(R.id.workStepEditText);
-        listView=(ListView) findViewById(R.id.workStepsListView);
-
-        workstepDescribitions=new ArrayList<>();
-        recipeWorkSteps=new ArrayList<>();
-        arrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, workstepDescribitions);
-        dbAdapter=new DBAdapter(this);
-
-        listView.setAdapter(arrayAdapter);
+        initButtons();
+        initViewsAndEditTexts();
+        initLists();
+        initAdapters();
         setOnClickListern();
         setRecipeIDThroughIntent();
         fillListView();
+    }
 
 
+    //--------------------------init methods--------------------------------------------------------
+    //used while OnCreate() of Lifecycle
 
+    //inits all buttons
+    private void initButtons(){
+        addButton=(Button) findViewById(R.id.saveSingleWorkStepButton);
+        saveButton=(Button) findViewById(R.id.saveAllWorkStepsButton);
+    }
+
+    //inits views and editTexts
+    private void initViewsAndEditTexts(){
+        workStepEditText=(EditText) findViewById(R.id.workStepEditText);
+        listView=(ListView) findViewById(R.id.workStepsListView);
+    }
+
+    //inits all lists
+    private void initLists(){
+        workstepDescribitions=new ArrayList<>();
+        recipeWorkSteps=new ArrayList<>();
+    }
+
+    //inits all adapters
+    private void initAdapters(){
+        arrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, workstepDescribitions);
+        dbAdapter=new DBAdapter(this);
+        listView.setAdapter(arrayAdapter);
     }
 
     //sets recipeID through the intent
@@ -96,23 +120,40 @@ public class WorkStepActivity extends AppCompatActivity {
 
     }
 
-    private boolean isEditTextEmpty(EditText editText){
-        if (editText.getText().toString().trim().isEmpty()) return true;
-        else return false;
+    //fills listView, keep order of methods in this method or nullException
+    private void fillListView(){
+        try{
+            getOldWorksStepsFromDB();
+            fillListViewWithOldValues();
+        }
+        catch (Exception e){giveFeedback("fillListView ", e.toString());}
 
     }
 
-    private void tellUserToFillField(){
-        Toast.makeText(WorkStepActivity.this, "Bitte Feld füllen",Toast.LENGTH_SHORT).show();
+    //fills listView with workstep-values from recipe
+    private void fillListViewWithOldValues(){
+        try{
+            for (RecipeWorkStep workStep:recipeWorkSteps){
+                workstepDescribitions.add(workStep.getWorkStepDescribition());
+            }
+        }
+        catch (Exception e){giveFeedback("fillListViewWithOldValues ",e.toString());}
+        arrayAdapter.notifyDataSetChanged();
     }
 
-    private void tellUserWorkStepSaved(){
-        Toast.makeText(WorkStepActivity.this, "Gespeichert!",Toast.LENGTH_SHORT).show();
+
+    //writes worksteps of this recipe from DB into arrayList
+    private void getOldWorksStepsFromDB(){
+
+        try {
+            Recipe recipe=dbAdapter.getRecipeByID(recipeID);
+            recipeWorkSteps.addAll(dbAdapter.getAllWorkStepsOfRecipe(recipe));
+        }
+        catch (Exception e){giveFeedback("getOldWorksStepsFromDB ",e.toString() );}
     }
 
-    private void tellUserWorkStepDeleted(){
-        Toast.makeText(WorkStepActivity.this, "Gelöscht",Toast.LENGTH_SHORT).show();
-    }
+    //--------------------------save and delete methods---------------------------------------------
+    //used in the clickListener
 
 
     //sets single workstep to list
@@ -158,6 +199,7 @@ public class WorkStepActivity extends AppCompatActivity {
         }
     }
 
+    //delets workstep from DB
     private void deleteWorkStepFromDB(Long id){
         try {
             dbAdapter.deleteWorkStepFromDB(id);
@@ -165,8 +207,6 @@ public class WorkStepActivity extends AppCompatActivity {
         catch (Exception e){giveFeedback("deleteWorkStepFromDB ", e.toString());}
 
     }
-
-
 
     //returns ingrident ID through string name
     //used in to delete worksteps in deleteWorkStep
@@ -186,40 +226,36 @@ public class WorkStepActivity extends AppCompatActivity {
         return id;
     }
 
-    //fills listView, keep order of methods in this method or nullException
-    private void fillListView(){
-        try{
-            getOldWorksStepsFromDB();
-            fillListViewWithOldValues();
-        }
-        catch (Exception e){giveFeedback("fillListView ", e.toString());}
 
+
+    //checks if user forgot to make input
+    private boolean isEditTextEmpty(EditText editText){
+        if (editText.getText().toString().trim().isEmpty()) return true;
+        else return false;
     }
 
-    private void fillListViewWithOldValues(){
-        try{
-            for (RecipeWorkStep workStep:recipeWorkSteps){
-                workstepDescribitions.add(workStep.getWorkStepDescribition());
-            }
-        }
-        catch (Exception e){giveFeedback("fillListViewWithOldValues ",e.toString());}
-        arrayAdapter.notifyDataSetChanged();
-    }
-
-
-    private void getOldWorksStepsFromDB(){
-
-        try {
-            Recipe recipe=dbAdapter.getRecipeByID(recipeID);
-            recipeWorkSteps.addAll(dbAdapter.getAllWorkStepsOfRecipe(recipe));
-        }
-        catch (Exception e){giveFeedback("getOldWorksStepsFromDB ",e.toString() );}
-    }
+    //-------------------------communication methods------------------------------------------------
 
     private void giveFeedback(String method, String feedback) {
         Log.d("WorkStepActivity " + method, feedback);
     }
 
+
+    private void tellUserToFillField(){
+        Toast.makeText(WorkStepActivity.this, "Bitte Feld füllen",Toast.LENGTH_SHORT).show();
+    }
+
+    private void tellUserWorkStepSaved(){
+        Toast.makeText(WorkStepActivity.this, "Gespeichert!",Toast.LENGTH_SHORT).show();
+    }
+
+    private void tellUserWorkStepDeleted(){
+        Toast.makeText(WorkStepActivity.this, "Gelöscht",Toast.LENGTH_SHORT).show();
+    }
+
+    //return to recipeactivity
+    //at the moment finished() is used instead of this method
+    //for future extensions of this app
     private void returnToRecipeActivity(){
         Intent intent=new Intent(this,RecipeNewActivity.class);
         intent.putExtra(CookingConstants.RECIPE_ID_KEY,recipeID);
@@ -230,6 +266,7 @@ public class WorkStepActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
 
 
 

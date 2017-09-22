@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * -----------------Init part-------------------------------------------------------------------
      * all methods who are used  to init the Activity in onCreate()---------------------------------
      * ---------------------------------------------------------------------------------------------
-     /*-----------------Intent part-----------------------------------------------------------------
+     /------------------Intent part-----------------------------------------------------------------
      *methods to start other activities trough intents----------------------------------------------
      *----------------------------------------------------------------------------------------------
      *Logic: onCreate implements Activity, after that the user can starts trough buttons other------

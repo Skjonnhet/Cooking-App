@@ -11,6 +11,8 @@ public class RecipeListAdapter extends SQLiteOpenHelper {
 
 
 
+
+
     private static final String LOG_TAG = RecipeListAdapter.class.getSimpleName();
 
     public static final String DB_NAME = "RecipeDB.db";

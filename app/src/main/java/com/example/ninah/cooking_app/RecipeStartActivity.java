@@ -20,6 +20,7 @@ import java.util.List;
 
 
 public class RecipeStartActivity extends AppCompatActivity implements View.OnClickListener {
+    /*****************Shows recipe to the user so he can cook*****************************/
 
     TextView title;
     RatingBar ratingBar;
@@ -38,6 +39,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
     ArrayAdapter arrayAdapterIngridents;
     ArrayList<String> workstepList;
     ArrayList<String>  ingridentList;
+    List<Ingrident> ingridens;
     Recipe activityRecipe;
 
     @Override
@@ -58,6 +60,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
 
         workstepList=new ArrayList<>();
         ingridentList=new ArrayList<>();
+        ingridens=new ArrayList<>();
         dbAdapter=new DBAdapter(this);
         arrayAdapterWorkSteps=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, workstepList);
         arrayAdapterIngridents=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, ingridentList);
@@ -69,7 +72,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         setRecipeId();//1. get recipeID
         fillViewsWithRecipe();//2.fills views with recipeID
 
-        setOnClickListener();
+        setClickListener();
 
     }
 
@@ -135,6 +138,10 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item); //To change body of generated methods, choose Tools | Templates.
     }
 
+
+    //----------------------init part--------------------------------------------------------------
+    //methods are used in onCreate()
+
     //get recipeIdFromIntent
     private void setRecipeId(){
         Intent intent=getIntent();
@@ -142,8 +149,8 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         recipeId=extras.getLong(CookingConstants.RECIPE_ID_KEY);
         Log.d("RecipeStartActivity","setRecipeId recipeID: "+recipeId);
     }
-
-    private void setOnClickListener(){
+    //sets setsClickListener
+    private void setClickListener(){
         startTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +166,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    //fills views with recipe values
     private void fillViewsWithRecipe(){
         if(recipeId!=null){
             Recipe activityRecipe= dbAdapter.getRecipeByID(recipeId);
@@ -179,6 +187,8 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         else {Log.d("RecipeStartActivity","fillViewsWithRecipe recipeID is null");}
     }
 
+    //fills ingridentsList with recipe values
+    //transform values into one String
     private void fillIngridentsList(Recipe recipe){
         List<Ingrident> ingridens=dbAdapter.getAllIngridentsOfRecipe(recipe);
         for(Ingrident ingrident:ingridens){
@@ -197,13 +207,6 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void riseNumberPortions(){
-
-    }
-
-    private void lowerNumberOfPortions(){
-
-    }
 
     private void fillWorkStepList(Recipe recipe){
         List<RecipeWorkStep> workSteps=dbAdapter.getAllWorkStepsOfRecipe(recipe);
@@ -217,6 +220,10 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         }
         arrayAdapterIngridents.notifyDataSetChanged();
     }
+
+
+    //--------------------------intent part---------------------------------------------------------
+    //is used to start other activities
 
     private void startTimerActivity(){
         Intent intent=new Intent(this, CookingTimerActivity.class);

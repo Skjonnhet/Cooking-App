@@ -24,6 +24,7 @@ public class IngridentActivity extends AppCompatActivity {
     /*creates new ingridents with user input and tells the ingridents through the recipeID
      *to which recipe the ingridents are connected */
     /*saves ingridents to database*/
+     /*deletes ingridents if user clicks long on ingridents*/
 
     private EditText nameEditText;
     private EditText mengeEditText;
