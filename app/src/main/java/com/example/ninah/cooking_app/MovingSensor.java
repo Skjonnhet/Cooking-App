@@ -11,7 +11,11 @@ import android.util.Log;
  */
 
 public class MovingSensor {
-
+    /******************* Moving Sensor of the timer function of the app******************************/
+    /*checks if the device has been moved and gives a feedback if so
+      uses Sensor and Sensor Manager of Android Studio
+      is implemented in the CookingTimerActivity to stop alarm if device is moved by the user
+    */
     //constants
     //motion_detection values show how big the movements of the devices has to be until motion is detected by the sensor
     private final static int MOTION_DETECTION_X = 8;
@@ -24,7 +28,7 @@ public class MovingSensor {
     private final static int Z_AXIS = 2;
 
 
-   private final Context context;
+    private final Context context;
     private final SensorEventListener listener;
     private SensorManager manager;
     private Sensor sensor;

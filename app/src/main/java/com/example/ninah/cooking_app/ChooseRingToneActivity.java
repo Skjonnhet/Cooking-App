@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 
 public class ChooseRingToneActivity extends AppCompatActivity {
-    /*****************Acitvity of the timer function of the app************************************/
+    /*****************Activity of the timer function of the app************************************/
     /*----------------------------------------------------------------------------------------------
     * Logic: CookingTimerActivity starts this service------------------------------------------------------
     * user selects ringTone through radioGroup------------------------------------------------------

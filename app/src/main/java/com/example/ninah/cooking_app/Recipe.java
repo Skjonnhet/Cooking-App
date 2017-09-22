@@ -12,6 +12,15 @@ import java.util.List;
 
 /**
  * Created by Jonas on 19.09.2017.
+ * Recipe class. contains id, name, portions difficulty time and rating of the recipe
+ * contains two lists: one for ingridents and one for worksteps
+ * ingridents and worksteps contain recipeIDs, so the recipe knows its ingridents and worksteps
+ * ,so recipe knows which ingirents and worksteps it has to put in his lists
+ * changed trough greenDaoGenerator for greenDao 3 communication
+ * has to be handled carefully to avoid problems at database communication
+ * if changed greendao { schemaVersion 4 } in build.gradle has to be riced+1 and project rebuild
+ *
+ * all ids are NOT incremented automatically as dao 3 has problems with its operations (null-ids)
  */
 
 @Entity(nameInDb = "recipe", active = true)

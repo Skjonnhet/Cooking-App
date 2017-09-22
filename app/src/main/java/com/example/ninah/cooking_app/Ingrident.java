@@ -12,6 +12,7 @@ import org.greenrobot.greendao.DaoException;
  * Ingrident class. contains id, name, (unit) einheit,(amount) menge of the ingrident and the id of its connected recipe
  * changed trough greenDaoGenerator for greenDao 3 communication
  * has to be handled carefully to avoid problems at database communication
+ * if changed greendao { schemaVersion 4 } in build.gradle has to be riced+1  and project rebuild
  */
 
 @Entity(nameInDb = "ingrident",  active = true)

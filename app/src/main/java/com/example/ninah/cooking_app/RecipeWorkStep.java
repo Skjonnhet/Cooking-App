@@ -9,6 +9,10 @@ import org.greenrobot.greendao.DaoException;
 
 /**
  * Created by Jonas on 19.09.2017.
+ * WorkStep class. contains id, workStepDescribition, recipeID of its connected recipe
+ * changed trough greenDaoGenerator for greenDao 3 communication
+ * has to be handled carefully to avoid problems at database communication
+ * if changed greendao { schemaVersion 4 } in build.gradle has to be riced+1  and project rebuild
  */
 
 @Entity(nameInDb = "recipeWorkStep",  active = true)

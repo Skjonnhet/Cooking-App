@@ -17,6 +17,11 @@ import java.util.List;
 
 public class RecipeListActivity extends AppCompatActivity {
 
+    /*****************Activity to set show user all recipes on one screen************************************/
+    /*reads all recipes from the DB trough database adapter and shows its name in a listView*/
+    /*user selects recipe by long clicking on it*/
+
+
     ListView recipeList;
     ArrayList<String> recipeNames;
     ArrayAdapter arrayAdapter;
@@ -28,35 +33,41 @@ public class RecipeListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
         recipeList = (ListView)findViewById(R.id.recipe_list);
-        recipeNames=new ArrayList<>();
-        arrayAdapter=new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, recipeNames);
-        recipeList.setAdapter(arrayAdapter);
-        dbAdapter=new DBAdapter(this);
-        recipes=new ArrayList<>();
-
+        initLists();
+        initAdapters();
         setupListView();
         setListViewClickListener();
     }
 
-    /**
-     * Wir brauchen hier eine Funktion, die alle Listeneinträge (Überschriften) anzeigt und
-     * dann je nachdem, auf welchen man klickt, die Rezept-Activity öffnet und das entsprechende
-     * Rezept anzeigt
-     *
-     * Siehe Übung Todo-List, da haben wir das gemacht
-     */
+    //inits all ArrayLists
+    private void initLists(){
+        recipeNames=new ArrayList<>();
+        recipes=new ArrayList<>();
+
+    }
+
+    //inits all adapters
+    private void initAdapters(){
+        arrayAdapter=new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, recipeNames);
+        dbAdapter=new DBAdapter(this);
+        recipeList.setAdapter(arrayAdapter);
+    }
 
 
+    //setsUpListViews
     private void setupListView(){
-       List<Recipe> recipes=dbAdapter.getAllRecipesFromDB();
+        recipes=dbAdapter.getAllRecipesFromDB();
         for (Recipe recipe:recipes){
             recipeNames.add(recipe.getName());
+            Log.d("RecipeListActivity","setupListView recipe name:"+recipe.getName()+" id: "+ recipe.getId());
         }
 
         arrayAdapter.notifyDataSetChanged();
     }
 
+    //sets ClickListener
     private void setListViewClickListener(){
+        //user selects recipe to start it
         recipeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -68,6 +79,7 @@ public class RecipeListActivity extends AppCompatActivity {
         });
     }
 
+    //returns the id of a recipe by its name
     private Long getRecipeIdByName(String name){
 
         Long recipeID=Long.valueOf(0);
@@ -75,8 +87,10 @@ public class RecipeListActivity extends AppCompatActivity {
 
             for (Recipe recipe : recipes) {
                 if(recipe!=null) {
+                    Log.d("RecipeListActivity", "getRecipeIdByName, id: "+recipeID);
                     if (recipe.getName().equals(name)) {
                         recipeID = recipe.getId();
+                        Log.d("RecipeListActivity", "getRecipeIdByName, equals id: "+recipeID);
                     }
                 }
             }
@@ -85,10 +99,13 @@ public class RecipeListActivity extends AppCompatActivity {
         return recipeID;
     }
 
+    //starts RecipeStartActivity.class
+    //the intent has the recipeID as extra
     private void startRecipe(String name){
-
+        Long id = getRecipeIdByName(name);
+        Log.d("RecipeListActivity", "startRecipe id "+id);
         try {
-            Long id = getRecipeIdByName(name);
+
             Intent intent = new Intent(this, RecipeStartActivity.class);
             intent.putExtra(CookingConstants.RECIPE_ID_KEY, id);
             startActivity(intent);
