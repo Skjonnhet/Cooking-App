@@ -19,11 +19,11 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     * boolean:true: a new recipe is created on the DB and the user fills the recipe witch values*
     * boolean:false: an old recipe is loaded from the DB to fill this recipe, user can than change values*/
     //----------------------------------------------------------------------------------------------------
-    /*User has to fill all fields. After that he can add new ingridents and worksteps to this recipe
+    /*User has to fill all fields. After that he can add new ingridentsList and worksteps to this recipe
     * by starting other activities
     * startIngridentActivity(): sends intent with recipe id to IngridentActivity.class
     * startWorkSteoActivity(): sends intent with recipe id to WorkStepActivity.class
-    * both activities use the recipe id to connect their ingridents and worksteps with this recipe
+    * both activities use the recipe id to connect their ingridentsList and worksteps with this recipe
     *
     * user freedom is limited to avoid wrong user input and to allow better usability of the app
     * */
@@ -252,7 +252,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         dbAdapter.updateRecipe(recipe);
     }
 
-    //saves whole recipe to DB WITH ingridents and worksteps
+    //saves whole recipe to DB WITH ingridentsList and worksteps
     private void saveRecipeToDB(){
         if(areAllFieldsFilled()) {
             updateActivityRecipe(actitivityRecipe);

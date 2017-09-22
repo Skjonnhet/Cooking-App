@@ -21,10 +21,10 @@ public class IngridentActivity extends AppCompatActivity {
     /*****************IngridentActivity of the recipe function of the app**************************/
     /*saves the user inputs into the listView trough an arrayAdapter*/
     /*receives recipeID from RecipeNewActivity via Intent */
-    /*creates new ingridents with user input and tells the ingridents through the recipeID
-     *to which recipe the ingridents are connected */
-    /*saves ingridents to database*/
-     /*deletes ingridents if user clicks long on ingridents*/
+    /*creates new ingridentsList with user input and tells the ingridentsList through the recipeID
+     *to which recipe the ingridentsList are connected */
+    /*saves ingridentsList to database*/
+     /*deletes ingridentsList if user clicks long on ingridentsList*/
 
     private EditText nameEditText;
     private EditText mengeEditText;
@@ -96,7 +96,7 @@ public class IngridentActivity extends AppCompatActivity {
 
     }
 
-    //fills listview ith old ingridents
+    //fills listview ith old ingridentsList
     private void fillListView(){
         getOldIngridents();
         for (Ingrident ingrident:ingridentArrayList){

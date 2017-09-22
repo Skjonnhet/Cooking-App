@@ -83,7 +83,7 @@ public class DBAdapter {
 //-------------------------------------------------------------------------------------------------------#
     //Save-methods: save instances in the dataBase
     //those methods are only for the class
-    //methods are used in the public part as a single recipe HAS TO contain recipe,ingridents and worksteps
+    //methods are used in the public part as a single recipe HAS TO contain recipe,ingridentsList and worksteps
 
 
     private void saveSingleRecipeToDB(Recipe recipe) {
@@ -142,7 +142,7 @@ public class DBAdapter {
     //destroy methods: destroy all specified instances
     //should be used carefully
 
-    //destroys whole recipe and all connected ingridents and workSteps
+    //destroys whole recipe and all connected ingridentsList and workSteps
     //should be used carefuly
     private void destroyWholeRecipe(Recipe recipe) {
         Long id = recipe.getId();
@@ -508,7 +508,7 @@ public class DBAdapter {
         return recipeList;
     }
 
-    //returns a List of ingridents which have the given name
+    //returns a List of ingridentsList which have the given name
     public List<Ingrident> getAllIngridentsOfRecipe(Recipe recipe) {
 
         List<Ingrident> ingridentList = null;
@@ -717,9 +717,9 @@ public class DBAdapter {
     //---------------saveAndDestroy-part---------------------------------
     //most important part: user can save a whole recipe to DB or destroy it
 
-    //save a recipe to DB: needs, recipe, List of ingridents, list of worksteps
+    //save a recipe to DB: needs, recipe, List of ingridentsList, list of worksteps
     //each ingrident and worksteps gets the recipeID of "his" recipe
-    //therefore recipe, ingridentList and recipeWorkStepList have to be saved together to the DB
+    //therefore recipe, ingridentStringList and recipeWorkStepList have to be saved together to the DB
     public void saveRecipeToDB(Recipe recipe, List<Ingrident> ingridentList, List<RecipeWorkStep> recipeWorkStepList) {
         try {
             saveSingleRecipeToDB(recipe);

@@ -13,8 +13,8 @@ import java.util.List;
 /**
  * Created by Jonas on 19.09.2017.
  * Recipe class. contains id, name, portions difficulty time and rating of the recipe
- * contains two lists: one for ingridents and one for worksteps
- * ingridents and worksteps contain recipeIDs, so the recipe knows its ingridents and worksteps
+ * contains two lists: one for ingridentsList and one for worksteps
+ * ingridentsList and worksteps contain recipeIDs, so the recipe knows its ingridentsList and worksteps
  * ,so recipe knows which ingirents and worksteps it has to put in his lists
  * changed trough greenDaoGenerator for greenDao 3 communication
  * has to be handled carefully to avoid problems at database communication

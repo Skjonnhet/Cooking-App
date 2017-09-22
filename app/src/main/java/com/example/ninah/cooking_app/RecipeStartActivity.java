@@ -21,6 +21,13 @@ import java.util.List;
 
 public class RecipeStartActivity extends AppCompatActivity implements View.OnClickListener {
     /*****************Shows recipe to the user so he can cook*****************************/
+    /*User sees all fields of the recipe filled.
+    * he can work through the single steps of the recipe and
+    * start the CookingTimerActivity to start a countdown for his recipe or
+    * start the RatingActivity to rate and change the recipe
+    * both activities use the recipe id to get time or rating of this recipe
+    *
+    * */
 
     TextView title;
     RatingBar ratingBar;
@@ -38,43 +45,35 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
     ArrayAdapter arrayAdapterWorkSteps;
     ArrayAdapter arrayAdapterIngridents;
     ArrayList<String> workstepList;
-    ArrayList<String>  ingridentList;
-    List<Ingrident> ingridens;
+    ArrayList<String> ingridentStringList;
+    List<Ingrident> ingridentsList;
     Recipe activityRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
-        title = (TextView)findViewById(R.id.title);
-        ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         ingredientsListView = (ListView)findViewById(R.id.ingredients);
-        servings = (TextView)findViewById(R.id.servings);
-        numberOfServings = (TextView)findViewById(R.id.numberOfServings);
-        plus = (Button)findViewById(R.id.plus);
-        minus = (Button)findViewById(R.id.minus);
-        recipe_text = (TextView)findViewById(R.id.recipe_text);
+        ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         checkBox = (CheckBox)findViewById(R.id.checkBox);
-        startTimer = (Button)findViewById(R.id.ready_button);
-        rateRecipeButton=(Button) findViewById(R.id.reStAc_rateRecipeButton);
-
-        workstepList=new ArrayList<>();
-        ingridentList=new ArrayList<>();
-        ingridens=new ArrayList<>();
-        dbAdapter=new DBAdapter(this);
-        arrayAdapterWorkSteps=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, workstepList);
-        arrayAdapterIngridents=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, ingridentList);
-
-        ingredientsListView.setAdapter(arrayAdapterIngridents);
-
-
-
-        setRecipeId();//1. get recipeID
-        fillViewsWithRecipe();//2.fills views with recipeID
-
+        initTextViews();
+        initButtons();
+        initLists();
+        initAdapters();
         setClickListener();
 
+        //-------------//keep order!---------------------------------------------------------------
+        setRecipeId();//1. get recipeID
+        fillViewsWithRecipe();//2.fills views with recipeID
+        //keep order to avoid execeptions
+        //-----------------------------------------------------------------------------------------
+
+
+
     }
+
+    //-------------------------------overwrite-methods---------------------------------------------
+    //overwritten methods
 
     @Override
     public void onClick(View v) {
@@ -142,6 +141,34 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
     //----------------------init part--------------------------------------------------------------
     //methods are used in onCreate()
 
+    private void initTextViews(){
+        title = (TextView)findViewById(R.id.title);
+        servings = (TextView)findViewById(R.id.servings);
+        recipe_text = (TextView)findViewById(R.id.recipe_text);
+        numberOfServings = (TextView)findViewById(R.id.numberOfServings);
+
+    }
+
+    private void initButtons(){
+        plus = (Button)findViewById(R.id.plus);
+        minus = (Button)findViewById(R.id.minus);
+        startTimer = (Button)findViewById(R.id.ready_button);
+        rateRecipeButton=(Button) findViewById(R.id.reStAc_rateRecipeButton);
+    }
+
+    private void initLists(){
+        workstepList=new ArrayList<>();
+        ingridentStringList =new ArrayList<>();
+        ingridentsList =new ArrayList<>();
+    }
+
+    private void initAdapters(){
+        dbAdapter=new DBAdapter(this);
+        arrayAdapterWorkSteps=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, workstepList);
+        arrayAdapterIngridents=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, ingridentStringList);
+        ingredientsListView.setAdapter(arrayAdapterIngridents);
+    }
+
     //get recipeIdFromIntent
     private void setRecipeId(){
         Intent intent=getIntent();
@@ -187,27 +214,27 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         else {Log.d("RecipeStartActivity","fillViewsWithRecipe recipeID is null");}
     }
 
-    //fills ingridentsList with recipe values
-    //transform values into one String
+    //fills lists with ingridents values
+    //transform values into one String for ingridentStringList
     private void fillIngridentsList(Recipe recipe){
-        List<Ingrident> ingridens=dbAdapter.getAllIngridentsOfRecipe(recipe);
-        for(Ingrident ingrident:ingridens){
-            try{
+        try{
+        ingridentsList=dbAdapter.getAllIngridentsOfRecipe(recipe);
+        for(Ingrident ingrident:ingridentsList){
+
                 String name=ingrident.getName();
                 double menge=ingrident.getMenge();
                 String einheit=ingrident.getEinheit();
                 String ingridentFormat="Zutat: "+name +", Menge: "+menge+" "+einheit;
-                this.ingridentList.add(ingridentFormat);
+                this.ingridentStringList.add(ingridentFormat);
             }
-            catch (Exception e){Log.d("RecipeStartActivity","fillIngridentsList "+e.toString());}
 
-
-        }
+           }
+        catch (Exception e){Log.d("RecipeStartActivity","fillIngridentsList "+e.toString());}
         arrayAdapterIngridents.notifyDataSetChanged();
 
     }
 
-
+    //fills lists with worksteps values
     private void fillWorkStepList(Recipe recipe){
         List<RecipeWorkStep> workSteps=dbAdapter.getAllWorkStepsOfRecipe(recipe);
         for(RecipeWorkStep workStep:workSteps){
@@ -225,6 +252,8 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
     //--------------------------intent part---------------------------------------------------------
     //is used to start other activities
 
+    //starts CookingTimerActivity
+    //intent has recipeId
     private void startTimerActivity(){
         Intent intent=new Intent(this, CookingTimerActivity.class);
         intent.putExtra(CookingConstants.RECIPE_ID_KEY,recipeId);
@@ -232,6 +261,8 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         Log.d("RecipeStartActivity","startTimerActivity" );
     }
 
+    //starts Rating_Activity
+    //intent has recipeId
     private void startRatingActivity(){
         Intent intent=new Intent(this, Rating_Activity.class);
         intent.putExtra(CookingConstants.RECIPE_ID_KEY,recipeId);
