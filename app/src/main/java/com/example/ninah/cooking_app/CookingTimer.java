@@ -20,7 +20,7 @@ public class CookingTimer {
   */
 
     private CountDownTimer countDownTimer;
-    private static String currentTime;
+    private static String currentTime="00:00:00";
     private CookingTimerListener cookingTimerListener;
 
 
@@ -49,9 +49,14 @@ public class CookingTimer {
                 int hours = timeInSecondsLeft / 3600;
                 int minutes = (timeInSecondsLeft % 360) / 60;
                 int seconds = timeInSecondsLeft % 60;
+                Log.d("startNewCountDownTimer","timeInSecondsLeft:"+ timeInSecondsLeft);
+                currentTime=  String.format(timeFormat, hours, minutes, seconds);
+                if(currentTime!=null){
+                    setCurrentTime( currentTime);
+                }
 
-                String currentTime=  String.format(timeFormat, hours, minutes, seconds);
-                setCurrentTime( currentTime);
+                else {setCurrentTime("00:00:00");}
+
                 callCookingTimerListenerThatTick();
                 Log.d("Cooking Timer counts", currentTime);
             }
@@ -95,6 +100,7 @@ public class CookingTimer {
 
         else{
             Log.d("Cooking Timer returns", "null");
+            currentTime="";
         }
 
         return currentTime;

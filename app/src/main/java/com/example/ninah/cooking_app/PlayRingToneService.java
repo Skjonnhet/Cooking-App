@@ -3,12 +3,15 @@ package com.example.ninah.cooking_app;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.util.Log;
 
-public class PlayRingToneService extends Service {
+public class PlayRingToneService extends Service implements MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener,
+        MediaPlayer.OnPreparedListener, MediaPlayer.OnSeekCompleteListener, MediaPlayer.OnInfoListener, MediaPlayer.OnBufferingUpdateListener {
     /*****************Service of the CookingTimerActivity of the app**************************************/
     /*----------------------------------------------------------------------------------------------
     * Logic:
@@ -19,6 +22,8 @@ public class PlayRingToneService extends Service {
     *
     *CookingTimerActivity ends this service----------------------------------------------------------------
     * mediaPlayer and vibrator are stopped in onDestroy()-------------------------------------------
+    * mediaPlayer is very sensitive to its lifecyclestate. therefore it's behaviour is controlled trough booleans and MediaPlayer Listeners
+    * source https://developer.android.com/reference/android/media/MediaPlayer.html, 23.09.17
     * */
 
 
@@ -27,6 +32,8 @@ public class PlayRingToneService extends Service {
     private static String chosenRingtone;
     private static String CHOSEN_RING_TONE_KEY=CookingConstants.CHOSEN_RING_TONE_KEY;
     private static String defaultRingTone="clapping";
+    private boolean isMediaPlayerStopped =false;
+    private boolean isMediaPlayerPrepared=false;
 
 
     //constructor calls SuperClass
@@ -48,15 +55,22 @@ public class PlayRingToneService extends Service {
         setRingToneTroughIntent(intent);
         vibrate();
         playMusic();
+        Log.d("RingToneService","started");
         return START_STICKY;
     }
 
+    //service can only be destroyed if mediaplayer has been stopped
+    //avoids that mediplayer runs in the background while ringTone-Service has been shut down
+    //mediaplayer can only be stopped if mediplayer is prepared avoids mediaplayer exceptions
     @Override
     public void onDestroy() {
-        stopMusic();
-        stopVibrator();
-        Log.d("RingToneService","destroyed");
-        super.onDestroy();
+        if(isMediaPlayerPrepared) {
+            stopMusic();
+            Log.d("RingToneService", "destroyed");
+            stopVibrator();
+            if (isMediaPlayerStopped)
+                super.onDestroy();
+        }
     }
 
 
@@ -95,33 +109,43 @@ public class PlayRingToneService extends Service {
 
     //creates a new MediaPlayer and plays the sound in looping
     //is used in onStartCommand() of this LifeCycle
+    //waits 3 seconds in handler to avoid exception because media player is in the idlestate https://developer.android.com/reference/android/media/MediaPlayer.html
     private void playMusic(){
         try{
             if(chosenRingtone!=null){
                 mediaPlayer= MediaPlayer.create(this, getChosenRingtoneID(chosenRingtone));
+
             }
             else{
                 mediaPlayer= MediaPlayer.create(this, R.raw.clapping);
                 Log.d("RingToneService","chosenRingTone is null");
             }
 
-            mediaPlayer.setLooping(true);
-            mediaPlayer.start();
-        }
+           setMPListeners();
+           prepareMediaPlayer();
 
-        catch (Exception e){Log.d("RingToneService","playMusic "+e.toString());}
 
+        }catch(Exception e){Log.d("RingToneService","playMusic "+e.toString());}
     }
 
-    //stops the MediaPlayer
+
+
+    //stops the MediaPlayer according to https://developer.android.com/reference/android/media/MediaPlayer.html#setLooping(boolean) to avoid execptions
     //is used in onDestroy() of this LifeCycle
     private void stopMusic(){
-        if(mediaPlayer!=null)
-        {
-            mediaPlayer.stop();
+        if(isMediaPlayerPrepared){
+            try
+            {
+                mediaPlayer.stop();
+                isMediaPlayerStopped =true;
+                mediaPlayer.release();
+                mediaPlayer=null;
+                Log.d("RingToneService", "stopMusic mediaPlayer stopped");
+            }
+            catch (Exception e){Log.d("RingToneService", "stopMusic "+e.toString());}
         }
 
-        else {Log.d("RingToneService", "mediaPlayer is null");}
+
 
     }
 
@@ -186,8 +210,86 @@ public class PlayRingToneService extends Service {
     }
 
 
+    //-------------------------control media player part-------------------------------------------
+    //mediaplayer is very sensitive needs to be controlled
+    //overwritten methods to handle mediaplayer errors
+
+    //listener controll the mediaplayer to avoid execeptions
+    private void setMPListeners(){
+        mediaPlayer.setOnErrorListener(this);
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setOnBufferingUpdateListener(this);
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnBufferingUpdateListener(this);
+        mediaPlayer.setOnSeekCompleteListener(this);
+        mediaPlayer.setOnInfoListener(this);
+
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        resetMediaPlayer();
+        Log.d("RingToneService", "onError mediaplayer created error" +"what :"+what +"extra: "+extra);
+        return false;
+    }
+
+    //prepares mediaplayer and sets boolean isMediaPlayerPrepared true
+    private void prepareMediaPlayer() {
+        try {
+
+            if(!mediaPlayer.isLooping())
+                mediaPlayer.setLooping(true);
+            if(!mediaPlayer.isPlaying())
+                mediaPlayer.start();
+            isMediaPlayerPrepared = true;
+        }
+        catch (Exception e) {
+            {
+                Log.d("RingToneService", "playMusic " + e.toString());
+            }
+
+        }
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        if (mediaPlayer!=null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            stopSelf();
+        }
+        else return;
+    }
 
 
+    private void resetMediaPlayer(){
+        mediaPlayer.stop();
+        mediaPlayer.reset();
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+
+    }
+
+
+
+    @Override
+    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+        return false;
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        prepareMediaPlayer();
+    }
+
+
+    @Override
+    public void onSeekComplete(MediaPlayer mp) {
+
+    }
 
 
 }
