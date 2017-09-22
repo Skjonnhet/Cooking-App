@@ -20,7 +20,8 @@ public class DBAdapter {
     /*****************Adapter of the database function of the app**********************************/
     /*translates the input which are done in the activities of the app into greenDao 3 code
     to encapsulate the sensible database from users who are  working in the activities
-    greenDao 3 is an SQLite based Android ORM, source: http://greenrobot.org/greendao/ 22.09.17 */
+    greenDao 3 is an SQLite based Android ORM, source: http://greenrobot.org/greendao/ 22.09.17
+    */
 
     private DaoMaster daoMaster;
     private DaoSession daoSession;

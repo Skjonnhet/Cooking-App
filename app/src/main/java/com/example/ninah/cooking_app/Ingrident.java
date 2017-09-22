@@ -9,6 +9,9 @@ import org.greenrobot.greendao.DaoException;
 
 /**
  * Created by Jonas on 19.09.2017.
+ * Ingrident class. contains id, name, (unit) einheit,(amount) menge of the ingrident and the id of its connected recipe
+ * changed trough greenDaoGenerator for greenDao 3 communication
+ * has to be handled carefully to avoid problems at database communication
  */
 
 @Entity(nameInDb = "ingrident",  active = true)

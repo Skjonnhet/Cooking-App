@@ -14,12 +14,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class IngridentActivity extends AppCompatActivity {
 
-    private EditText nameTextView;
-    private EditText mengeTextView;
-    private EditText einheitTextView;
+    /*****************IngridentActivity of the recipe function of the app**************************/
+    /*saves the user inputs into the listView trough an arrayAdapter*/
+    /*receives recipeID from RecipeNewActivity via Intent */
+    /*creates new ingridents with user input and tells the ingridents through the recipeID
+     *to which recipe the ingridents are connected */
+    /*saves ingridents to database*/
+
+    private EditText nameEditText;
+    private EditText mengeEditText;
+    private EditText einheitEditText;
     private Button saveButton;
     private ListView listView;
     ArrayList<Ingrident> ingridentArrayList;
@@ -33,10 +41,10 @@ public class IngridentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingrident);
 
-        nameTextView=(EditText) findViewById(R.id.IngrAct_nameEditText);
-        mengeTextView=(EditText) findViewById(R.id.IngrAct_mengeEditText);
-        einheitTextView=(EditText) findViewById(R.id.IngrAct_einheitEditText);
-        einheitTextView.setTransformationMethod(null);
+        nameEditText =(EditText) findViewById(R.id.IngrAct_nameEditText);
+        mengeEditText =(EditText) findViewById(R.id.IngrAct_mengeEditText);
+        mengeEditText.setTransformationMethod(null);
+        einheitEditText =(EditText) findViewById(R.id.IngrAct_einheitEditText);
         saveButton=(Button) findViewById(R.id.IngrAct_saveButton);
         listView=(ListView) findViewById(R.id.IngrAct_listView);
 
@@ -45,10 +53,10 @@ public class IngridentActivity extends AppCompatActivity {
         arrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, ingridentNames);
         dbAdapter=new DBAdapter(this);
 
-
+        setRecipeIDThroughIntent();
         listView.setAdapter(arrayAdapter);
         setOnClickListern();
-        setRecipeIDThroughIntent();
+        fillListView();
 
 
     }
@@ -56,11 +64,15 @@ public class IngridentActivity extends AppCompatActivity {
     //sets recipeID through the intent
     //MUST BE SET ON START OF ACTIVITY!
     private void setRecipeIDThroughIntent(){
-        Intent intent= getIntent();
-        Bundle extras=intent.getExtras();
-        recipeID=extras.getLong(CookingConstants.RECIPE_ID_KEY);
-        giveFeedback("setRecipeIDThroughIntent", "recipeID:"+recipeID.toString());
-    }
+        try{
+            Intent intent= getIntent();
+            Bundle extras=intent.getExtras();
+            recipeID=extras.getLong(CookingConstants.RECIPE_ID_KEY);
+            giveFeedback("setRecipeIDThroughIntent", "recipeID:"+recipeID.toString());
+        }
+        catch (Exception e){giveFeedback("setRecipeIDThroughIntent ",  e.toString());}
+        }
+
 
     //sets all onclickListeners of this class
     private void setOnClickListern(){
@@ -69,41 +81,53 @@ public class IngridentActivity extends AppCompatActivity {
             public void onClick(View v) {
             createNewIngrident();
 
+
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedIngrident=((TextView) view).getText().toString();
-                delteIngrident(selectedIngrident);
+                deleteIngrident(selectedIngrident);
                 return false;
             }
         });
 
     }
 
+    //fills listview ith old ingridents
+    private void fillListView(){
+        getOldIngridents();
+        for (Ingrident ingrident:ingridentArrayList){
+            ingridentNames.add(ingrident.getName());
+            giveFeedback("fillListView", ingrident.getName());
+        }
+        arrayAdapter.notifyDataSetChanged();
+    }
+
     //-----------------------getter and setter methods---------------------------------------------
 
     //sets single workstep to list
     private void setIngridentsNameToList( String name){
-            nameTextView.setText(CookingConstants.EMPTY_STRING);
+            nameEditText.setText(CookingConstants.EMPTY_STRING);
             ingridentNames.add(name);
             arrayAdapter.notifyDataSetChanged();
     }
 
+    //returns IngridentName
     private String getIngridentName(){
         String name="";
-        if(nameTextView!=null){
-            name=nameTextView.getText().toString();
+        if(nameEditText !=null){
+            name= nameEditText.getText().toString();
         }
 
         return name;
     }
-
+    //returns IngridentMenge
     private int getIngridentMenge(){
         int amount=0;
-        if(mengeTextView!=null){
-            String menge=mengeTextView.getText().toString();
+        if(mengeEditText !=null){
+            String menge= mengeEditText.getText().toString();
             if(isNumber(menge)){
                 amount=Integer.parseInt(menge);
             }
@@ -112,38 +136,17 @@ public class IngridentActivity extends AppCompatActivity {
         return amount;
     }
 
+    //returns Einheit (unit)
     private String getEinheit(){
         String unit="";
-        if(einheitTextView!=null){
-            unit=einheitTextView.getText().toString();
+        if(einheitEditText !=null){
+            unit= einheitEditText.getText().toString();
         }
 
         return unit;
     }
 
-    //--------------------creater methods----------------------------------------------------------
-
-    private void createNewIngrident(){
-        if(recipeID!=null) {
-            if(getIngridentName()!=null||getIngridentMenge()!=0||getEinheit()!=null) {
-            Ingrident ingrident=dbAdapter.createNewIngridentWithRecipeID(getIngridentName(), getEinheit(),getIngridentMenge(), recipeID);
-            setIngridentsNameToList(getIngridentName());
-                ingridentArrayList.add(ingrident);
-                Toast.makeText(this, "Zutat gespeichert",Toast.LENGTH_SHORT);}
-            else  {  Toast.makeText(this, "Ein Feld ist leer. Konnte nicht speichern",Toast.LENGTH_LONG);}
-        }
-        else {giveFeedback("createNewIngrident", "no recipe created, recipeID is null");}
-
-    }
-
-    //------------------save and delete methods--------------------------------------------------
-
-    private void delteIngrident(String name){
-        Long id=getIngridentIDbyName(name);
-        deleteIngridentsNamesFromListView(name);
-        delteOldIngridentFromDB(id);
-    }
-
+    //returns ingrident ID through string name
     private Long getIngridentIDbyName(String name){
         Long id=Long.valueOf(0);
         for (Ingrident ingrident:ingridentArrayList){
@@ -156,7 +159,42 @@ public class IngridentActivity extends AppCompatActivity {
         return id;
     }
 
-    //deletes single workStep from list
+    private void getOldIngridents(){
+        try {
+            ingridentArrayList.addAll(dbAdapter.getAllIngridentsOfRecipe(dbAdapter.getRecipeByID(recipeID)));
+        }
+        catch (Exception e){giveFeedback("getOldIngridents ",e.toString());}
+    }
+
+
+    //--------------------creater methods----------------------------------------------------------
+    //------------------save and delete methods--------------------------------------------------
+
+    //creates new ingrident and saves it to DB and ingridentArrayList and ingridentNames
+    private void createNewIngrident(){
+        if(recipeID!=null) {
+            if(areAllFieldsFilled()) {
+                Ingrident ingrident=dbAdapter.createNewIngridentWithRecipeID(getIngridentName(), getEinheit(),getIngridentMenge(), recipeID);
+                setIngridentsNameToList(getIngridentName());
+                ingridentArrayList.add(ingrident);
+                giveFeedback("createNewIngrident", "ingriedent created: id:"+ingrident.getId()+" "+getIngridentName()+" recipe id:"+ ingrident.getRecipeID());
+                Toast.makeText(this, "Zutat gespeichert",Toast.LENGTH_SHORT).show();}
+            else  {  Toast.makeText(this, "Ein Feld ist leer. Bitte füllen",Toast.LENGTH_LONG).show();}
+        }
+        else {giveFeedback("createNewIngrident", "no recipe created, recipeID is null");}
+
+    }
+
+    //deletes from listView and database
+    private void deleteIngrident(String name){
+        Long id=getIngridentIDbyName(name);
+        deleteIngridentsNamesFromListView(name);
+        delteOldIngridentFromDB(id);
+        Toast.makeText(this, "Zutat gelöscht",Toast.LENGTH_SHORT).show();
+    }
+
+
+    //deletes single ingrident from list
     private void deleteIngridentsNamesFromListView(String ingrident){
         if(ingridentNames.contains(ingrident)){
             ingridentNames.remove(ingrident);
@@ -164,6 +202,7 @@ public class IngridentActivity extends AppCompatActivity {
         }
     }
 
+    //deletes single ingrident from DB
     private void delteOldIngridentFromDB(Long ingridentID){
         dbAdapter.deleteIngridentFromDB(ingridentID);
     }
@@ -172,9 +211,11 @@ public class IngridentActivity extends AppCompatActivity {
    // ----------------------------helper methods----------------------------------------------------
 
     private void giveFeedback(String method, String feedback) {
-        Log.d("WorkStepActivity " + method, feedback);
+        Log.d("IngridentActivity " + method, feedback);
     }
 
+    //checks if input is a number
+    //is used to avoid wrong user input
     private boolean isNumber(String s){
         try{
             Integer.parseInt(s);
@@ -187,6 +228,21 @@ public class IngridentActivity extends AppCompatActivity {
         }
 
         return true;
+
+    }
+
+    //checks if user filled all Fields
+    private boolean areAllFieldsFilled(){
+        if(isEditTextEmpty(nameEditText)|isEditTextEmpty(mengeEditText)|isEditTextEmpty(einheitEditText)){
+            return false;
+        }
+
+        else return true;
+    }
+
+    private boolean isEditTextEmpty(EditText editText){
+        if (editText.getText().toString().trim().isEmpty()) return true;
+        else return false;
 
     }
 }

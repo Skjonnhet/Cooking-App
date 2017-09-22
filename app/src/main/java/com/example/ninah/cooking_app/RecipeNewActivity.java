@@ -308,7 +308,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    //checks if user fileld all Fields
+    //checks if user filled all Fields
     private boolean areAllFieldsFilled(){
       if(isEditTextEmpty(recipeNameInput)|isEditTextEmpty(difficultInput)|isEditTextEmpty(recipePortionsInput)|isEditTextEmpty(recipeTimeInput)){
           return false;
