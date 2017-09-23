@@ -21,7 +21,8 @@
     <string name="inputWorkingstep">Arbeitsschritt angeben</string>
     <string name="title_activity_rating_">Arbeitsschritt angeben</string>
     <string name="edit">edit</string>
-    <string name="changeRecipe">Rezept wechseln?</string>
+    <string name="changeRecipe">weitere Bestandteile des Rezept ändern? \n Bewertung wird dabei gespeichert</string>
+    <string name="saveRecipe">Rezept nicht weiter verändern und \n Bewertung speichern?</string>
     <string name="IngrAct_saveButton">Zutat speichern</string>
     <string name="IngrAct_einheitEditText">Einheit</string>
     <string name="IngrAct_mengeEditText">Menge</string>

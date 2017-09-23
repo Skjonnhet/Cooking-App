@@ -43,32 +43,41 @@
             android:id="@+id/textViewChangeRecipie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:text="@string/changeRecipe"
-            android:layout_above="@+id/ratingRecipe_changeRecipeButton_no"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="58dp" />
+            android:layout_below="@+id/ratingRecipe_RatingBar"
+            android:layout_alignLeft="@+id/ratingRecipe_RatingBar"
+            android:layout_alignStart="@+id/ratingRecipe_RatingBar"
+            android:layout_marginTop="55dp" />
 
         <Button
             android:id="@+id/ratingRecipe_changeRecipeButton_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no"
-            android:layout_marginLeft="13dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginBottom="116dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/ratingRecipe_RatingBar"
-            android:layout_alignStart="@+id/ratingRecipe_RatingBar" />
+            android:text="@string/yes"
+            android:layout_marginTop="45dp"
+            android:layout_alignTop="@+id/textViewSaveRecipe"
+            android:layout_alignLeft="@+id/ratingRecipe_changeRecipeButton_yes"
+            android:layout_alignStart="@+id/ratingRecipe_changeRecipeButton_yes" />
 
         <Button
             android:id="@+id/ratingRecipe_changeRecipeButton_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/yes"
-            android:layout_alignBaseline="@+id/ratingRecipe_changeRecipeButton_no"
-            android:layout_alignBottom="@+id/ratingRecipe_changeRecipeButton_no"
-            android:layout_alignRight="@+id/ratingRecipe_RatingBar"
-            android:layout_alignEnd="@+id/ratingRecipe_RatingBar" />
+            android:layout_marginTop="43dp"
+            android:layout_alignTop="@+id/textViewChangeRecipie"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/textViewSaveRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/saveRecipe"
+            android:layout_marginTop="107dp"
+            android:layout_below="@+id/textViewChangeRecipie"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
