@@ -37,12 +37,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="115dp"
             android:numStars="5"
-<<<<<<< HEAD
             android:stepSize="1"/>
-=======
-            android:rating="0"
-            android:stepSize="1" />
->>>>>>> ac54267731d8079022aa2a2035e5c053ce78852c
 
         <TextView
             android:id="@+id/textViewChangeRecipie"
