@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //inits buttons
     private void initButtons(){
-        testTimerButton=(Button) findViewById(R.id.testTimerButton);
-        changeRecipeButton=(Button) findViewById(R.id.changeRecipeName);
+        //testTimerButton=(Button) findViewById(R.id.testTimerButton);
+        //changeRecipeButton=(Button) findViewById(R.id.changeRecipeName);
         deleteRecipeButton=(Button) findViewById(R.id.deleteRecipeButton);
     }
 
