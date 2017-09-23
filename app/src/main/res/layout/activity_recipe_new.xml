@@ -92,7 +92,7 @@
         android:id="@+id/buttonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/saveButton"
+        android:text="@string/advancedSaveButton"
         android:layout_below="@+id/recipeTimeInput"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
