@@ -133,10 +133,14 @@ public class CookingTimerService extends Service implements CookingTimerListener
     public void onCookingTimerTick() {
         prepareBroadCastIntent();
         if(broadcastIntent!=null) {
+            try {
+                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
 
-            LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                {Log.d("CTService","broadCastIntent sended "+broadcastIntent.getAction());}
 
-            {Log.d("CTService","broadCastIntent sended "+broadcastIntent.getAction());}
+            }catch (Exception e){Log.d("CTService","no onCookingTimerTick "+e.toString());}
+
+
         }
 
         else {Log.d("CTService","no broadCastIntent");}

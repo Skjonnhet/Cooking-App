@@ -33,6 +33,7 @@ public class WorkStepActivity extends AppCompatActivity {
     ArrayList<RecipeWorkStep> recipeWorkSteps;
     private ArrayAdapter<String> arrayAdapter;
     private Long recipeID;
+    private Long defaultValue;
     private DBAdapter dbAdapter;
 
 
@@ -40,7 +41,7 @@ public class WorkStepActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_step);
-
+        initDefaultValues();
         initButtons();
         initViewsAndEditTexts();
         initLists();
@@ -53,6 +54,12 @@ public class WorkStepActivity extends AppCompatActivity {
 
     //--------------------------init methods--------------------------------------------------------
     //used while OnCreate() of Lifecycle
+
+    //initDefaultValues
+    private void initDefaultValues(){
+        defaultValue=CookingConstants.DEFAULT_RECIPE_ID;
+        recipeID=defaultValue;
+    }
 
     //inits all buttons
     private void initButtons(){
@@ -82,10 +89,15 @@ public class WorkStepActivity extends AppCompatActivity {
     //sets recipeID through the intent
     //MUST BE SET ON START OF ACTIVITY!
     private void setRecipeIDThroughIntent(){
-        Intent intent= getIntent();
-        Bundle extras=intent.getExtras();
-        recipeID=extras.getLong(CookingConstants.RECIPE_ID_KEY);
-        giveFeedback("setRecipeIDThroughIntent", "recipeID:"+recipeID.toString());
+        recipeID=defaultValue;
+        try{
+            Intent intent= getIntent();
+            Bundle extras=intent.getExtras();
+            recipeID=extras.getLong(CookingConstants.RECIPE_ID_KEY);
+            giveFeedback("setRecipeIDThroughIntent", "recipeID:"+recipeID.toString());
+        }
+        catch (Exception e){giveFeedback("setRecipeIDThroughIntent", e.toString());}
+
     }
 
     //sets all onclickListeners of this class
@@ -211,7 +223,7 @@ public class WorkStepActivity extends AppCompatActivity {
     //returns ingrident ID through string name
     //used in to delete worksteps in deleteWorkStep
     private Long getWorkstepIDbyDescription(String description){
-        Long id=Long.valueOf(0);
+        Long id=defaultValue;
         try{
             for (RecipeWorkStep recipeWorkStep:recipeWorkSteps){
                 if(recipeWorkStep.getWorkStepDescribition().equals(description)){

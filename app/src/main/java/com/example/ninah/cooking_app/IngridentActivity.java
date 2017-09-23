@@ -36,30 +36,53 @@ public class IngridentActivity extends AppCompatActivity {
     ArrayAdapter arrayAdapter;
     DBAdapter dbAdapter;
     Long recipeID;
+    Long defaultID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingrident);
-
-        nameEditText =(EditText) findViewById(R.id.IngrAct_nameEditText);
-        mengeEditText =(EditText) findViewById(R.id.IngrAct_mengeEditText);
-        mengeEditText.setTransformationMethod(null);
-        einheitEditText =(EditText) findViewById(R.id.IngrAct_einheitEditText);
+        initDefaultValues();
+        initEditTexts();
+        initAdapters();
+        initLists();
+        initListView();
         saveButton=(Button) findViewById(R.id.IngrAct_saveButton);
-        listView=(ListView) findViewById(R.id.IngrAct_listView);
-
-        ingridentArrayList=new ArrayList<>();
-        ingridentNames=new ArrayList<>();
-        arrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, ingridentNames);
-        dbAdapter=new DBAdapter(this);
-
         setRecipeIDThroughIntent();
-        listView.setAdapter(arrayAdapter);
         setOnClickListern();
         fillListView();
 
 
+    }
+
+    //-------------------init part-----------------------------------------------------------------
+    //all methods are used in onCreate()
+
+    private void initDefaultValues(){
+        defaultID=CookingConstants.DEFAULT_RECIPE_ID;
+        recipeID=defaultID;
+    }
+
+    private void initLists(){
+        ingridentArrayList=new ArrayList<>();
+        ingridentNames=new ArrayList<>();
+    }
+
+    private void initListView(){
+        listView=(ListView) findViewById(R.id.IngrAct_listView);
+        listView.setAdapter(arrayAdapter);
+    }
+
+    private void initEditTexts(){
+        nameEditText =(EditText) findViewById(R.id.IngrAct_nameEditText);
+        mengeEditText =(EditText) findViewById(R.id.IngrAct_mengeEditText);
+        mengeEditText.setTransformationMethod(null);
+        einheitEditText =(EditText) findViewById(R.id.IngrAct_einheitEditText);
+    }
+
+    private void initAdapters(){
+        arrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, ingridentNames);
+        dbAdapter=new DBAdapter(this);
     }
 
     //sets recipeID through the intent

@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.text.CollationKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,8 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
     ArrayList<String> workstepList;
     ArrayList<String> ingridentStringList;
     List<Ingrident> ingridentsList;
-    Recipe activityRecipe;
+    Long defaultValue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         ingredientsListView = (ListView)findViewById(R.id.ingredients);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         checkBox = (CheckBox)findViewById(R.id.checkBox);
+        initDefaultValues();
         initTextViews();
         initButtons();
         initLists();
@@ -141,6 +144,12 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
     //----------------------init part--------------------------------------------------------------
     //methods are used in onCreate()
 
+
+    private void initDefaultValues(){
+        defaultValue= CookingConstants.DEFAULT_RECIPE_ID;
+        recipeId=defaultValue;
+    }
+
     private void initTextViews(){
         title = (TextView)findViewById(R.id.title);
         servings = (TextView)findViewById(R.id.servings);
@@ -171,10 +180,15 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
 
     //get recipeIdFromIntent
     private void setRecipeId(){
-        Intent intent=getIntent();
-        Bundle extras=intent.getExtras();
-        recipeId=extras.getLong(CookingConstants.RECIPE_ID_KEY);
-        Log.d("RecipeStartActivity","setRecipeId recipeID: "+recipeId);
+        recipeId=defaultValue;
+        try{
+            Intent intent=getIntent();
+            Bundle extras=intent.getExtras();
+            recipeId=extras.getLong(CookingConstants.RECIPE_ID_KEY);
+            Log.d("RecipeStartActivity","setRecipeId recipeID: "+recipeId);
+        }
+        catch (Exception e){Log.d("RecipeStartActivity","setRecipeId recipeID: "+e.toString());}
+
     }
     //sets setsClickListener
     private void setClickListener(){

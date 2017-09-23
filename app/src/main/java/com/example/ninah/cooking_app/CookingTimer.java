@@ -20,7 +20,8 @@ public class CookingTimer {
   */
 
     private CountDownTimer countDownTimer;
-    private static String currentTime="00:00:00";
+    private static String defaultTime ="00:00:00";
+    private static String currentTime= defaultTime;
     private CookingTimerListener cookingTimerListener;
 
 
@@ -55,7 +56,7 @@ public class CookingTimer {
                     setCurrentTime( currentTime);
                 }
 
-                else {setCurrentTime("00:00:00");}
+                else {setCurrentTime(defaultTime);}
 
                 callCookingTimerListenerThatTick();
                 Log.d("Cooking Timer counts", currentTime);

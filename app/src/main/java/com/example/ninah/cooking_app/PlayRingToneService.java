@@ -30,10 +30,10 @@ public class PlayRingToneService extends Service implements MediaPlayer.OnErrorL
     private static MediaPlayer mediaPlayer;
     private Vibrator vibrator;
     private static String chosenRingtone;
-    private static String CHOSEN_RING_TONE_KEY=CookingConstants.CHOSEN_RING_TONE_KEY;
-    private static String defaultRingTone="clapping";
-    private boolean isMediaPlayerStopped =false;
-    private boolean isMediaPlayerPrepared=false;
+    private static String CHOSEN_RING_TONE_KEY;
+    private static String defaultRingTone;
+    private boolean isMediaPlayerStopped ;
+    private boolean isMediaPlayerPrepared;
 
 
     //constructor calls SuperClass
@@ -52,6 +52,7 @@ public class PlayRingToneService extends Service implements MediaPlayer.OnErrorL
     //START_STICKY is returned as the service should alarm the user, even if the device has run out of memory before
     @Override
     public int onStartCommand(Intent intent,int flags, int startId) {
+        setDefaultValues();
         setRingToneTroughIntent(intent);
         vibrate();
         playMusic();
@@ -83,6 +84,15 @@ public class PlayRingToneService extends Service implements MediaPlayer.OnErrorL
 
     /*-------------------------------------------------------------------------------------------*/
     /*--------------Intent-Part: all methods to progress received intent-------------------------*/
+
+    //sets default booleans
+    //isMediaPlayerStopped and isMediaPlayerPrepared protect mediaplayer from acting in the wrong lifecyclestate
+    private void setDefaultValues(){
+        isMediaPlayerStopped =false;
+        isMediaPlayerPrepared=false;
+        defaultRingTone="clapping";
+        CHOSEN_RING_TONE_KEY=CookingConstants.CHOSEN_RING_TONE_KEY;
+    }
 
     private void setRingToneTroughIntent(Intent intent){
         if(intent!=null)

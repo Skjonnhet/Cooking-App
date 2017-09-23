@@ -80,6 +80,7 @@ public class CookingTimerActivity extends AppCompatActivity implements SensorEve
     DBAdapter dbAdapter;
 
     private Long recipeId;
+    private Long defaulID;
 
 
      /*--------------------------------------------------------------------------*/
@@ -92,6 +93,7 @@ public class CookingTimerActivity extends AppCompatActivity implements SensorEve
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
+        initDefaultValues();
         initAdapter();
         initEditTexts();
         initButtons();
@@ -176,6 +178,12 @@ public class CookingTimerActivity extends AppCompatActivity implements SensorEve
      *the status (enabled, disabled) of the buttons are set, inits a new cookingTimeReceiver-object and a new movingSensor-Object
      * this part is used in the on createMethod();
       */
+
+    //init default Values
+    private void initDefaultValues(){
+         defaulID=CookingConstants.DEFAULT_RECIPE_ID;
+         recipeId=defaulID;
+    }
 
     //inits all editTexts
     private void initEditTexts() {
