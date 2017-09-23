@@ -40,9 +40,6 @@ public class Rating_Activity extends AppCompatActivity {
         setOldValueToRaingBar();
     }
 
-
-
-
     private void initButtons(){
         yesButton=(Button) findViewById(R.id.ratingRecipe_changeRecipeButton_yes);
         noButton=(Button) findViewById(R.id.ratingRecipe_changeRecipeButton_no);
@@ -118,7 +115,7 @@ public class Rating_Activity extends AppCompatActivity {
         changeRecipeIntent.putExtra(CookingConstants.NEW_RECIPE_KEY, CookingConstants.NEW_RECIPE_FALSE);
         if(recipeId!=null){
             try {
-                if(!isRaingEmpty()){
+                if(!isRatingEmpty()){
                     Log.d("Rating_Activity","changeRecipe " +recipeId);
                     changeRecipeIntent.putExtra(CookingConstants.RECIPE_ID_KEY, recipeId);
                     startActivity(changeRecipeIntent);
@@ -142,7 +139,7 @@ public class Rating_Activity extends AppCompatActivity {
     //start MainActivity,class trough intent if ratingbar is not empty
     private void returnToMainMenu(){
         try {
-            if(!isRaingEmpty()){
+            if(!isRatingEmpty()){
                 Log.d("Rating_Activity","returnToMainMenu " +recipeId);
                 Intent mainMenuIntent=new Intent(this, MainActivity.class);
                 startActivity(mainMenuIntent);
@@ -156,7 +153,7 @@ public class Rating_Activity extends AppCompatActivity {
 
 
     //checks if ratingbar is empty
-    private boolean isRaingEmpty() {
+    private boolean isRatingEmpty() {
         if (ratingBar.getRating() == 0)
             return true;
 
