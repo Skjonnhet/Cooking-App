@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import java.text.CollationKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_recipe);
         ingredientsListView = (ListView)findViewById(R.id.ingredients);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
-        checkBox = (CheckBox)findViewById(R.id.checkBox);
+        //checkBox = (CheckBox)findViewById(R.id.checkBox);
         initDefaultValues();
         initTextViews();
         initButtons();
@@ -101,12 +100,12 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
                  * DB-Funktion, dass eine Portion abgezogen wird
                  */
                 break;
-            case R.id.checkBox:
+            //case R.id.checkBox:
                 /**
                  * hier muss was rein, aber was?
                  * Wenn Timer-Funktion im Rezept hinterlegt ist bei diesem Arbeitsschritt, dann Weiterleitung zu Timer?
                  */
-                break;
+                //break;
             case R.id.ready_button:startTimerActivity();
                 /**
                  * Funktion, dass Kochvorgang gestartet wird
@@ -153,7 +152,7 @@ public class RecipeStartActivity extends AppCompatActivity implements View.OnCli
     private void initTextViews(){
         title = (TextView)findViewById(R.id.title);
         servings = (TextView)findViewById(R.id.servings);
-        recipe_text = (TextView)findViewById(R.id.recipe_text);
+        //recipe_text = (TextView)findViewById(R.id.recipe_text);
         numberOfServings = (TextView)findViewById(R.id.numberOfServings);
 
     }

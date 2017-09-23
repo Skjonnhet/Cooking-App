@@ -15,13 +15,15 @@
     <string name="numOfServings">Anzahl Portionen</string>
     <string name="recipeText">Arbeitsschritte</string>
     <string name="saveButton">Speichern</string>
+    <string name="advancedSaveButton">Speichern \n und zum Rezept \n zurückkehren</string>
     <string name="inputRecipeName">Rezeptname eingeben</string>
     <string name="inputRecipeIngredients">Zutaten eintragen</string>
     <string name="inputServings">Anzahl der Portionen angeben</string>
     <string name="inputWorkingstep">Arbeitsschritt angeben</string>
     <string name="title_activity_rating_">Arbeitsschritt angeben</string>
     <string name="edit">edit</string>
-    <string name="changeRecipe">Rezept wechseln?</string>
+    <string name="changeRecipe">weitere Bestandteile des Rezept ändern? \n Bewertung wird dabei gespeichert</string>
+    <string name="saveRecipe">Rezept nicht weiter verändern und \n Bewertung speichern?</string>
     <string name="IngrAct_saveButton">Zutat speichern</string>
     <string name="IngrAct_einheitEditText">Einheit</string>
     <string name="IngrAct_mengeEditText">Menge</string>
@@ -34,5 +36,8 @@
     <string name="ringToneTrumpet">Trompete</string>
     <string name="ringToneEagle">Adler</string>
     <string name="ringToneWolf">Wolf</string>
+    <string name="timerStart">Timer starten</string>
+    <string name="rating">Bewerten</string>
+    <string name="servings">Portionen</string>
 
 </resources>
