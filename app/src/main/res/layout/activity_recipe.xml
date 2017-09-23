@@ -26,11 +26,15 @@
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/numberOfServings"
-                android:layout_alignRight="@+id/numberOfServings"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_below="@+id/title"
-                android:layout_marginEnd="11dp"
-                android:layout_marginRight="11dp" />
+                android:layout_marginTop="11dp"
+                android:layout_toLeftOf="@+id/reStAc_rateRecipeButton"
+                android:layout_toStartOf="@+id/reStAc_rateRecipeButton"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:clickable="false"/>
 
             <Button
                 android:id="@+id/reStAc_rateRecipeButton"
