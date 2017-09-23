@@ -34,5 +34,8 @@
     <string name="ringToneTrumpet">Trompete</string>
     <string name="ringToneEagle">Adler</string>
     <string name="ringToneWolf">Wolf</string>
+    <string name="timerStart">Timer starten</string>
+    <string name="rating">Bewerten</string>
+    <string name="servings">Portionen</string>
 
 </resources>

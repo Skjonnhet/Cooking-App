@@ -79,33 +79,10 @@
         android:background="@color/colorSkyBlue"/>
 
     <Button
-        android:id="@+id/testTimerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test timer **noch als String hinterlegen**"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_marginTop="14dp"
-        android:layout_below="@+id/viewNewRecipe" />
-
-    <Button
-        android:id="@+id/changeRecipeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="70dp"
-        android:layout_marginStart="70dp"
-        android:text="button" />
-
-    <Button
         android:id="@+id/deleteRecipeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/testTimerButton"
+        android:text="Rezept löschen"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/testTimerButton"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:text="Rezept löschen" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
