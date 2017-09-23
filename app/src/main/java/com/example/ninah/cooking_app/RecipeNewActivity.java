@@ -43,7 +43,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     Button workStepsButton;
     DBAdapter dbAdapter;
     Recipe actitivityRecipe;
-    boolean isNewRecipe=false;
+    boolean isNewRecipe;
     Long defaultValue=Long.valueOf(0);
     Long oldRecipeID=defaultValue;
 
@@ -130,6 +130,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     //checks trough intent if recipe is new
     //depending on that the newactivityy is filled with old values or not
     private void setIsNewRecipeBoolean(){
+        isNewRecipe=false;
 
         try {
             Intent intent=getIntent();
@@ -143,6 +144,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
     //sets recipeID trough intent
     private void setOldRecipeID(){
+        oldRecipeID=Long.valueOf(0);
         try{
             Intent intent=getIntent();
             Bundle extras=intent.getExtras();
