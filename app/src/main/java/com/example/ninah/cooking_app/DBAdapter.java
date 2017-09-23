@@ -644,7 +644,8 @@ public class DBAdapter {
 
     //creates a new single RecipeInstance without confusing the user with setting the startID and rating
     //should always be used for creating new recipes
-    public Recipe createNewRecipe(String name, int portions, String difficulty, int timeInMinutes) {
+    //is set private as there is no public use at the moment
+    private Recipe createNewSingleRecipe(String name, int portions, String difficulty, int timeInMinutes) {
         Long startID = getHighestRecipeID();
         startID++;
         int startRating = 0;
@@ -656,10 +657,11 @@ public class DBAdapter {
 
     //creates a new single Ingrident Instance without confusing the user with setting the startID and rating
     //should always be used for creating new ingrident
-    public Ingrident createNewIngrident(String name, String einheit, double menge) {
+    //is set private as there is no public use at the moment
+    private Ingrident createSingleNewIngrident(String name, String einheit, double menge, Long recipeId) {
         Long startID = getHighestIngridentID();
         startID++;
-        Long startRecipeID = Long.valueOf(1);
+        Long startRecipeID = recipeId;
         Ingrident ingrident = new Ingrident(startID, name, einheit, menge, startRecipeID);
         giveFeedback("createNewIngrident", "name:" + ingrident.getName().toString()+" recipeID: "+startID);
         saveSingleIngridentToDB(ingrident);
@@ -668,17 +670,18 @@ public class DBAdapter {
 
     //creates a new single workstep instance without confusing the user with setting the startID and rating
     //should always be used for creating new workstep
-    public RecipeWorkStep createNewWorkStep(String description) {
+    //is set private as there is no public use at the moment
+    private RecipeWorkStep createSingleNewWorkStep(String description, Long recipeId) {
         Long startID = getHighestWorkStepID();
         startID++;
-        Long startRecipeID = Long.valueOf(1);
+        Long startRecipeID = recipeId;
         RecipeWorkStep workStep = new RecipeWorkStep(startID, description, startRecipeID);
         saveSingleRecipeWorkStepToDB(workStep);
         return workStep;
     }
 
 
-    //creates a recipe with default values
+    //creates a default recipes
     //saves it to db
     //should be used to fill DB in the mainactivity when app starts to avoid nullpointers
     public Recipe createDefaultRecipeAndSaveItToDB() {
@@ -691,6 +694,20 @@ public class DBAdapter {
         workSteps.add(getDefaultWorkStep());
         saveRecipeToDB(recipe, ingridentList, workSteps);
         giveFeedback("createDefaultRecipeAndSaveItToDB", "recipe saved");
+        return recipe;
+    }
+    //creates a newRecipe for the recipeNewActvity
+    public Recipe createNewRecipe(){
+        Recipe recipe=createNewSingleRecipe(CookingConstants.DEFAULT_RECIPE_NAME, CookingConstants.DEFAULT_RECIPE_PORTIONS, CookingConstants.DEFAULT_RECIPE_DIFFIICULTY,CookingConstants.DEFAULT_RECIPE_TIME);
+        Long id=recipe.getId();
+        Ingrident ingrident=createSingleNewIngrident(CookingConstants.DEFAULT_INGRIDENT_NAME, CookingConstants.DEFAULT_INGRIDENT_UNIT, CookingConstants.DEFAULT_INGRIDENT_MENGE, id);
+        RecipeWorkStep workStep=createSingleNewWorkStep(CookingConstants.DEFAULT_WORKSTEP_DECRIPTION, id);
+        List<Ingrident> ingridentList = new ArrayList<>();
+        List<RecipeWorkStep> workSteps = new ArrayList<>();
+        ingridentList.add(ingrident);
+        workSteps.add(workStep);
+        saveRecipeToDB(recipe, ingridentList, workSteps);
+        giveFeedback("createNewRecipe", "recipe saved id:"+id);
         return recipe;
     }
 

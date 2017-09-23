@@ -173,7 +173,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     private void createActivityRecipe(){
         if(isNewRecipe)
         {
-            actitivityRecipe =dbAdapter.createDefaultRecipeAndSaveItToDB();
+            actitivityRecipe =dbAdapter.createNewRecipe();
             oldRecipeID= actitivityRecipe.getId();
             giveFeedback("createActivityRecipe","recipe: "+actitivityRecipe.getName()+" is new recipeID:"+oldRecipeID);
         }

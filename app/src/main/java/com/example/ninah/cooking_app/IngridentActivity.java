@@ -44,8 +44,8 @@ public class IngridentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ingrident);
         initDefaultValues();
         initEditTexts();
-        initAdapters();
         initLists();
+        initAdapters();
         initListView();
         saveButton=(Button) findViewById(R.id.IngrAct_saveButton);
         setRecipeIDThroughIntent();

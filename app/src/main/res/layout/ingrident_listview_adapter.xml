@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:background="#ffffff">
+
+
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ingrident_name"
+        android:text="@string/IngrAct_nameEditText"
+        android:textSize="20dp"
+        android:textColor="@color/colorBrightBlue"/>
+
+    <TextView
+        android:id="@+id/ingrident_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/IngrAct_mengeEditText"
+        android:textColor="@color/colorBrightBlue"
+        android:textSize="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ingrident_name"
+        android:layout_toEndOf="@+id/ingrident_name"
+        android:layout_marginLeft="80dp"
+        android:layout_marginStart="80dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ingrident_unit"
+        android:text="@string/IngrAct_einheitEditText"
+        android:textSize="20dp"
+        android:textColor="@color/colorBrightBlue"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp" />
+
+</RelativeLayout>

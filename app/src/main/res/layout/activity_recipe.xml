@@ -4,9 +4,26 @@
     android:layout_height="match_parent"
     android:baselineAligned="false">
 
+
+    <ListView
+        android:id="@+id/ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ListView
+        android:id="@+id/workstepText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ingredients"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -18,9 +35,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
                 android:text="@string/recipeName"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:layout_alignParentTop="true" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -40,18 +57,11 @@
                 android:id="@+id/reStAc_rateRecipeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/ingredients"
+
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:text="@string/rating" />
 
-            <ListView
-                android:id="@+id/ingredients"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/ratingBar" />
 
             <TextView
                 android:id="@+id/servings"
@@ -59,15 +69,15 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/ingredients"
+
                 android:layout_marginTop="16dp"
                 android:text="@string/servings" />
 
             <TextView
                 android:id="@+id/numberOfServings"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/servings"
+                android:layout_height="110dp"
+                android:layout_below="@+id/title"
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_toRightOf="@+id/servings"
@@ -92,13 +102,7 @@
                 android:layout_alignTop="@+id/plus"
                 android:text="@string/minusButton" />
 
-            <ListView
-                android:id="@+id/workstepText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/plus"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+
 
         </RelativeLayout>
 
@@ -111,5 +115,17 @@
         android:text="@string/timerStart"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/act_recipe_numberOfServings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/ready_button"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/ready_button"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:inputType="none"
+        android:text="Name" />
 
 </RelativeLayout>

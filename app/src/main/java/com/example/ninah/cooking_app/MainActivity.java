@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initButtons();
         initClickListener();
         initDBCommunication();
-        //cleanDataBase();
+        cleanDataBase();
         createStartRecipe();
     }
 
