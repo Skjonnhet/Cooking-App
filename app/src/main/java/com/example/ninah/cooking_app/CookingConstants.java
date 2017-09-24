@@ -16,7 +16,7 @@ import java.util.List;
 public class CookingConstants {
     /********************************Constants of the app******************************************/
     //DB constants
-    public final static String DATA_BASE_FILE_NAME="demoDB5.db";
+    public final static String DATA_BASE_FILE_NAME="demoDB6.db";
     public final static String NEW_RECIPE_KEY="NEW_RECIPE_KEY";
     public final static boolean NEW_RECIPE_FALSE=false;
     public final static boolean NEW_RECIPE_TRUE=true;
