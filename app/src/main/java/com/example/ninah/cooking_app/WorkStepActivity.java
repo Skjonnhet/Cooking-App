@@ -30,6 +30,7 @@ public class WorkStepActivity extends AppCompatActivity {
     private EditText workStepEditText;
     private ListView listView;
     private ArrayList<String> workstepDescribitions;
+    private ArrayList<String> oldWorkstepDescribitions;
     ArrayList<RecipeWorkStep> recipeWorkSteps;
     private ArrayAdapter<String> arrayAdapter;
     private Long recipeID;
@@ -77,6 +78,7 @@ public class WorkStepActivity extends AppCompatActivity {
     private void initLists(){
         workstepDescribitions=new ArrayList<>();
         recipeWorkSteps=new ArrayList<>();
+        oldWorkstepDescribitions=new ArrayList<>();
     }
 
     //inits all adapters
@@ -147,6 +149,7 @@ public class WorkStepActivity extends AppCompatActivity {
         try{
             for (RecipeWorkStep workStep:recipeWorkSteps){
                 workstepDescribitions.add(workStep.getWorkStepDescribition());
+                oldWorkstepDescribitions.add(workStep.getWorkStepDescribition());
             }
         }
         catch (Exception e){giveFeedback("fillListViewWithOldValues ",e.toString());}
@@ -184,10 +187,25 @@ public class WorkStepActivity extends AppCompatActivity {
 
         if(recipeID!=null){
             for (String description:workstepDescribitions){
-                RecipeWorkStep recipeWorkStep=dbAdapter.createNewWorkStepWithRecipeID(description,recipeID);
+                if(isNewDescription(description)){
+                    RecipeWorkStep recipeWorkStep=dbAdapter.createNewWorkStepWithRecipeID(description,recipeID);
+                }
+
             }
             tellUserWorkStepSaved();
         }
+    }
+
+    private boolean isNewDescription(String description){
+        try {
+            for (String oldDescr:oldWorkstepDescribitions ) {
+                if (oldDescr.equals(description));
+                return false;
+            }
+        }
+        catch (Exception e){};
+
+        return true;
     }
 
 

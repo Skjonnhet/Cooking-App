@@ -104,6 +104,7 @@ public class IngridentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             createNewIngrident();
+                clearEdits();
 
 
             }
@@ -127,6 +128,12 @@ public class IngridentActivity extends AppCompatActivity {
             giveFeedback("fillListView", ingrident.getName());
         }
         arrayAdapter.notifyDataSetChanged();
+    }
+
+    private void clearEdits(){
+        einheitEditText.setText("");
+        mengeEditText.setText("");
+        nameEditText.setText("");
     }
 
     //-----------------------getter and setter methods---------------------------------------------

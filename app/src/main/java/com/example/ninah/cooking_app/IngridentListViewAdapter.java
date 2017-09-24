@@ -35,12 +35,6 @@ public class IngridentListViewAdapter extends ArrayAdapter<Ingrident> {
         this.activity=activity;
     }
 
-    public void notifyChanges(List<Ingrident> ingridents) {
-        ingridents.clear();
-        ingridents.addAll(ingridents);
-        this.notifyDataSetChanged();
-    }
-
     //returns listsize
     @Override
     public int getCount() {
