@@ -49,7 +49,6 @@
                 android:layout_marginTop="11dp"
                 android:layout_toLeftOf="@+id/reStAc_rateRecipeButton"
                 android:layout_toStartOf="@+id/reStAc_rateRecipeButton"
-                android:isIndicator="false"
                 android:numStars="5"
                 android:clickable="false"/>
 

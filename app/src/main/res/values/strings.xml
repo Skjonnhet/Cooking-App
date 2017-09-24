@@ -15,7 +15,7 @@
     <string name="numOfServings">Anzahl Portionen</string>
     <string name="recipeText">Arbeitsschritte</string>
     <string name="saveButton">Speichern</string>
-    <string name="advancedSaveButton">Speichern \n und zum Rezept \n zurückkehren</string>
+    <string name="advancedSaveButton">Speichern \n und Rezept \n anzeigen</string>
     <string name="inputRecipeName">Rezeptname eingeben</string>
     <string name="inputRecipeIngredients">Zutaten eintragen</string>
     <string name="inputServings">Anzahl der Portionen angeben</string>
@@ -37,7 +37,7 @@
     <string name="ringToneEagle">Adler</string>
     <string name="ringToneWolf">Wolf</string>
     <string name="timerStart">Timer starten</string>
-    <string name="rating">Bewerten</string>
+    <string name="rating">Bewerten / ändern</string>
     <string name="servings">Portionen</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="startCookingButton">Kochen starten</string>

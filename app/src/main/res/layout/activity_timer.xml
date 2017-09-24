@@ -20,9 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/resetButton"
-        android:layout_below="@+id/editTextForSeconds"
+        android:layout_above="@+id/ringtoneButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="63dp" />
+        android:layout_marginBottom="22dp" />
 
     <EditText
         android:id="@+id/editTextForHours"
