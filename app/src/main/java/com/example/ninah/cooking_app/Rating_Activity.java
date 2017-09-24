@@ -26,18 +26,25 @@ public class Rating_Activity extends AppCompatActivity {
     private Button noButton;
     private static RatingBar ratingBar;
     private Long recipeId;
+    private Long defaultID;
     private DBAdapter dbAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating_);
+        initDefaultValues();
         initButtons();
         initRatingBar();
         dbAdapter=new DBAdapter(this);
         setButtonOnClickListener();
         setRecipeIdTroughIntent();
         setOldValueToRaingBar();
+    }
+
+    private void initDefaultValues(){
+        defaultID=CookingConstants.DEFAULT_RECIPE_ID;
+        recipeId=defaultID;
     }
 
     private void initButtons(){

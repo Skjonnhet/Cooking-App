@@ -75,16 +75,20 @@ public class RecipeListActivity extends AppCompatActivity {
     //sets ClickListener
     private void setListViewClickListener(){
         //user selects recipe to start it
-        recipeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedRecipe=((TextView) view).getText().toString();
-                Log.d("RecipeListActivity", "onItemLongClick, name: "+selectedRecipe);
-                startRecipe(selectedRecipe);
-                return false;
-            }
-        });
+       recipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               String selectedRecipe=((TextView) view).getText().toString();
+               Log.d("RecipeListActivity", "onItemLongClick, name: "+selectedRecipe);
+               startRecipe(selectedRecipe);
+
+           }
+       });
     }
+
+
+
+
 
     //returns the id of a recipe by its name
     private Long getRecipeIdByName(String name){

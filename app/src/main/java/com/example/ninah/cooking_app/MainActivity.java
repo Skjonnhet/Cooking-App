@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initButtons();
         initClickListener();
         initDBCommunication();
+        cleanDataBase();
+        createStartRecipe();
     }
 
 
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //inits DB Communication
     private void initDBCommunication(){
         dbAdapter=new DBAdapter(this);
-        createStartRecipe();
+
     }
 
 
@@ -182,6 +184,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         oldRecipeIntent.putExtra(CookingConstants.NEW_RECIPE_KEY,CookingConstants.NEW_RECIPE_FALSE);
         oldRecipeIntent.putExtra(CookingConstants.RECIPE_ID_KEY,id);
         startActivity(oldRecipeIntent);
+    }
+
+    private void cleanDataBase(){
+        dbAdapter.cleanAllTables();
     }
 
 

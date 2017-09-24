@@ -39,5 +39,6 @@
     <string name="timerStart">Timer starten</string>
     <string name="rating">Bewerten</string>
     <string name="servings">Portionen</string>
+    <string name="title_activity_test">TestActivity</string>
 
 </resources>

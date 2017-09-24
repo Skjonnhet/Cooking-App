@@ -44,8 +44,9 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     DBAdapter dbAdapter;
     Recipe actitivityRecipe;
     boolean isNewRecipe;
-    Long defaultValue=Long.valueOf(0);
-    Long oldRecipeID=defaultValue;
+    boolean defaultBoolean;
+    Long defaultValue;
+    Long oldRecipeID;
 
 
 
@@ -54,13 +55,12 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_new);
-
-        dbAdapter=new DBAdapter(this);
+        initDefaultValues();
+        initAdapter();
         initTextViews();
         initEditTexts();
         initButtons();
         setOnClickListener();
-
         //---------------------------//keep order!---------------------------------------------------
         setIsNewRecipeBoolean();    //1.checks boolean if recipe is new or old
         setOldRecipeID();           //2.sets oldRecipeID
@@ -97,6 +97,19 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     //-----------------------------init methods--------------------------------------------------
     //used in onCreate()
 
+    //inits default values
+    private void initDefaultValues(){
+        defaultValue=CookingConstants.DEFAULT_RECIPE_ID;
+        defaultBoolean=false;
+        oldRecipeID=defaultValue;
+        isNewRecipe=defaultBoolean;
+    }
+
+    //inits adapater
+    private void initAdapter(){
+        dbAdapter=new DBAdapter(this);
+    }
+
     //inits all textViews
     private void initTextViews(){
         recipeNameTextView = (TextView)findViewById(R.id.recipeName);
@@ -130,12 +143,11 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     //checks trough intent if recipe is new
     //depending on that the newactivityy is filled with old values or not
     private void setIsNewRecipeBoolean(){
-        isNewRecipe=false;
+        isNewRecipe=defaultBoolean;
 
         try {
             Intent intent=getIntent();
-            Bundle extras=intent.getExtras();
-            isNewRecipe=extras.getBoolean(CookingConstants.NEW_RECIPE_KEY);
+            isNewRecipe=intent.getBooleanExtra(CookingConstants.NEW_RECIPE_KEY, defaultBoolean);
         }
 
         catch (Exception e){giveFeedback("setIsNewRecipeBoolean", e.toString());}
@@ -144,11 +156,11 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
     //sets recipeID trough intent
     private void setOldRecipeID(){
-        oldRecipeID=Long.valueOf(0);
+        oldRecipeID=defaultValue;
         try{
             Intent intent=getIntent();
-            Bundle extras=intent.getExtras();
-            oldRecipeID=extras.getLong(CookingConstants.RECIPE_ID_KEY);
+            if(intent!=null)
+            oldRecipeID=intent.getLongExtra(CookingConstants.RECIPE_ID_KEY, defaultValue);
         }
         catch (Exception e){giveFeedback("setOldRecipeID ",e.toString() );}
 
@@ -161,7 +173,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     private void createActivityRecipe(){
         if(isNewRecipe)
         {
-            actitivityRecipe =dbAdapter.createDefaultRecipeAndSaveItToDB();
+            actitivityRecipe =dbAdapter.createNewRecipe();
             oldRecipeID= actitivityRecipe.getId();
             giveFeedback("createActivityRecipe","recipe: "+actitivityRecipe.getName()+" is new recipeID:"+oldRecipeID);
         }
@@ -205,6 +217,13 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
                 startWorkStepActivity();
             }
         });
+
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startRecipeStartActivity();
+            }
+        });
     }
 
 
@@ -242,6 +261,21 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
                 intent.putExtra(CookingConstants.RECIPE_ID_KEY, id);
                 startActivity(intent);
             }catch (Exception e) {giveFeedback("startWorkStepActivity", e.toString());}
+
+        }
+        else  Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();
+    }
+
+    private void startRecipeStartActivity(){
+        if(areAllFieldsFilled()){
+            try {
+
+                Intent intent = new Intent(this, RecipeStartActivity.class);
+                Long id = getActivityRecipe().getId();
+                giveFeedback("startRecipeStartActivity", "recipe-recipeID:" + id);
+                intent.putExtra(CookingConstants.RECIPE_ID_KEY, id);
+                startActivity(intent);
+            }catch (Exception e) {giveFeedback("startRecipeStartActivity", e.toString());}
 
         }
         else  Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();

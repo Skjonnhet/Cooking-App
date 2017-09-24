@@ -50,30 +50,42 @@ public class DBAdapter {
     //Default-methods: return a default instance.
 
     private Recipe getDefaultRecipe() {
+        Recipe defaulRecipe=null;
+        defaulRecipe = new Recipe(CookingConstants.DEFAULT_RECIPE_ID, CookingConstants.DEFAULT_RECIPE_NAME,
+                CookingConstants.DEFAULT_RECIPE_PORTIONS, CookingConstants.DEFAULT_RECIPE_DIFFIICULTY,
+                CookingConstants.DEFAULT_RECIPE_TIME, CookingConstants.DEFAULT_RECIPE_RATING);
+        daoSession.getRecipeDao().insertOrReplace(defaulRecipe);
+        giveFeedback("getDefaultRecipe", "insertOrReplace recipeId:" +defaulRecipe.getId());
+        try {
+            Long id = defaulRecipe.getId();
+            if (id == null) giveFeedback("getDefaultRecipe", "recipeID is null!");
+            else giveFeedback("getDefaultRecipe", "recipeID not null");
+            defaulRecipe= daoSession.getRecipeDao().load(id);
+            giveFeedback("getDefaultRecipe", "could load recipe recipId:" +defaulRecipe.getId());
+        }
+        catch (Exception e){giveFeedback("getDefaultRecipe could not load recipe recipId: ", +defaulRecipe.getId()+" error: "+ e.toString());}
 
-        Recipe recipe = new Recipe(null, "DefaultRecipeName", 2, "Zutaten", 10, 10);
-        daoSession.getRecipeDao().insertOrReplace(recipe);
-
-        Long id = recipe.getId();
-        Ingrident ingridient = new Ingrident(null, "namedZutat", "einheit", 2, id);
-        IngridentDao ingridentDao = daoSession.getIngridentDao();
-        if (id == null) giveFeedback("getDefaultRecipe", "recipeID is null!");
-        else giveFeedback("getDefaultRecipe", "recipeID not null");
-        daoSession.getRecipeDao().insertOrReplace(recipe);
-        return daoSession.getRecipeDao().load(id);
+        return defaulRecipe;
     }
 
-    private Ingrident getDefaultIngrident(Long recipeId) {
-        Ingrident ingrident = new Ingrident(null, "default Ingrident", "gramm", 500, recipeId);
-        daoSession.getIngridentDao().insertOrReplace(ingrident);
-        giveFeedback("getDefaultIngrident", ingrident.getId().toString() + ":" + ingrident.getName());
-        return daoSession.getIngridentDao().load(ingrident.getId());
+    private Ingrident getDefaultIngrident() {
+        Ingrident defaultIngrident=null;
+        defaultIngrident=  new Ingrident(CookingConstants.DEFAULT_INGRIDENT_ID, CookingConstants.DEFAULT_INGRIDENT_NAME,
+                 CookingConstants.DEFAULT_INGRIDENT_UNIT, CookingConstants.DEFAULT_INGRIDENT_MENGE, CookingConstants.DEFAULT_INGRIDENT_RECIPE_ID);
+        daoSession.getIngridentDao().insertOrReplace(defaultIngrident);
+        giveFeedback("getDefaultIngrident insertOrReplaced", defaultIngrident.getId().toString() + ":" + defaultIngrident.getName());
+        try {
+            defaultIngrident= daoSession.getIngridentDao().load(defaultIngrident.getId());
+            giveFeedback("getDefaultIngrident", "could load ingrident recipeId:" +defaultIngrident.getRecipeID() +"inigridentID: "+defaultIngrident.getId());
+        }
+        catch (Exception e){giveFeedback("getDefaultRecipe could not load ingrident recipeId: ", +defaultIngrident.getId()+"inigridentID: "+defaultIngrident.getId()+" error: "+ e.toString());}
+        return defaultIngrident;
     }
 
-    private RecipeWorkStep getDefaultWorkStep(Long recipeId) {
-        RecipeWorkStep workstep = new RecipeWorkStep(null, "default workstepp", recipeId);
+    private RecipeWorkStep getDefaultWorkStep() {
+        RecipeWorkStep workstep = new RecipeWorkStep(CookingConstants.DEFAULT_WORKSTEP_ID, CookingConstants.DEFAULT_WORKSTEP_DECRIPTION, CookingConstants.DEFAULT_WORKSTEP_RECIPE_ID);
         daoSession.getRecipeWorkStepDao().insertOrReplace(workstep);
-        giveFeedback("getDefaultWorkStep", workstep.getId().toString() + ":" + workstep.getWorkStepDescribition());
+        giveFeedback("getDefaultWorkStep insertOrReplaced", workstep.getId().toString() + ":" + workstep.getWorkStepDescribition());
         return workstep;
     }
 
@@ -632,7 +644,8 @@ public class DBAdapter {
 
     //creates a new single RecipeInstance without confusing the user with setting the startID and rating
     //should always be used for creating new recipes
-    public Recipe createNewRecipe(String name, int portions, String difficulty, int timeInMinutes) {
+    //is set private as there is no public use at the moment
+    private Recipe createNewSingleRecipe(String name, int portions, String difficulty, int timeInMinutes) {
         Long startID = getHighestRecipeID();
         startID++;
         int startRating = 0;
@@ -644,10 +657,11 @@ public class DBAdapter {
 
     //creates a new single Ingrident Instance without confusing the user with setting the startID and rating
     //should always be used for creating new ingrident
-    public Ingrident createNewIngrident(String name, String einheit, double menge) {
+    //is set private as there is no public use at the moment
+    private Ingrident createSingleNewIngrident(String name, String einheit, double menge, Long recipeId) {
         Long startID = getHighestIngridentID();
         startID++;
-        Long startRecipeID = Long.valueOf(1);
+        Long startRecipeID = recipeId;
         Ingrident ingrident = new Ingrident(startID, name, einheit, menge, startRecipeID);
         giveFeedback("createNewIngrident", "name:" + ingrident.getName().toString()+" recipeID: "+startID);
         saveSingleIngridentToDB(ingrident);
@@ -656,30 +670,44 @@ public class DBAdapter {
 
     //creates a new single workstep instance without confusing the user with setting the startID and rating
     //should always be used for creating new workstep
-    public RecipeWorkStep createNewWorkStep(String description) {
+    //is set private as there is no public use at the moment
+    private RecipeWorkStep createSingleNewWorkStep(String description, Long recipeId) {
         Long startID = getHighestWorkStepID();
         startID++;
-        Long startRecipeID = Long.valueOf(1);
+        Long startRecipeID = recipeId;
         RecipeWorkStep workStep = new RecipeWorkStep(startID, description, startRecipeID);
         saveSingleRecipeWorkStepToDB(workStep);
         return workStep;
     }
 
 
-    //creates a recipe with default values
+    //creates a default recipes
     //saves it to db
     //should be used to fill DB in the mainactivity when app starts to avoid nullpointers
     public Recipe createDefaultRecipeAndSaveItToDB() {
         Recipe recipe = getDefaultRecipe();
-        Long id = getHighestRecipeID();
-        id++;
-
+        Long id = CookingConstants.DEFAULT_RECIPE_ID;
+        recipe.setId(CookingConstants.DEFAULT_RECIPE_ID);
         List<Ingrident> ingridentList = new ArrayList<>();
         List<RecipeWorkStep> workSteps = new ArrayList<>();
-        ingridentList.add(getDefaultIngrident(id));
-        workSteps.add(getDefaultWorkStep(id));
+        ingridentList.add(getDefaultIngrident());
+        workSteps.add(getDefaultWorkStep());
         saveRecipeToDB(recipe, ingridentList, workSteps);
         giveFeedback("createDefaultRecipeAndSaveItToDB", "recipe saved");
+        return recipe;
+    }
+    //creates a newRecipe for the recipeNewActvity
+    public Recipe createNewRecipe(){
+        Recipe recipe=createNewSingleRecipe(CookingConstants.DEFAULT_RECIPE_NAME, CookingConstants.DEFAULT_RECIPE_PORTIONS, CookingConstants.DEFAULT_RECIPE_DIFFIICULTY,CookingConstants.DEFAULT_RECIPE_TIME);
+        Long id=recipe.getId();
+        Ingrident ingrident=createSingleNewIngrident(CookingConstants.DEFAULT_INGRIDENT_NAME, CookingConstants.DEFAULT_INGRIDENT_UNIT, CookingConstants.DEFAULT_INGRIDENT_MENGE, id);
+        RecipeWorkStep workStep=createSingleNewWorkStep(CookingConstants.DEFAULT_WORKSTEP_DECRIPTION, id);
+        List<Ingrident> ingridentList = new ArrayList<>();
+        List<RecipeWorkStep> workSteps = new ArrayList<>();
+        ingridentList.add(ingrident);
+        workSteps.add(workStep);
+        saveRecipeToDB(recipe, ingridentList, workSteps);
+        giveFeedback("createNewRecipe", "recipe saved id:"+id);
         return recipe;
     }
 
