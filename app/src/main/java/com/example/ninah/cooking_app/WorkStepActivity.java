@@ -188,6 +188,7 @@ public class WorkStepActivity extends AppCompatActivity {
         if(recipeID!=null){
             for (String description:workstepDescribitions){
                 if(isNewDescription(description)){
+                    Log.d("saved ","new "+description);
                     RecipeWorkStep recipeWorkStep=dbAdapter.createNewWorkStepWithRecipeID(description,recipeID);
                 }
 
@@ -199,8 +200,11 @@ public class WorkStepActivity extends AppCompatActivity {
     private boolean isNewDescription(String description){
         try {
             for (String oldDescr:oldWorkstepDescribitions ) {
-                if (oldDescr.equals(description));
-                return false;
+                Log.d("oldDescr "+oldDescr, "new "+description);
+                if (oldDescr.equals(description)){
+                    return false;
+                }
+
             }
         }
         catch (Exception e){};
