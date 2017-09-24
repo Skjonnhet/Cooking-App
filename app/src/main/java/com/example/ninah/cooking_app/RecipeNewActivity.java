@@ -74,7 +74,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.buttonSave: saveRecipeToDB();
+            case R.id.buttonSave: if(saveRecipeToDB()){startRecipeStartActivity();}
                 giveFeedback("onClick", "saveRecipeToDB()");
                 break;
             case R.id.newIngridentsButton: startIngridentActivity();
@@ -198,32 +198,6 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         else {giveFeedback("updateTextViewsWithOldRecipe", "actitivityRecipe is null");}
     }
 
-    //sets onClickListener
-    //is redunant but avoids trouble if problems appear with overwritten OnClick()
-  /*  private void setOnClickListener(){
-       ingridentsButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               startIngridentActivity();
-           }
-       });
-
-        workStepsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startWorkStepActivity();
-            }
-        });
-
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startRecipeStartActivity();
-            }
-        });
-    }*/
-
 
     //-----------------------start other activities-------------------------------------------------
     //used in clickListener
@@ -296,44 +270,48 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
     //saves whole recipe to DB WITH ingridentsList and worksteps
     //checks if user filled all fields and recipe is new
-    private void saveRecipeToDB() {
+    private boolean saveRecipeToDB() {
         if (areAllFieldsFilled()) {
             updateActivityRecipe(actitivityRecipe);
             Recipe recipe = getActivityRecipe();
             if(isNewRecipe){
-                progessNewRecipe(recipe);
+              return   progressNewRecipe(recipe);
             }
-            else updateOldRecipe(recipe);
+            else return updateOldRecipe(recipe);
 
         }else Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();
+
+        return false;
     }
 
     //checks if the recipeName is new before saving it to DB
-    private void progessNewRecipe(Recipe recipe){
+    private boolean progressNewRecipe(Recipe recipe){
         if (isRecipeNameNew(recipe)) {
-            progressRecipeToDB(recipe);
+          return   progressRecipeToDB(recipe);
         } else{
             Toast.makeText(this, "Den Rezeptnamen gibt es schon. Bitte neuen aussuchen", Toast.LENGTH_LONG).show();
-
+           return false;
         }
     }
 
     //just saves the recipe to DB
-    private void updateOldRecipe(Recipe recipe){
-        progressRecipeToDB(recipe);
+    private boolean updateOldRecipe(Recipe recipe){
+       return progressRecipeToDB(recipe);
     }
 
     //constructs a new whole recipe and saves it to the db
-    private void progressRecipeToDB(Recipe recipe){
+    private boolean progressRecipeToDB(Recipe recipe){
         List<Ingrident> ingridentList = dbAdapter.getAllIngridentsOfRecipe(recipe);
         List<RecipeWorkStep> workStepList = dbAdapter.getAllWorkStepsOfRecipe(recipe);
 
         if (recipe != null | ingridentList != null | workStepList != null) {
             dbAdapter.saveRecipeToDB(recipe, ingridentList, workStepList);
             Toast.makeText(this, "Rezept " + recipe.getName() + " gespeichert! ", Toast.LENGTH_SHORT).show();
+            return true;
         } else {
             giveFeedback("saveRecipeToDB", "one paramter is null!");
             Toast.makeText(this, "Eine Eingabe ist leer: Prüfe Rezept-, Zutaten und Arbeitsschritteingaben", Toast.LENGTH_LONG).show();
+            return false;
         }
 
     }
