@@ -40,5 +40,13 @@
     <string name="rating">Bewerten</string>
     <string name="servings">Portionen</string>
     <string name="title_activity_test">TestActivity</string>
-
+    <string name="startCookingButton">Kochen starten</string>
+    <string name="resetButton">Reset</string>
+    <string name="editTextForHours">Zeit in Stunden</string>
+    <string name="editTextForMinutes">Zeit in Minuten</string>
+    <string name="editTextForSeconds">Zeit in Sekunden</string>
+    <string name="ringtoneButton">Klingelton ändern</string>
+    <string name="saveSingleWorkStepButton">Eintragen</string>
+    <string name="workStepEditText">Arbeitsschritt</string>
+    <string name="saveAllWorkStepsButton">Liste speichern</string>
 </resources>
