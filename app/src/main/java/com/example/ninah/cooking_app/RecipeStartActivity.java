@@ -229,7 +229,7 @@ public class RecipeStartActivity extends AppCompatActivity {
                 titleTextView.setText(activityRecipe.getName());
                 numberOfServingsEditText.setText("" + activityRecipe.getPortions());
                 Log.d("RecipeStartActivity", "numberOfServingsEditText " + activityRecipe.getPortions());
-                ratingBar.setNumStars(activityRecipe.getRatingInStars());
+                ratingBar.setRating(activityRecipe.getRatingInStars());
                 fillIngridentsList(activityRecipe);
                 fillWorkStepList(activityRecipe);
             } catch (Exception e) {

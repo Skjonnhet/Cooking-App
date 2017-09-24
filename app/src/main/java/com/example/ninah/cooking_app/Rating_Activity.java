@@ -104,8 +104,10 @@ public class Rating_Activity extends AppCompatActivity {
     //changes rating of the recipe
     private void commitRatingToDB(){
         if(ratingBar!=null){
+
             try{
-                dbAdapter.updateRatingStars(recipeId,ratingBar.getNumStars());
+                int rating=Math.round(ratingBar.getRating());
+                dbAdapter.updateRatingStars(recipeId,rating);
             }
 
             catch (Exception e){  Log.d("Rating_Activity","commitRatingToDB " +e.toString());}
