@@ -72,7 +72,7 @@ public class IngridentListViewAdapter extends ArrayAdapter<Ingrident> {
         unit.setText(ingridents.get(position).getEinheit());
 
         view.setTag(ingridents.get(position).getId());
-        Log.d("IngrAdapter","getView" +position);
+       // Log.d("IngrAdapter","getView" +position);
         return view;
     }
 

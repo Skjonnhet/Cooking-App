@@ -1,6 +1,10 @@
 package com.example.ninah.cooking_app;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,8 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView fastRecipe;
     TextView randomRecipe;
     TextView newRecipe;
-    Button testTimerButton;
-    Button changeRecipeButton;
     Button deleteRecipeButton;
     DBAdapter dbAdapter;
 
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initButtons();
         initClickListener();
         initDBCommunication();
-        cleanDataBase();
+        //cleanDataBase();
         createStartRecipe();
     }
 
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                startNewRecipe();
                 break;
 
+
             default:
                 break;
         }
@@ -97,11 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbAdapter.createDefaultRecipeAndSaveItToDB();
     }
 
-    //optional: cleans all tables
-    //useful if DB has to be reseted in the future to Test DB
-    private void cleanAllTables(){
-        dbAdapter.cleanAllTables();
-    }
+
 
     //inits textViews
     private void initTextViews(){
@@ -114,9 +113,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //inits buttons
     private void initButtons(){
-        //testTimerButton=(Button) findViewById(R.id.testTimerButton);
-        //changeRecipeButton=(Button) findViewById(R.id.changeRecipeName);
         deleteRecipeButton=(Button) findViewById(R.id.deleteRecipeButton);
+       setResetButton();
     }
 
     //inits clickListener
@@ -132,6 +130,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initDBCommunication(){
         dbAdapter=new DBAdapter(this);
 
+    }
+
+
+    //Button to clean the whole database
+    private void setResetButton(){
+        deleteRecipeButton.setText("ResetButton: Clean Database");
+        deleteRecipeButton.setTextColor(Color.RED);
+        deleteRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDeleteAlertDialog(MainActivity.this);
+
+            }
+        });
     }
 
 
@@ -186,10 +198,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(oldRecipeIntent);
     }
 
-    private void cleanDataBase(){
-        dbAdapter.cleanAllTables();
+
+    //-----------------------communication part-----------------------------------------------------
+    //shows dialogs
+
+
+    //shows warning dialog and cleans the database if wanted by user
+    private void startDeleteAlertDialog(Context context){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        alertBuilder.setTitle("Datenbank komplett bereinigen");
+        alertBuilder.setMessage("Wirklich alle Rezepte löschen?");
+        alertBuilder.setPositiveButton("Ja, löschen!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                cleanAllTables();
+                createStartRecipe();
+            }
+        });
+        alertBuilder.setNegativeButton("Nein, behalten", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertBuilder.show();
     }
 
+    //optional: cleans all tables if the databse
+    //useful if DB has to be reseted in the future to test DB
+    private void cleanAllTables(){
+        dbAdapter.cleanAllTables();
+    }
 
 
 

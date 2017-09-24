@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -29,17 +30,17 @@ public class RecipeStartActivity extends AppCompatActivity {
     *
     * */
 
-    TextView titleTextView;
-    RatingBar ratingBar;
+
     ListView ingredientsListView;
     ListView workStepListView;
+    TextView titleTextView;
     TextView servingsTextView;
     EditText numberOfServingsEditText;
+    RatingBar ratingBar;
+    CheckBox checkBox;
     Button rateRecipeButton;
     Button plusButton;
     Button minusButton;
-    TextView recipe_text;
-    CheckBox checkBox;
     Button startTimerButton;
     DBAdapter dbAdapter;
     ArrayAdapter arrayAdapterWorkSteps;
@@ -60,12 +61,11 @@ public class RecipeStartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
-        ingredientsListView = (ListView)findViewById(R.id.ingredients);
-        workStepListView=(ListView)findViewById(R.id.workstepText);
+        initListViews();
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
-        //checkBox = (CheckBox)findViewById(R.id.checkBox);
         initDefaultValues();
         initTextViews();
+        initEditTexts();
         initButtons();
         initLists();
         setClickListener();
@@ -79,68 +79,7 @@ public class RecipeStartActivity extends AppCompatActivity {
         //-----------------------------------------------------------------------------------------
 
         initStartValues();
-
-
     }
-
-    //-------------------------------overwrite-methods---------------------------------------------
-    //overwritten methods
-/*
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ratingBar:
-
-                  Intent zu Jonas Bewertungs-Activity
-
-
-                Intent RatingIntent = new Intent( RecipeStartActivity.this, Rating_Activity.class);
-                RatingIntent.putExtra(CookingConstants.RECIPE_ID_KEY, recipeId);
-                startActivity(RatingIntent);
-
-                break;
-            case R.id.plus:morerecipes();
-
-                DB-Funktion einfügren, dass eine Portion dazu gerechnet wird
-
-            case R.id.minus:
-
-                 DB-Funktion, dass eine Portion abgezogen wird
-
-                break;
-            case R.id.checkBox:
-
-                 hier muss was rein, aber was?
-                 * Wenn Timer-Funktion im Rezept hinterlegt ist bei diesem Arbeitsschritt, dann Weiterleitung zu Timer?
-                 *
-                //break;
-            case R.id.ready_button:startTimerActivity();
-
-            default:
-                break;
-        }
-    }*/
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actions, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }*/
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.actionbarEdit:
-
-                Intent newRecipeIntent = new Intent(RecipeStartActivity.this, RecipeNewActivity.class);
-                startActivity(newRecipeIntent);
-                break;
-        }
-        return super.onOptionsItemSelected(item); //To change body of generated methods, choose Tools | Templates.
-    }*/
 
 
     //----------------------init part--------------------------------------------------------------
@@ -160,28 +99,35 @@ public class RecipeStartActivity extends AppCompatActivity {
        oldNumberOfServings=activityRecipe.getPortions();
     }
 
-    //inits the textviews and editText
+    //inits the textviews
     private void initTextViews(){
         titleTextView = (TextView)findViewById(R.id.title);
         servingsTextView = (TextView)findViewById(R.id.servings);
-        //recipe_text = (TextView)findViewById(R.id.recipe_text);
+
+          }
+    //inits edit texts
+    //sets keylistener of numberOfServingsEditText null to avoid user uses it as input
+    private void initEditTexts(){
         numberOfServingsEditText = (EditText) findViewById(R.id.act_recipe_numberOfServings);
         numberOfServingsEditText.setInputType(InputType.TYPE_NULL);
         numberOfServingsEditText.setKeyListener(null);
+    }
 
+    //inits listviews
+    private void initListViews(){
+        ingredientsListView = (ListView)findViewById(R.id.ingredients);
+        workStepListView=(ListView)findViewById(R.id.workstepText);
+        workStepListView.setClickable(true);
+        workStepListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
     //inits the buttons
     private void initButtons(){
         plusButton = (Button)findViewById(R.id.plus);
         minusButton = (Button)findViewById(R.id.minus);
-        minusButton.setText("MMMM");
         startTimerButton = (Button)findViewById(R.id.ready_button);
         rateRecipeButton=(Button) findViewById(R.id.reStAc_rateRecipeButton);
-    //    plusButton.setOnClickListener(this);
-     //   minusButton.setOnClickListener(this);
-      //  startTimerButton.setOnClickListener(this);
-      //  rateRecipeButton.setOnClickListener(this);
+
     }
 
     //inits all lists
@@ -193,16 +139,12 @@ public class RecipeStartActivity extends AppCompatActivity {
 
 
 
-
     //inits the adapter for the ingridents- and workstepslistadapters
     private void initAdapters(){
         dbAdapter=new DBAdapter(this);
         arrayAdapterWorkSteps=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, workstepList);
         arrayAdapterIngridents =new ArrayAdapter<String> (this, android.R.layout.simple_list_item_multiple_choice, ingridentStringList);
-
-        /**change items() to  dbAdapter.getAllIngridentsOfRecipe(getActivitiyRecipe());!!!!!!!!!!**/
-        ingridentsList= items();// dbAdapter.getAllIngridentsOfRecipe(getActivitiyRecipe());
-
+        ingridentsList= dbAdapter.getAllIngridentsOfRecipe(getActivitiyRecipe());
         ingridentListViewAdapter=new IngridentListViewAdapter(this,this,ingridentsList);
         arrayAdapterWorkSteps=new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, workstepList);
         Log.d("RecipeStartActivity","initAdapters : ingridentsList size"+ingridentsList.size());
@@ -210,12 +152,14 @@ public class RecipeStartActivity extends AppCompatActivity {
         ingredientsListView.setAdapter(ingridentListViewAdapter);
         workStepListView.setAdapter(arrayAdapterWorkSteps);
 
+
         arrayAdapterWorkSteps.notifyDataSetChanged();
         ingridentListViewAdapter.notifyDataSetChanged();
 
     }
 
     //returns activity according to the recipeID
+    //sets the activityRecipe
     private Recipe getActivitiyRecipe(){
         this.activityRecipe=dbAdapter.getRecipeByID(recipeId);
         return activityRecipe;
@@ -232,10 +176,10 @@ public class RecipeStartActivity extends AppCompatActivity {
             Log.d("RecipeStartActivity","setRecipeId recipeID: "+recipeId);
         }
         catch (Exception e){Log.d("RecipeStartActivity","setRecipeId recipeID: "+e.toString());}
-
     }
-    //sets setsClickListener
-    private void setClickListener(){
+
+    //sets ClickListener
+    private void setClickListener() {
         startTimerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -253,52 +197,27 @@ public class RecipeStartActivity extends AppCompatActivity {
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
+                try {
                     changeNumberOfServings(true);
                     rise();
                     ingridentListViewAdapter.notifyIngridentsChanged();
+                } catch (Exception e) {
                 }
-                catch (Exception e){}
             }
         });
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
+                try {
                     changeNumberOfServings(false);
                     lower();
 
+                } catch (Exception e) {
                 }
-                catch (Exception e){}
             }
         });
-    }
-
-    private void rise(){
-        int number=1;
-        try{
-            number=Integer.parseInt(numberOfServingsEditText.getText().toString());
-        }catch (Exception e) {Log.d("",e.toString());}
-
-        number++;
-        numberOfServingsEditText.setText("");
-        numberOfServingsEditText.setText(""+number);
-    }
 
 
-    private void lower(){
-        int minValue=1;
-        int number=1;
-        try{
-          number=Integer.parseInt(numberOfServingsEditText.getText().toString());
-        }
-        catch (Exception e) {Log.d("",e.toString());}
-
-        if(number>minValue){number--;}
-        else number=minValue;
-
-        numberOfServingsEditText.setText("");
-        numberOfServingsEditText.setText(""+number);
     }
 
 
@@ -306,8 +225,6 @@ public class RecipeStartActivity extends AppCompatActivity {
     //fills views with recipe values
     private void fillViewsWithRecipe(){
         if(activityRecipe!=null) {
-
-
             try {
                 titleTextView.setText(activityRecipe.getName());
                 numberOfServingsEditText.setText("" + activityRecipe.getPortions());
@@ -318,17 +235,13 @@ public class RecipeStartActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.d("RecipeStartActivity", "fillViewsWithRecipe " + e.toString());
             }
-
         }
-
-
         else {Log.d("RecipeStartActivity","fillViewsWithRecipe recipeID is null");}
     }
 
     //fills lists with ingridents values
     //transform values into one String for ingridentStringList
     private void fillIngridentsList(Recipe recipe){
-
         try {
             ingridentsList = dbAdapter.getAllIngridentsOfRecipe(recipe);
             for (Ingrident ingrident : ingridentsList) {
@@ -338,17 +251,10 @@ public class RecipeStartActivity extends AppCompatActivity {
                 String einheit = ingrident.getEinheit();
                 String ingridentFormat = "Zutat: " + name + ", Menge: " + menge + " " + einheit;
                 this.ingridentStringList.add(ingridentFormat);
-
             }
         }
-
         catch (Exception e){Log.d("RecipeStartActivity","fillIngridentsList "+e.toString());}
-
         arrayAdapterIngridents.notifyDataSetChanged();
-
-
-
-
     }
 
     //fills lists with worksteps values
@@ -390,10 +296,7 @@ public class RecipeStartActivity extends AppCompatActivity {
     //-------------------calculate part-------------------------------------------------------------
     //methods caculate the amounts of the ingridents
 
-
-
-
-    //calculates the amount with the values of new number of servings/persons, old amount of recipe, and old number of servings/persons
+    //calculates the amount with the int/double-values of new number of servings/persons, old amount of recipe, and old number of servings/persons
     private double calculateAmount(int newNumberOfServings, double oldAmount, int oldNumberOfServings ){
         double minValue=1;
         double oldAmountInIngridient=roundDouble(oldAmount);
@@ -409,8 +312,9 @@ public class RecipeStartActivity extends AppCompatActivity {
         return result;
     }
 
+    //rounds values two two number after comma
     private double roundDouble(double d){
-        return Math.round(d*100)/100;
+        return Math.round((d*100))/100;
     }
 
 
@@ -449,12 +353,11 @@ public class RecipeStartActivity extends AppCompatActivity {
 
 
     //changes the number of recipes
-    //used in the plus and minuts button
+    //used in the plus and minus button OnCliListener
+    //checks if user rises or lowers the portion
+    //than caulcates the new portions through updateAmountOfIngridentObjects()
     private void changeNumberOfServings(boolean isPlus){
-
-
         try{
-
              oldNumberOfServings= getOldNumberOfServings();
             Log.d("changeNumberOfServings1","old"+oldNumberOfServings+"new"+newNumberOfServings);
             if(isPlus){this.newNumberOfServings=oldNumberOfServings;
@@ -487,37 +390,54 @@ public class RecipeStartActivity extends AppCompatActivity {
         Log.d(" updateAmount","ingridentListViewAdapter data changed");
     }
 
+
+
+
+//---------------------hepler part------------------------------------------------------------------
+    //methods support other methods
+
+
+    private void rise(){
+        int number=1;
+        try{
+            number=Integer.parseInt(numberOfServingsEditText.getText().toString());
+        }catch (Exception e) {Log.d("",e.toString());}
+
+        number++;
+        numberOfServingsEditText.setText("");
+        numberOfServingsEditText.setText(""+number);
+    }
+
+
+    private void lower(){
+        int minValue=1;
+        int number=1;
+        try{
+            number=Integer.parseInt(numberOfServingsEditText.getText().toString());
+        }
+        catch (Exception e) {Log.d("",e.toString());}
+
+        if(number>minValue){number--;}
+        else number=minValue;
+
+        numberOfServingsEditText.setText("");
+        numberOfServingsEditText.setText(""+number);
+    }
+
+
+    //returns old numberOf Servings
     private int getOldNumberOfServings(){
         int numberOfPersonsInRecipe=1;
         try {
             String numberOfService= numberOfServingsEditText.getText().toString();
             Log.d("getOldNumberOfServings", ""+numberOfService);
-             numberOfPersonsInRecipe=Integer.parseInt(numberOfService);
+            numberOfPersonsInRecipe=Integer.parseInt(numberOfService);
             Log.d("getOldNumberOfServings", ""+numberOfPersonsInRecipe);
         }
         catch (Exception e){Log.d("getOldNumberOfServings",e.toString());}
 
         return numberOfPersonsInRecipe;
 
-    }
-
-
-
-    //testmethod
-    private List<Ingrident> items(){
-        List<Ingrident> list=new ArrayList<>();
-        for (int i=0;i<10;i++)
-        {
-            Ingrident ingrident=dbAdapter.createNewIngridentWithRecipeID("Rezept "+i ,"Gramm ",15*i,recipeId);
-            list.add(ingrident);
-        }
-        return list;
-    }
-
-    //testmethod
-    private void morerecipes(){
-        ingridentsList.addAll(items());
-        ingridentListViewAdapter.notifyDataSetChanged();
     }
 
 

@@ -261,7 +261,7 @@ public class DBAdapter {
             recipesWithNameX = recipeQueryBuilder.where(RecipeDao.Properties.Name.eq(nameX)).list();
             giveFeedback("getRecipeListByName", "Size: "+ recipesWithNameX.size());
         } catch (Exception e) {
-            Log.d("DBAdapter", "getRecipeByName" + e.toString());
+            Log.d("DBAdapter", "getRecipeByName " + e.toString());
         }
 
         if (recipesWithNameX == null) {
@@ -698,7 +698,8 @@ public class DBAdapter {
     }
     //creates a newRecipe for the recipeNewActvity
     public Recipe createNewRecipe(){
-        Recipe recipe=createNewSingleRecipe(CookingConstants.DEFAULT_RECIPE_NAME, CookingConstants.DEFAULT_RECIPE_PORTIONS, CookingConstants.DEFAULT_RECIPE_DIFFIICULTY,CookingConstants.DEFAULT_RECIPE_TIME);
+        String name=CookingConstants.DEFAULT_RECIPE_NAME+" "+getHighestRecipeID()+1;
+        Recipe recipe=createNewSingleRecipe(name, CookingConstants.DEFAULT_RECIPE_PORTIONS, CookingConstants.DEFAULT_RECIPE_DIFFIICULTY,CookingConstants.DEFAULT_RECIPE_TIME);
         Long id=recipe.getId();
         Ingrident ingrident=createSingleNewIngrident(CookingConstants.DEFAULT_INGRIDENT_NAME, CookingConstants.DEFAULT_INGRIDENT_UNIT, CookingConstants.DEFAULT_INGRIDENT_MENGE, id);
         RecipeWorkStep workStep=createSingleNewWorkStep(CookingConstants.DEFAULT_WORKSTEP_DECRIPTION, id);

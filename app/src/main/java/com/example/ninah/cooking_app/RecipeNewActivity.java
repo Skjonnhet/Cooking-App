@@ -60,7 +60,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         initTextViews();
         initEditTexts();
         initButtons();
-        setOnClickListener();
+      //  setOnClickListener();
         //---------------------------//keep order!---------------------------------------------------
         setIsNewRecipeBoolean();    //1.checks boolean if recipe is new or old
         setOldRecipeID();           //2.sets oldRecipeID
@@ -70,7 +70,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    //
+    //*
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -83,9 +83,6 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
             case R.id.newWorkStepsButton: startWorkStepActivity();
                 giveFeedback("onClick", "startWorkStepActivity()");
                 break;
-                /**
-             * speichern oder activites aufrufen
-             */
 
 
             default:
@@ -203,7 +200,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
 
     //sets onClickListener
     //is redunant but avoids trouble if problems appear with overwritten OnClick()
-    private void setOnClickListener(){
+  /*  private void setOnClickListener(){
        ingridentsButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -214,6 +211,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
         workStepsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startWorkStepActivity();
             }
         });
@@ -224,7 +222,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
                 startRecipeStartActivity();
             }
         });
-    }
+    }*/
 
 
     //-----------------------start other activities-------------------------------------------------
@@ -267,6 +265,7 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void startRecipeStartActivity(){
+
         if(areAllFieldsFilled()){
             try {
 
@@ -296,23 +295,50 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
     }
 
     //saves whole recipe to DB WITH ingridentsList and worksteps
-    private void saveRecipeToDB(){
-        if(areAllFieldsFilled()) {
+    //checks if user filled all fields and recipe is new
+    private void saveRecipeToDB() {
+        if (areAllFieldsFilled()) {
             updateActivityRecipe(actitivityRecipe);
             Recipe recipe = getActivityRecipe();
-            List<Ingrident> ingridentList = dbAdapter.getAllIngridentsOfRecipe(recipe);
-            List<RecipeWorkStep> workStepList = dbAdapter.getAllWorkStepsOfRecipe(recipe);
-
-            if (recipe != null | ingridentList != null | workStepList != null) {
-                dbAdapter.saveRecipeToDB(recipe, ingridentList, workStepList);
-                Toast.makeText(this, "Rezept"+recipe.getName()+ "gespeichert!", Toast.LENGTH_LONG).show();
-            } else {
-                giveFeedback("saveRecipeToDB", "one paramter is null!");
-                Toast.makeText(this, "Eine Eingabe ist leer: Prüfe Rezept-, Zutaten und Arbeitsschritteingaben", Toast.LENGTH_LONG).show();
+            if(isNewRecipe){
+                progessNewRecipe(recipe);
             }
-        }
-        else  Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();
+            else updateOldRecipe(recipe);
+
+        }else Toast.makeText(this, "Eine Rezept Eingabe ist leer: Prüfe Name-, Menge und Zeit", Toast.LENGTH_LONG).show();
     }
+
+    //checks if the recipeName is new before saving it to DB
+    private void progessNewRecipe(Recipe recipe){
+        if (isRecipeNameNew(recipe)) {
+            progressRecipeToDB(recipe);
+        } else{
+            Toast.makeText(this, "Den Rezeptnamen gibt es schon. Bitte neuen aussuchen", Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+    //just saves the recipe to DB
+    private void updateOldRecipe(Recipe recipe){
+        progressRecipeToDB(recipe);
+    }
+
+    //constructs a new whole recipe and saves it to the db
+    private void progressRecipeToDB(Recipe recipe){
+        List<Ingrident> ingridentList = dbAdapter.getAllIngridentsOfRecipe(recipe);
+        List<RecipeWorkStep> workStepList = dbAdapter.getAllWorkStepsOfRecipe(recipe);
+
+        if (recipe != null | ingridentList != null | workStepList != null) {
+            dbAdapter.saveRecipeToDB(recipe, ingridentList, workStepList);
+            Toast.makeText(this, "Rezept " + recipe.getName() + " gespeichert! ", Toast.LENGTH_SHORT).show();
+        } else {
+            giveFeedback("saveRecipeToDB", "one paramter is null!");
+            Toast.makeText(this, "Eine Eingabe ist leer: Prüfe Rezept-, Zutaten und Arbeitsschritteingaben", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+
 
     //-----------------------getter methods: return values for recipe from inputs-------------------
     //mainly used in other methofs to read out values from user input
@@ -420,6 +446,23 @@ public class RecipeNewActivity extends AppCompatActivity implements View.OnClick
        if (editText.getText().toString().trim().isEmpty()) return true;
         else return false;
 
+    }
+
+    //checks if the recipe name is already in the DB should be max 1
+    private boolean isRecipeNameNew(Recipe recipe){
+        boolean isNew=false;
+        if(recipe!=null) {
+            try {
+                Log.d("isRecipeNameNew ", "recipe name " +recipe.getName());
+                List<Recipe> recipes = dbAdapter.getAllRecipesWithThisName(recipe.getName());
+                if (recipes.isEmpty() || recipe == null||recipes.size()==1 ) {
+                    isNew = true;
+                }
+            } catch (Exception e) {
+            }
+        } else {  Log.d("isRecipeNameNew ", "recipe is null");}
+
+        return isNew;
     }
 
     private void giveFeedback(String method, String feedback) {
