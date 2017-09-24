@@ -5,25 +5,12 @@
     android:baselineAligned="false">
 
 
-    <ListView
-        android:id="@+id/ingredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <ListView
-        android:id="@+id/workstepText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ingredients"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -35,9 +22,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:text="@string/recipeName"
-                android:visibility="visible"
-                android:layout_alignParentTop="true" />
+                android:visibility="visible" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -49,8 +36,9 @@
                 android:layout_marginTop="11dp"
                 android:layout_toLeftOf="@+id/reStAc_rateRecipeButton"
                 android:layout_toStartOf="@+id/reStAc_rateRecipeButton"
+                android:clickable="false"
                 android:numStars="5"
-                android:clickable="false"/>
+                android:stepSize="1" />
 
             <Button
                 android:id="@+id/reStAc_rateRecipeButton"
@@ -59,35 +47,33 @@
 
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/ratingBar"
                 android:text="@string/rating" />
-
 
             <TextView
                 android:id="@+id/servings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:layout_alignBottom="@+id/numberOfServings"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-
-                android:layout_marginTop="16dp"
                 android:text="@string/servings" />
 
             <TextView
                 android:id="@+id/numberOfServings"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
-                android:text=""
-                android:layout_below="@+id/ratingBar"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="29dp"
-                android:layout_marginStart="29dp" />
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/servings"
+                android:layout_toRightOf="@+id/servings"
+                android:text="" />
 
             <Button
                 android:id="@+id/plus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/numberOfServings"
+                android:layout_below="@+id/ratingBar"
                 android:layout_toLeftOf="@+id/minus"
                 android:layout_toStartOf="@+id/minus"
                 android:text="@string/plusButton"
@@ -97,37 +83,55 @@
                 android:id="@+id/minus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:text="@string/minusButton"
+                android:layout_alignBaseline="@+id/plus"
+                android:layout_alignBottom="@+id/plus"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/plus"
-                android:text="@string/minusButton" />
+                android:layout_alignParentEnd="true" />
+
+            <EditText
+                android:id="@+id/act_recipe_numberOfServings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/servings"
+                android:layout_alignBottom="@+id/servings"
+                android:layout_toLeftOf="@+id/minus"
+                android:layout_toStartOf="@+id/minus"
+                android:ems="10"
+                android:inputType="none"
+                android:text="Name" />
 
             <Button
                 android:id="@+id/ready_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/timerStart"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/act_recipe_numberOfServings"
-                android:layout_toEndOf="@+id/act_recipe_numberOfServings" />
+                android:layout_below="@+id/plus"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="14dp" />
 
-            <EditText
-                android:id="@+id/act_recipe_numberOfServings"
-                android:layout_width="wrap_content"
+            <ListView
+                android:id="@+id/ingredients"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="none"
-                android:text="Name"
-                android:layout_alignBottom="@+id/reStAc_rateRecipeButton"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/ready_button"/>
 
         </RelativeLayout>
-
     </ScrollView>
 
+
+
+    <ListView
+        android:id="@+id/workstepText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="341dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

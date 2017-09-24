@@ -31,13 +31,15 @@
 
         <RatingBar
             android:id="@+id/ratingRecipe_RatingBar"
-            android:layout_width="wrap_content"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="115dp"
+            android:layout_marginTop="118dp"
+            android:clickable="true"
+            android:gravity="center"
             android:numStars="5"
-            android:stepSize="1"/>
+            android:stepSize="1" />
 
         <TextView
             android:id="@+id/textViewChangeRecipie"
@@ -45,29 +47,29 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:text="@string/changeRecipe"
+            android:layout_marginTop="75dp"
             android:layout_below="@+id/ratingRecipe_RatingBar"
-            android:layout_alignLeft="@+id/ratingRecipe_RatingBar"
-            android:layout_alignStart="@+id/ratingRecipe_RatingBar"
-            android:layout_marginTop="55dp" />
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
 
         <Button
             android:id="@+id/ratingRecipe_changeRecipeButton_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/yes"
-            android:layout_marginTop="45dp"
-            android:layout_alignTop="@+id/textViewSaveRecipe"
-            android:layout_alignLeft="@+id/ratingRecipe_changeRecipeButton_yes"
-            android:layout_alignStart="@+id/ratingRecipe_changeRecipeButton_yes" />
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/textViewSaveRecipe"
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:id="@+id/ratingRecipe_changeRecipeButton_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/yes"
-            android:layout_marginTop="43dp"
-            android:layout_alignTop="@+id/textViewChangeRecipie"
-            android:layout_centerHorizontal="true" />
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/textViewChangeRecipie"
+            android:layout_alignLeft="@+id/ratingRecipe_changeRecipeButton_no"
+            android:layout_alignStart="@+id/ratingRecipe_changeRecipeButton_no" />
 
         <TextView
             android:id="@+id/textViewSaveRecipe"

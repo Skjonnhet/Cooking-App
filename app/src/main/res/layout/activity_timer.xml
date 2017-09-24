@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:gravity="center"
-        android:text="***hier muss Timer noch rein***"
+        android:text="***hier wird Timer angezeigt***"
         android:textSize="32sp"
         android:layout_below="@+id/startCookingButton"
         android:layout_centerHorizontal="true" />
